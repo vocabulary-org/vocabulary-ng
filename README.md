@@ -6,6 +6,16 @@
 $ npm install keycloak-angular keycloak-js
 ```
 
+## Bootstrap
+```shell
+$ npm install bootstrap
+```
+## Components creation
+```shell
+$ ng g class model/word/word --type=model  # Results in word.model.ts 
+$ ng generate component header  --skip-tests  --type=component
+```
+
 # Default Doc
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.5.
