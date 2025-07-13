@@ -14,6 +14,12 @@ $ npm install bootstrap
 ```shell
 $ ng g class model/word/word --type=model  # Results in word.model.ts 
 $ ng generate component header  --skip-tests  --type=component
+$ ng generate component words/word-list  --skip-tests  --type=component
+```
+
+## Service Creation
+```shell
+$ ng generate service services/word/word --type=service
 ```
 
 # Default Doc

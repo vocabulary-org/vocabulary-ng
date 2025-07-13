@@ -1,0 +1,23 @@
+<h2>Word List</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Sentence</th>
+      <th>Translation</th>
+      <th>Description</th>
+      <th>Language</th>
+      <th>Language To</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (word of words; track word.uuid) {
+      <tr>
+        <td>{{ word.sentence }}</td>
+        <td>{{ word.translation }}</td>
+        <td>{{ word.description }}</td>
+        <td>{{ word.language }}</td>
+        <td>{{ word.languageTo }}</td>
+      </tr>
+    }
+  </tbody>
+</table>
