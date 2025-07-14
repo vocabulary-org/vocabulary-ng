@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, DestroyRef, inject, OnInit} from '@angular/core';
 import { WordService } from '../../services/word/word.service'
 import { Word } from '../../model/word/word.model';
 
@@ -11,13 +11,18 @@ import { Word } from '../../model/word/word.model';
 })
 
 export class WordListComponent implements OnInit {
+  private destroyRef = inject(DestroyRef);
   words: Word[] = [];
 
   constructor(private wordService: WordService) {}
 
   ngOnInit(): void {
-    this.wordService.getAll().subscribe(page => {
+    const subscription = this.wordService.getAll().subscribe(page => {
       this.words = page.content;
+    });
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+
     });
   }
 }
