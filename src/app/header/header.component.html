@@ -4,4 +4,13 @@
   <button mat-icon-button aria-label="Menu">
     <mat-icon>menu</mat-icon>
   </button>
+@if (!authenticated) {
+  <button mat-raised-button color="primary" (click)="login()">
+    Login
+  </button>
+} @else {
+  <button mat-raised-button color="warn" (click)="logout()">
+    Logout
+  </button>
+}
 </mat-toolbar>
