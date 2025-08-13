@@ -5,6 +5,11 @@
 ```shell
 $ npm install keycloak-angular keycloak-js
 ```
+## Angular Material
+```shell
+ng add @angular/material
+```
+
 ## Installing components
 ### Header
 ```shell
