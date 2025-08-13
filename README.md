@@ -5,6 +5,11 @@
 ```shell
 $ npm install keycloak-angular keycloak-js
 ```
+## Installing components
+### Header
+```shell
+ng generate component header  --skip-tests  --type=component
+```
 
 # Default Doc
 
