@@ -16,6 +16,17 @@ ng add @angular/material
 ng generate component header  --skip-tests  --type=component
 ```
 
+## Services
+```shell
+ng generate component service/word  --skip-tests  --type=service
+```
+## Models
+```shell
+ng generate class model/word --type=model --skip-tests
+```
+
+
+
 # Default Doc
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.5.
