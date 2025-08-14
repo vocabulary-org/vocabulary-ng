@@ -5,22 +5,27 @@
 ```shell
 $ npm install keycloak-angular keycloak-js
 ```
-
-## Bootstrap
+## Angular Material
 ```shell
-$ npm install bootstrap
-```
-## Components creation
-```shell
-$ ng g class model/word/word --type=model  # Results in word.model.ts 
-$ ng generate component header  --skip-tests  --type=component
-$ ng generate component words/word-list  --skip-tests  --type=component
+ng add @angular/material
 ```
 
-## Service Creation
+## Installing components
+### Header
 ```shell
-$ ng generate service services/word/word --type=service
+ng generate component header  --skip-tests  --type=component
 ```
+
+## Services
+```shell
+ng generate component service/word  --skip-tests  --type=service
+```
+## Models
+```shell
+ng generate class model/word --type=model --skip-tests
+```
+
+
 
 # Default Doc
 
