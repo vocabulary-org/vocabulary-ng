@@ -1,4 +1,33 @@
 # VocabularyNg
+## Keycloak Angular
+[Keycloak Angular](https://www.npmjs.com/package/keycloak-angular)
+
+```shell
+$ npm install keycloak-angular keycloak-js
+```
+## Angular Material
+```shell
+ng add @angular/material
+```
+
+## Installing components
+### Header
+```shell
+ng generate component header  --skip-tests  --type=component
+```
+
+## Services
+```shell
+ng generate component service/word  --skip-tests  --type=service
+```
+## Models
+```shell
+ng generate class model/word --type=model --skip-tests
+```
+
+
+
+# Default Doc
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.5.
 
