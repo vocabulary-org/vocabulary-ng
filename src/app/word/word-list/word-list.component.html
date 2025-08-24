@@ -8,7 +8,7 @@
       <ul class="book-list">
         @for (word of words; track word.uuid) {
           <li class="book-item">
-            <strong>{{ word.sentence }}</strong> by {{ word.translation }} ({{ word.language }})
+            {{ word.sentence }} - {{ word.translation }} - {{ word.language }}
           </li>
         }
       </ul>
