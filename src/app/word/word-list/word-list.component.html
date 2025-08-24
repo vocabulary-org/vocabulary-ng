@@ -1,0 +1,17 @@
+<div class="section">
+
+
+  <main>
+    @if (words.length === 0) {
+      <p class="no-books">No books found. Did you start the <code>example-server</code> project?</p>
+    } @else {
+      <ul class="book-list">
+        @for (word of words; track word.uuid) {
+          <li class="book-item">
+            <strong>{{ word.sentence }}</strong> by {{ word.translation }} ({{ word.language }})
+          </li>
+        }
+      </ul>
+    }
+  </main>
+</div>
