@@ -1,16 +1,13 @@
-<mat-toolbar color="primary">
-  <span>Vocabulary</span>
-  <span class="spacer"></span>
-  <button mat-icon-button aria-label="Menu">
-    <mat-icon>menu</mat-icon>
-  </button>
-@if (!authenticated) {
-  <button mat-raised-button color="primary" (click)="login()">
-    Login
-  </button>
-} @else {
-  <button mat-raised-button color="warn" (click)="logout()">
-    Logout
-  </button>
-}
-</mat-toolbar>
+<nav class="menu">
+  <div class="developer-status"><strong>Keycloak Events:</strong> {{ keycloakStatus }}</div>
+
+  <div class="actions">
+    <a routerLink="/" class="action-item">Home</a>
+    <a routerLink="/words" class="action-item"   *kaHasRoles="['USER']">My Words</a>
+    @if (!authenticated) {
+      <button class="action-item" (click)="login()">Login</button>
+    } @else {
+      <button class="action-item" (click)="logout()">Logout</button>
+    }
+  </div>
+</nav>

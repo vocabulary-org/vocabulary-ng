@@ -16,6 +16,7 @@ const isAccessAllowed = async (
   const { authenticated, grantedRoles } = authData;
 
   const requiredRole = route.data['role'];
+  console.log('requiredRole: '+requiredRole);
   if (!requiredRole) {
     return false;
   }
@@ -23,7 +24,7 @@ const isAccessAllowed = async (
   const hasRequiredRole = (role: string): boolean =>
     Object.values(grantedRoles.resourceRoles).some((roles) => roles.includes(role));
 
-  if (authenticated) {
+  if (authenticated && hasRequiredRole(requiredRole)) {
     return true;
   }
 

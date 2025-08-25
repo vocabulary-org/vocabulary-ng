@@ -22,7 +22,6 @@
               }
             ],
             "styles": [
-              "src/custom-theme.scss",
               "src/styles.css"
             ]
           },
@@ -84,6 +83,6 @@
     }
   },
   "cli": {
-    "analytics": "c10707a9-f7ab-47bc-a64e-bb376c820ad3"
+    "analytics": false
   }
 }
