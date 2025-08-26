@@ -1,1 +1,35 @@
-<p>word-create works!</p>
+<h2>Add New Word</h2>
+
+<form action="/api/v1/vocabulary/word" method="post">
+  <label for="sentence">Sentence:</label>
+  <input type="text" id="sentence" name="sentence" required />
+  <br /><br />
+
+  <label for="translation">Translation:</label>
+  <input type="text" id="translation" name="translation" required />
+  <br /><br />
+
+  <label for="description">Description:</label>
+  <textarea id="description" name="description"></textarea>
+  <br /><br />
+
+  <label for="language">Language:</label>
+  <select id="language" name="language" required>
+    <option value="">-- Select --</option>
+    <option value="EN">English</option>
+    <option value="IT">Italian</option>
+    <option value="DE">German</option>
+  </select>
+  <br /><br />
+
+  <label for="languageTo">Language To:</label>
+  <select id="languageTo" name="languageTo" required>
+    <option value="">-- Select --</option>
+    <option value="EN">English</option>
+    <option value="IT">Italian</option>
+    <option value="DE">German</option>
+  </select>
+  <br /><br />
+
+  <button type="submit">Add Word</button>
+</form>
