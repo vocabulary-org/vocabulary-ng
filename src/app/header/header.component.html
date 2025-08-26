@@ -4,6 +4,7 @@
   <div class="actions">
     <a routerLink="/" class="action-item">Home</a>
     <a routerLink="/words" class="action-item"   *kaHasRoles="['USER']">My Words</a>
+    <a routerLink="/new-word" class="action-item"   *kaHasRoles="['USER']">Add Word</a>
     @if (!authenticated) {
       <button class="action-item" (click)="login()">Login</button>
     } @else {
