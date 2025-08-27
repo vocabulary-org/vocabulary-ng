@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, inject} from '@angular/core';
+import { WordService } from '../../service/word/word.service';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { CreateWordRequest } from '../../model/word.model';
 
 @Component({
   selector: 'app-word-create',
@@ -14,6 +16,9 @@ import {
   styleUrl: './word-create.component.css',
 })
 export class WordCreateComponent {
+    private readonly wordService = inject(WordService);
+
+
   form = new FormGroup({
     sentence: new FormControl('', {
       validators: [Validators.required, Validators.minLength(2)],
@@ -27,6 +32,22 @@ export class WordCreateComponent {
     const enteredSentence = this.form.value.sentence;
     const enteredTranslation = this.form.value.translation;
     console.log(enteredSentence + ' - ' + enteredTranslation);
+
+    const word: CreateWordRequest = {
+    sentence: this.form.value.sentence!,
+    translation: this.form.value.translation!,
+    description: 'N/A',   // hardcoded
+    language: 'ENGLISH',       // hardcoded
+    languageTo: 'ITALIAN'      // hardcoded
+  };
+
+  this.wordService.addWord(word).subscribe({
+    next: savedWord => {
+      console.log('Saved word:', savedWord);
+      this.form.reset();
+    },
+    error: err => console.error('Failed to save word', err)
+  });
   }
 
   get sentenceIsInvalid() {

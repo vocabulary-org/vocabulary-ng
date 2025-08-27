@@ -1,17 +1,16 @@
 <div class="section">
-
-
   <main>
     @if (words.length === 0) {
-      <p class="no-words">No words found.</p>
+    <p class="no-words">No words found.</p>
     } @else {
-      <ul class="word-list">
-        @for (word of words; track word.uuid) {
-          <li class="word-item">
-            {{ word.sentence }} - {{ word.translation }} - {{ word.language }} - {{ word.languageTo }}
-          </li>
-        }
-      </ul>
+    <ul class="word-list">
+      @for (word of words; track word.uuid) {
+      <li class="word-item">
+        {{ word.sentence }} - {{ word.translation }} - {{ word.language }} -
+        {{ word.languageTo }}
+      </li>
+      }
+    </ul>
     }
   </main>
 </div>

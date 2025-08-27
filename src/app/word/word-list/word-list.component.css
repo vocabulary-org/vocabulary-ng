@@ -4,8 +4,9 @@
 }
 
 .word-list {
+  color: #000;          /* black text */
+  font-size: 1rem;      /* adjust size */
   list-style: none;
-  padding: 0;
 }
 
 .word-item {
@@ -16,3 +17,5 @@
 .word-item:last-child {
   border-bottom: none;
 }
+
+

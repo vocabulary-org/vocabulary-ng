@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Page } from '../../model/page.model';
-import { Word } from '../../model/word.model';
+import { CreateWordRequest, Word } from '../../model/word.model';
 
 
 
@@ -15,5 +15,9 @@ export class WordService {
 
   listBooks(): Observable<Page<Word>> {
     return this.http.get<Page<Word>>(this.apiUrl);
+  }
+
+  addWord(payload: CreateWordRequest): Observable<Word> {
+    return this.http.post<Word>(this.apiUrl, payload);
   }
 }

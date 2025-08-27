@@ -10,11 +10,11 @@ import { Word } from '../../model/word.model';
 })
 export class WordListComponent implements OnInit  {
   words: Word[] = [];
-  private readonly bookService = inject(WordService);
+  private readonly wordService = inject(WordService);
 
   
   ngOnInit() {
-    this.bookService.listBooks().subscribe((data) => {
+    this.wordService.listBooks().subscribe((data) => {
       this.words = data.content;
     });
   }
