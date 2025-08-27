@@ -1,25 +1,28 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <h2>Login</h2>
+    <h2>Add New Word</h2>
   
     <div class="control-row">
       <div class="control no-margin">
-        <label for="email">Email</label>
-        <input id="email" type="email" [formControl]="form.controls.email"/>
+        <label for="sentence">Sentence</label>
+        <input id="sentence" type="text" [formControl]="form.controls.sentence"/>
       </div>
   
       <div class="control no-margin">
-        <label for="password">Password</label>
+        <label for="translation">Translation</label>
         <!-- equivalent-->
         <!--    
         <input id="password" type="password" [formControl]="form.controls.password"/> 
         -->
-        <input id="password" type="password" formControlName="password"/>
+        <input id="translation" type="text" formControlName="translation"/>
       </div>
   
-      <button class="button">Login</button>
+      <button class="button">Add Word</button>
     </div>
 
-    @if (form.controls.email.touched && form.controls.email.dirty && form.controls.email.invalid) {
-      <p class="control-error">Please enter a valid email address </p>
+    @if (sentenceIsInvalid) {
+      <p class="control-error">Please enter a valid Sentence</p>
+    }
+    @if (translationIsInvalid) {
+      <p class="control-error">Please enter a valid Translation</p>
     }
   </form>
