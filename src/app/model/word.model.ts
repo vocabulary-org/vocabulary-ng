@@ -9,3 +9,5 @@ export class Word {
     public languageTo: string
   ) {}
 }
+
+export type CreateWordRequest = Omit<Word, 'uuid'>; // no uuid on create
