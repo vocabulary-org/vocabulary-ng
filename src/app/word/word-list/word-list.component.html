@@ -1,16 +1,30 @@
-<div class="section">
+<div class="container mt-4">
   <main>
+
     @if (words.length === 0) {
-    <p class="no-words">No words found.</p>
+      <div class="alert alert-warning">No words found.</div>
     } @else {
-    <ul class="word-list">
-      @for (word of words; track word.uuid) {
-      <li class="word-item">
-        {{ word.sentence }} - {{ word.translation }} - {{ word.language }} -
-        {{ word.languageTo }}
-      </li>
-      }
-    </ul>
+
+      <div class="card shadow-sm">
+        <div class="card-header">
+          <h5 class="mb-0">Words</h5>
+        </div>
+
+        <ul class="list-group list-group-flush">
+          @for (word of words; track word.uuid) {
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div class="me-3">
+                <div class="fw-semibold">{{ word.sentence }}</div>
+                <div class="text-muted small">{{ word.translation }}</div>
+              </div>
+              <span class="badge text-bg-secondary">
+                {{ word.language }} → {{ word.languageTo }}
+              </span>
+            </li>
+          }
+        </ul>
+      </div>
+
     }
   </main>
 </div>

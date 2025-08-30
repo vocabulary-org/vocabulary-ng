@@ -1,28 +1,34 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <h2>Add New Word</h2>
-  
-    <div class="control-row">
-      <div class="control no-margin">
-        <label for="sentence">Sentence</label>
-        <input id="sentence" type="text" [formControl]="form.controls.sentence"/>
-      </div>
-  
-      <div class="control no-margin">
-        <label for="translation">Translation</label>
-        <!-- equivalent-->
-        <!--    
-        <input id="password" type="password" [formControl]="form.controls.password"/> 
-        -->
-        <input id="translation" type="text" formControlName="translation"/>
-      </div>
-  
-      <button class="button">Add Word</button>
-    </div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="container mt-4">
+  <h2 class="mb-4">Add New Word</h2>
 
+  <!-- Sentence -->
+  <div class="mb-3">
+    <label for="sentence" class="form-label">Sentence</label>
+    <input
+      id="sentence"
+      type="text"
+      [formControl]="form.controls.sentence"
+      class="form-control"
+    />
     @if (sentenceIsInvalid) {
-      <p class="control-error">Please enter a valid Sentence</p>
+      <div class="text-danger small">Please enter a valid Sentence</div>
     }
+  </div>
+
+  <!-- Translation -->
+  <div class="mb-3">
+    <label for="translation" class="form-label">Translation</label>
+    <input
+      id="translation"
+      type="text"
+      formControlName="translation"
+      class="form-control"
+    />
     @if (translationIsInvalid) {
-      <p class="control-error">Please enter a valid Translation</p>
+      <div class="text-danger small">Please enter a valid Translation</div>
     }
-  </form>
+  </div>
+
+  <!-- Submit -->
+  <button type="submit" class="btn btn-primary">Add Word</button>
+</form>
