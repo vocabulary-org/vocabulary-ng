@@ -13,11 +13,15 @@ export class WordService {
   private apiUrl = 'http://localhost:9090/api/v1/vocabulary/user/word';
   private http = inject(HttpClient);
 
-  listBooks(): Observable<Page<Word>> {
+  listWords(): Observable<Page<Word>> {
     return this.http.get<Page<Word>>(this.apiUrl);
   }
 
   addWord(payload: CreateWordRequest): Observable<Word> {
     return this.http.post<Word>(this.apiUrl, payload);
+  }
+
+  getById(uuid: string): Observable<Word> {
+    return this.http.get<Word>(`${this.apiUrl}/${uuid}`);
   }
 }
