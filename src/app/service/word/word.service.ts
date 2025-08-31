@@ -21,7 +21,7 @@ export class WordService {
     return this.http.post<Word>(this.apiUrl, payload);
   }
 
-  getById(id: string): Observable<Word> {
-    return this.http.get<Word>(`${this.apiUrl}/${id}`);
+  getById(uuid: string): Observable<Word> {
+    return this.http.get<Word>(`${this.apiUrl}/${uuid}`);
   }
 }

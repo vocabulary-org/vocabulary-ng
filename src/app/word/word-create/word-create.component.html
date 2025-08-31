@@ -29,6 +29,20 @@
     }
   </div>
 
+    <!-- Translation -->
+  <div class="mb-3">
+    <label for="description" class="form-label">Description</label>
+    <input
+      id="description"
+      type="text"
+      formControlName="description"
+      class="form-control"
+    />
+    @if (translationIsInvalid) {
+      <div class="text-danger small">Please enter a valid Description</div>
+    }
+  </div>
+
   <!-- Submit -->
   <button type="submit" class="btn btn-primary">Add Word</button>
 </form>

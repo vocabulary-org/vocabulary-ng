@@ -26,17 +26,17 @@ export class WordCreateComponent {
     translation: new FormControl('', {
       validators: [Validators.required, Validators.minLength(2)],
     }),
+    description: new FormControl('', {
+      validators: [Validators.minLength(2)]
+    }),
   });
 
   onSubmit() {
-    const enteredSentence = this.form.value.sentence;
-    const enteredTranslation = this.form.value.translation;
-    console.log(enteredSentence + ' - ' + enteredTranslation);
 
     const word: CreateWordRequest = {
     sentence: this.form.value.sentence!,
     translation: this.form.value.translation!,
-    description: 'N/A',   // hardcoded
+    description: this.form.value.description!,
     language: 'ENGLISH',       // hardcoded
     languageTo: 'ITALIAN'      // hardcoded
   };

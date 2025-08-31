@@ -1,10 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { WordService } from '../../service/word/word.service';
 import { Word } from '../../model/word.model';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-word-list',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './word-list.component.html',
   styleUrl: './word-list.component.css'
 })

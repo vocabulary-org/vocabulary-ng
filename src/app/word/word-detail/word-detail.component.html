@@ -1,1 +1,41 @@
-<p>word-detail works!</p>
+<div class="container my-4">
+  @if (word) {
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Word Details</h5>
+      </div>
+      <div class="card-body">
+        <!-- Sentence & Translation -->
+        <h3 class="card-title text-dark">
+          {{ word.sentence }}
+        </h3>
+        <h5 class="card-subtitle mb-3 text-muted">
+          Translation: <span class="fw-semibold">{{ word.translation }}</span>
+        </h5>
+
+        <!-- Languages -->
+        <p class="mb-1">
+          <span class="badge bg-info text-dark">{{ word.language }}</span>
+          <i class="bi bi-arrow-right"></i>
+          <span class="badge bg-success">{{ word.languageTo }}</span>
+        </p>
+
+        <!-- Description -->
+        <p class="mt-3">
+          <strong>Description:</strong><br>
+          {{ word.description }}
+        </p>
+
+        <!-- UUID -->
+        <p class="text-muted small mb-0">
+          <i class="bi bi-key"></i> {{ word.uuid }}
+        </p>
+      </div>
+    </div>
+  } @else {
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-2">Loading word details...</p>
+    </div>
+  }
+</div>
