@@ -14,7 +14,7 @@ export class WordListComponent implements OnInit  {
 
   
   ngOnInit() {
-    this.wordService.listBooks().subscribe((data) => {
+    this.wordService.listWords().subscribe((data) => {
       this.words = data.content;
     });
   }
