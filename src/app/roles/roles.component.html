@@ -1,0 +1,16 @@
+<!-- roles.component.html -->
+@if (error) {
+  <div class="error">
+    {{ error }}
+  </div>
+} @else {
+  @if (roles.length === 0) {
+    <p>No roles found.</p>
+  } @else {
+    <ul>
+      @for (role of roles; track role) {
+        <li>{{ role }}</li>
+      }
+    </ul>
+  }
+}

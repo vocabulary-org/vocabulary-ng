@@ -5,6 +5,8 @@
     <a routerLink="/" class="action-item">Home</a>
     <a routerLink="/word/list" class="action-item"   *kaHasRoles="['USER']">My Words</a>
     <a routerLink="/word/new-word" class="action-item"   *kaHasRoles="['USER']">Add Word</a>
+    <a routerLink="/roles" class="action-item"   *kaHasRoles="['USER']">My Roles</a>
+
     @if (!authenticated) {
       <button class="action-item" (click)="login()">Login</button>
     } @else {

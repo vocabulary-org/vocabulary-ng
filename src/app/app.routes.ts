@@ -8,6 +8,7 @@ import { WordListComponent } from './word/word-list/word-list.component';
 import { WordCreateComponent } from './word/word-create/word-create.component';
 import { LandingComponent } from './landing/landing.component';
 import { WordDetailComponent } from './word/word-detail/word-detail.component';
+import { RolesComponent } from './roles/roles.component';
 
 export const routes: Routes = [
 
@@ -36,6 +37,13 @@ export const routes: Routes = [
     canActivate: [canActivateAuthRole],
     data: { role: 'USER' }
   },
+
+    {
+    path: 'roles',
+    component: RolesComponent,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'USER' }
+  }
 
 
 ];

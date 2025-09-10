@@ -10,7 +10,7 @@ import { CreateWordRequest, Word } from '../../model/word.model';
   providedIn: 'root'
 })
 export class WordService {
-  private apiUrl = 'http://localhost:9090/api/v1/vocabulary/user/word';
+  private apiUrl = 'http://localhost:9090/api/v1/vocabulary/me/words';
   private http = inject(HttpClient);
 
   listWords(): Observable<Page<Word>> {
