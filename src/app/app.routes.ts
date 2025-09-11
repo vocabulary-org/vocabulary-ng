@@ -40,9 +40,7 @@ export const routes: Routes = [
 
     {
     path: 'roles',
-    component: RolesComponent,
-    canActivate: [canActivateAuthRole],
-    data: { role: 'USER' }
+    component: RolesComponent
   }
 
 
