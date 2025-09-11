@@ -1,0 +1,59 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="container mt-4">
+  <h2 class="mb-4">Register to Vocabulary</h2>
+
+  <!-- Sentence -->
+  <div class="mb-3">
+    <label for="username" class="form-label">Username</label>
+    <input
+      id="sentence"
+      type="text"
+      [formControl]="form.controls.username"
+      class="form-control"
+    />
+    @if (usernamesInvalid) {
+      <div class="text-danger small">Please enter a valid username</div>
+    }
+  </div>
+
+    <div class="mb-3">
+    <label for="firstName" class="form-label">First tName</label>
+    <input
+      id="firstName"
+      type="text"
+      [formControl]="form.controls.firstName"
+      class="form-control"
+    />
+    @if (firstNameIsInvalid) {
+      <div class="text-danger small">Please enter a valid first name</div>
+    }
+  </div>
+
+    <div class="mb-3">
+    <label for="lastName" class="form-label">LastName</label>
+    <input
+      id="lastName"
+      type="text"
+      [formControl]="form.controls.lastName"
+      class="form-control"
+    />
+    @if (lastNameIsInvalid) {
+      <div class="text-danger small">Please enter a valid last name</div>
+    }
+  </div>
+
+    <div class="mb-3">
+    <label for="email" class="form-label">E-mail</label>
+    <input
+      id="email"
+      type="text"
+      [formControl]="form.controls.email"
+      class="form-control"
+    />
+    @if (emailIsInvalid) {
+      <div class="text-danger small">Please enter a valid e-mail</div>
+    }
+  </div>
+
+  <!-- Submit -->
+  <button type="submit" class="btn btn-primary">Register</button>
+</form>
