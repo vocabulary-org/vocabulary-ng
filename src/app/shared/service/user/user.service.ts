@@ -8,11 +8,11 @@ import { User } from '../../model/user.model';
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:9090/api/v1/vocabulary/me/words';
+  private apiUrl = 'http://localhost:9090/api/v1/vocabulary/public/users';
 
   constructor(private http: HttpClient) {}
 
   createUser(user: User): Observable<User> {
-    return this.http.put<User>(`${this.apiUrl}/user`, user);
+    return this.http.post<User>(`${this.apiUrl}`, user);
   }
 }

@@ -1,12 +1,12 @@
 import { Component, inject} from '@angular/core';
-import { WordService } from '../../service/word/word.service';
+import { WordService } from '../../shared/service/word/word.service';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CreateWordRequest } from '../../model/word.model';
+import { CreateWordRequest } from '../../shared/model/word.model';
 
 @Component({
   selector: 'app-word-create',

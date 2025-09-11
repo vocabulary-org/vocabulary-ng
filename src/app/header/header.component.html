@@ -8,7 +8,9 @@
     <a routerLink="/roles" class="action-item">My Roles</a>
 
     @if (!authenticated) {
-      <button class="action-item" (click)="login()">Login</button>
+    <button class="action-item" (click)="login()">Login</button>
+    <a routerLink="/register" class="action-item">Register</a>
+
     } @else {
       <button class="action-item" (click)="logout()">Logout</button>
     }

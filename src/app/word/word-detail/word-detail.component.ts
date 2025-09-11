@@ -1,6 +1,6 @@
 import { Component, inject, input, OnInit } from '@angular/core';
-import { WordService } from '../../service/word/word.service';
-import { Word } from '../../model/word.model';
+import { WordService } from '../../shared/service/word/word.service';
+import { Word } from '../../shared/model/word.model';
 
 @Component({
   selector: 'app-word-detail',
