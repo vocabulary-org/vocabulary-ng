@@ -7,16 +7,19 @@ import {
   Validators,
 } from '@angular/forms';
 import { User } from '../../shared/model/user.model';
+import { CommonModule } from '@angular/common';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-new-user',
 
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
 
   templateUrl: './new-user.component.html',
   styleUrl: './new-user.component.css',
 })
 export class NewUserComponent {
+
   private readonly userService = inject(UserService);
 
   form = new FormGroup({
@@ -34,23 +37,35 @@ export class NewUserComponent {
     }),
   });
 
-  onSubmit() {
-    const user: User = {
-      username: this.form.value.username!,
-      firstName: this.form.value.firstName!,
-      lastName: this.form.value.lastName!,
-      email: this.form.value.email!,
-    };
+  message: string | null = null;
+ isError = false;
 
-    this.userService.createUser(user).subscribe({
-      next: (newUser) => {
-        console.log('Saved word:', newUser);
-        this.form.reset();
-      },
-      error: (err) => console.error('Failed to create a new user', err),
-    });
-  }
+onSubmit(): void {
+  const user: User = {
+    username: this.form.value.username!,
+    firstName: this.form.value.firstName!,
+    lastName: this.form.value.lastName!,
+    email: this.form.value.email!,
+  };
 
+  this.userService.createUser(user).subscribe({
+    next: (response: HttpResponse<User>) => {
+      if (response.status === 201) {
+        this.isError = false;
+        this.message = '✅ Check your email to complete registration.';
+      } else {
+        this.isError = true;
+        this.message = `Unexpected status: ${response.status}`;
+        console.error('Error status:', response.status);
+      }
+    },
+    error: (error: HttpErrorResponse) => {
+      this.isError = true;
+      this.message = error.error?.message || '❌ Something went wrong.';
+      console.error('Error status:', error.status);
+    }
+  });
+}
   get usernamesInvalid() {
     return (
       this.form.controls.username.touched &&
@@ -61,25 +76,25 @@ export class NewUserComponent {
 
   get firstNameIsInvalid() {
     return (
-      this.form.controls.username.touched &&
-      this.form.controls.username.dirty &&
-      this.form.controls.username.invalid
+      this.form.controls.firstName.touched &&
+      this.form.controls.firstName.dirty &&
+      this.form.controls.firstName.invalid
     );
   }
 
   get lastNameIsInvalid() {
     return (
-      this.form.controls.username.touched &&
-      this.form.controls.username.dirty &&
-      this.form.controls.username.invalid
+      this.form.controls.lastName.touched &&
+      this.form.controls.lastName.dirty &&
+      this.form.controls.lastName.invalid
     );
   }
 
   get emailIsInvalid() {
     return (
-      this.form.controls.username.touched &&
-      this.form.controls.username.dirty &&
-      this.form.controls.username.invalid
+      this.form.controls.email.touched &&
+      this.form.controls.email.dirty &&
+      this.form.controls.email.invalid
     );
   }
 }
