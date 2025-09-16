@@ -55,5 +55,11 @@
   </div>
 
   <!-- Submit -->
-  <button type="submit" class="btn btn-primary">Register</button>
+  <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Register</button>
+  @if (message) {
+    <div [ngClass]="{ 'error': isError, 'success': !isError }">
+      {{ message }}
+    </div>
+  }
+
 </form>
