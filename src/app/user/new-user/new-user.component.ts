@@ -19,7 +19,6 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
   styleUrl: './new-user.component.css',
 })
 export class NewUserComponent {
-
   private readonly userService = inject(UserService);
 
   form = new FormGroup({
@@ -38,34 +37,37 @@ export class NewUserComponent {
   });
 
   message: string | null = null;
- isError = false;
+  isError = false;
 
-onSubmit(): void {
-  const user: User = {
-    username: this.form.value.username!,
-    firstName: this.form.value.firstName!,
-    lastName: this.form.value.lastName!,
-    email: this.form.value.email!,
-  };
+  onSubmit(): void {
+    const user: User = {
+      username: this.form.value.username!,
+      firstName: this.form.value.firstName!,
+      lastName: this.form.value.lastName!,
+      email: this.form.value.email!,
+    };
 
-  this.userService.createUser(user).subscribe({
-    next: (response: HttpResponse<User>) => {
-      if (response.status === 201) {
-        this.isError = false;
-        this.message = '✅ Check your email to complete registration.';
-      } else {
+    this.userService.createUser(user).subscribe({
+      next: (response: HttpResponse<User>) => {
+        if (response.status === 201) {
+          this.isError = false;
+          this.message = '✅ Check your email to complete registration.';
+        } else {
+          this.isError = true;
+          this.message = `Unexpected status: ${response.status}`;
+          console.error('Error status:', response.status);
+        }
+      },
+      error: (error: HttpErrorResponse) => {
         this.isError = true;
-        this.message = `Unexpected status: ${response.status}`;
-        console.error('Error status:', response.status);
-      }
-    },
-    error: (error: HttpErrorResponse) => {
-      this.isError = true;
-      this.message = error.error?.message || '❌ Something went wrong.';
-      console.error('Error status:', error.status);
-    }
-  });
-}
+        const body = error.error; // could be string (text/plain) or object (application/json)
+    
+
+        this.message = (body && body.message) ? body.message : '❌ Something went wrong.';
+        console.error('Error status:', error.status, 'body:', body);
+      },
+    });
+  }
   get usernamesInvalid() {
     return (
       this.form.controls.username.touched &&
