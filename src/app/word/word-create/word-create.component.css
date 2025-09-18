@@ -1,0 +1,9 @@
+.error {
+  color: red;
+  margin-top: 0.5rem;
+  white-space: pre-line; 
+}
+.success {
+  color: green;
+  margin-top: 0.5rem;
+}

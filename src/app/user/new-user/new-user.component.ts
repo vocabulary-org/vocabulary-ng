@@ -61,11 +61,9 @@ export class NewUserComponent {
       error: (error: HttpErrorResponse) => {
         this.isError = true;
         const body = error.error; // could be string (text/plain) or object (application/json)
-    
-
         this.message = (body && body.message) ? body.message : '❌ Something went wrong.';
         console.error('Error status:', error.status, 'body:', body);
-      },
+      }
     });
   }
   get usernamesInvalid() {
