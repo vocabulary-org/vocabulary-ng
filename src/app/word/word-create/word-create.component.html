@@ -44,5 +44,10 @@
   </div>
 
   <!-- Submit -->
-  <button type="submit" class="btn btn-primary">Add Word</button>
+  <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Add New Word</button>
+  @if (message) {
+    <div [ngClass]="{ 'error': isError, 'success': !isError }">
+      {{ message }}
+    </div>
+  }
 </form>
