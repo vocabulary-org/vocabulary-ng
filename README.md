@@ -1,4 +1,21 @@
 # VocabularyNg
+## Backend Requirement
+This Anuglar app, requires the backend service to be running in order to work correctly.
+
+Start the backend from the [vocabulary-rest](https://github.com/egch/vocabulary-rest) repository:
+
+```bash
+cd vocabulary-rest
+mvn spring-boot:run
+```
+
+## Development server
+
+To start a local development:
+
+```bash
+ng serve
+```
 ## Keycloak Angular
 [Keycloak Angular](https://www.npmjs.com/package/keycloak-angular)
 
