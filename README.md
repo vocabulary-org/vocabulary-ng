@@ -16,6 +16,18 @@ To start a local development:
 ```bash
 ng serve
 ```
+
+## Configurations
+### Local with nginx
+Requires to define the following entry in the `/etc/hosts` file.   
+Requires the backend running with nginx and KC configured properly.
+```shell
+127.0.0.1 localhost keycloak.local
+```
+How to start it
+```shell
+ng serve --configuration=nginxLocal
+```
 ## Keycloak Angular
 [Keycloak Angular](https://www.npmjs.com/package/keycloak-angular)
 

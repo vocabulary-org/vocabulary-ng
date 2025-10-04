@@ -27,6 +27,14 @@
             ]
           },
           "configurations": {
+            "nginxLocal": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.nginx-local.ts"
+                }
+              ]
+            },
             "production": {
               "budgets": [
                 {
@@ -58,6 +66,9 @@
             },
             "development": {
               "buildTarget": "vocabulary-ng:build:development"
+            },
+            "nginxLocal": {
+              "buildTarget": "vocabulary-ng:build:nginxLocal"
             }
           },
           "defaultConfiguration": "development"

@@ -8,15 +8,17 @@ import {
   UserActivityService
 } from 'keycloak-angular';
 
-const localhostCondition = createInterceptorCondition<IncludeBearerTokenCondition>({
-  urlPattern: /^(http:\/\/localhost:9090)(\/.*)?$/i
+import { environment } from '../environments/environment';
+
+const hostCondition = createInterceptorCondition<IncludeBearerTokenCondition>({
+ urlPattern: environment.keycloakUrlPattern
 });
 
 export const provideKeycloakAngular = () =>
   provideKeycloak({
     config: {
       realm: 'vocabulary',
-      url: 'http://localhost:18081',
+      url: environment.keycloakUrl,
       clientId: 'vocabulary-rest-api'
     },
     initOptions: {
@@ -35,7 +37,7 @@ export const provideKeycloakAngular = () =>
       UserActivityService,
       {
         provide: INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG,
-        useValue: [localhostCondition]
+        useValue: [hostCondition]
       }
     ]
   });
