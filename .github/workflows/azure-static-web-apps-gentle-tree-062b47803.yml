@@ -26,8 +26,6 @@ jobs:
           lfs: false
       - name: Install OIDC Client from Core Package
         run: npm install @actions/core@1.6.0 @actions/http-client
-      - name: Build Angular for Azure
-        run: npm run build -- --configuration=azure
       - name: Get Id Token
         uses: actions/github-script@v6
         id: idtoken
@@ -47,6 +45,7 @@ jobs:
           app_location: "/" # App source code path
           api_location: "" # Api source code path - optional
           output_location: "/dist/vocabulary-ng/browser" # Built app content directory - optional
+          app_build_command: "npm run build -- --configuration=azure"
           github_id_token: ${{ steps.idtoken.outputs.result }}
           ###### End of Repository/Build Configurations ######
 
@@ -60,6 +59,7 @@ jobs:
         uses: Azure/static-web-apps-deploy@v1
         with:
           action: "close"
+
 
 
 
