@@ -43,6 +43,14 @@
                 }
               ]
             },
+            "azure-nginx": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.azure-nginx.ts"
+                }
+              ]
+            },
             "production": {
               "budgets": [
                 {
@@ -80,6 +88,9 @@
             },
             "azure": {
               "buildTarget": "vocabulary-ng:build:azure"
+            },
+            "azure-nginx": {
+              "buildTarget": "vocabulary-ng:build:azure-nginx"
             }
           },
           "defaultConfiguration": "development"
