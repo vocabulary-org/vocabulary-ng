@@ -26,7 +26,7 @@ Requires the backend running with nginx and KC configured properly.
 ```
 How to start it
 ```shell
-ng serve --configuration=nginxLocal
+ng serve --configuration=local-nginx
 ```
 ## Keycloak Angular
 [Keycloak Angular](https://www.npmjs.com/package/keycloak-angular)
