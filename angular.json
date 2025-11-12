@@ -27,11 +27,19 @@
             ]
           },
           "configurations": {
-            "nginxLocal": {
+            "local-nginx": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.nginx-local.ts"
+                  "with": "src/environments/environment.local-nginx.ts"
+                }
+              ]
+            },
+            "local-nginx-ssl": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.local-nginx-ssl.ts"
                 }
               ]
             },
@@ -40,6 +48,22 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.azure.ts"
+                }
+              ]
+            },
+            "azure-nginx": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.azure-nginx.ts"
+                }
+              ]
+            },
+            "azure-nginx-ssl": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.azure-nginx-ssl.ts"
                 }
               ]
             },
@@ -75,11 +99,21 @@
             "development": {
               "buildTarget": "vocabulary-ng:build:development"
             },
-            "nginxLocal": {
-              "buildTarget": "vocabulary-ng:build:nginxLocal"
+            "local-nginx": {
+              "buildTarget": "vocabulary-ng:build:local-nginx"
+            },
+            "local-nginx-ssl": {
+              "buildTarget": "vocabulary-ng:build:local-nginx-ssl"
             },
             "azure": {
               "buildTarget": "vocabulary-ng:build:azure"
+            },
+            "azure-nginx": {
+              "buildTarget": "vocabulary-ng:build:azure-nginx"
+            }
+            ,
+            "azure-nginx-ssl": {
+              "buildTarget": "vocabulary-ng:build:azure-nginx-ssl"
             }
           },
           "defaultConfiguration": "development"
