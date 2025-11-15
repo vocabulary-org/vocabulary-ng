@@ -1,18 +1,50 @@
-<nav class="menu">
-  <div class="developer-status"><strong>Keycloak Events:</strong> {{ keycloakStatus }}</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+  <div class="container-fluid">
 
-  <div class="actions">
-    <a routerLink="/" class="action-item">Home</a>
-    <a routerLink="/word/list" class="action-item"   *kaHasRoles="['USER']">My Words</a>
-    <a routerLink="/word/new-word" class="action-item"   *kaHasRoles="['USER']">Add Word</a>
-    <a routerLink="/roles" class="action-item">My Roles</a>
+    <!-- Brand -->
+    <a class="navbar-brand" routerLink="/">Vocabulary</a>
 
-    @if (!authenticated) {
-    <button class="action-item" (click)="login()">Login</button>
-    <a routerLink="/register" class="action-item">Register</a>
+    <!-- Mobile toggle -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-    } @else {
-      <button class="action-item" (click)="logout()">Logout</button>
-    }
+    <!-- Menu items -->
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav ms-auto">
+
+        <li class="nav-item">
+          <a routerLink="/" class="nav-link">Home</a>
+        </li>
+
+        <li class="nav-item" *kaHasRoles="['USER']">
+          <a routerLink="/word/list" class="nav-link">My Words</a>
+        </li>
+
+        <li class="nav-item" *kaHasRoles="['USER']">
+          <a routerLink="/word/new-word" class="nav-link">Add Word</a>
+        </li>
+
+        <li class="nav-item">
+          <a routerLink="/roles" class="nav-link">My Roles</a>
+        </li>
+
+        <!-- Authenticated / not authenticated -->
+        @if (!authenticated) {
+          <li class="nav-item">
+            <button class="btn nav-link" (click)="login()" style="cursor: pointer;">Login</button>
+          </li>
+
+          <li class="nav-item">
+            <a routerLink="/register" class="nav-link">Register</a>
+          </li>
+        } @else {
+          <li class="nav-item">
+            <button class="btn nav-link" (click)="logout()" style="cursor: pointer;">Logout</button>
+          </li>
+        }
+
+      </ul>
+    </div>
   </div>
 </nav>

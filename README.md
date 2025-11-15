@@ -41,15 +41,25 @@ $ npm install keycloak-angular keycloak-js
 ng generate component header  --skip-tests  --type=component
 ```
 
-## Services
+### Services
 ```shell
 ng generate service service/word  --skip-tests  --type=service
 ```
-## Models
+### Models
 ```shell
 ng generate class model/word --type=model --skip-tests
 ```
 
+
+## Accessing from other devices
+Get the IP of your mac
+```shell
+ipconfig getifaddr en0
+```
+
+```shell
+ng serve --host 0.0.0.0 --port 4200
+```
 
 
 # Default Doc
