@@ -70,6 +70,14 @@
                 }
               ]
             },
+            "hetzner-nginx-ssl": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.hetzner-nginx-ssl.ts"
+                }
+              ]
+            },
             "production": {
               "budgets": [
                 {
@@ -116,6 +124,9 @@
             },
             "azure-nginx-ssl": {
               "buildTarget": "vocabulary-ng:build:azure-nginx-ssl"
+            },
+            "hetzner-nginx-ssl": {
+              "buildTarget": "vocabulary-ng:build:hetzner-nginx-ssl"
             }
           },
           "defaultConfiguration": "development"
