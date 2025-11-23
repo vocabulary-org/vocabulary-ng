@@ -1,8 +1,9 @@
 export const environment = {
   production: false,
   name: 'hetzner-nginx-ssl',
-  apiBaseUrl:  'https://116.203.230.142/rest/api/v1/vocabulary',
-  keycloakUrl: 'https://116.203.230.142',
-  keycloakUrlPattern: /^(https:\/\/116\.203\.230\.142\/rest)(\/.*)?$/i
 
+  apiBaseUrl:  'https://api.myvocabulary.net/api/v1/vocabulary',
+  keycloakUrl: 'https://auth.myvocabulary.net',
+
+  keycloakUrlPattern: /^(https:\/\/api\.myvocabulary\.net)(\/.*)?$/i
 };
