@@ -50,6 +50,11 @@ ng generate service service/word  --skip-tests  --type=service
 ng generate class model/word --type=model --skip-tests
 ```
 
+### Interfaces
+```shell
+ng generate interface shared/model/language
+```
+
 
 ## Accessing from other devices
 Get the IP of your mac

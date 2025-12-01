@@ -1,3 +1,5 @@
+import { Language, LanguageRef } from "./language";
+
 export class Word {
 
     constructor(
@@ -5,9 +7,15 @@ export class Word {
     public sentence: string,
     public translation: string,
     public description: string,
-    public language: string,
-    public languageTo: string
+    public language: Language,
+    public languageTo: Language
   ) {}
 }
 
-export type CreateWordRequest = Omit<Word, 'uuid'>; // no uuid on create
+export interface CreateWordRequest {
+  sentence: string;
+  translation: string;
+  description?: string;
+  language: LanguageRef;
+  languageTo: LanguageRef;
+}
