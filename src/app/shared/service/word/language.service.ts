@@ -9,7 +9,7 @@ import { environment as env }  from '../../../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class LanguageService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = `${env.apiBaseUrl}/public/languages`;
+  private readonly apiUrl = `${env.apiBaseUrl}/me/languages`;
 
   getAllLanguages(): Observable<Language[]> {
     return this.http.get<Language[]>(this.apiUrl);
