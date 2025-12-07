@@ -2,32 +2,65 @@
   <main>
 
     @if (words.length === 0) {
-    <div class="alert alert-warning">No words found.</div>
+      <div class="alert alert-warning">No words found.</div>
     } @else {
 
-    <div class="card shadow-sm">
-      <div class="card-header">
-        <h5 class="mb-0">Words</h5>
-      </div>
+      <div class="card shadow-sm">
 
-      <ul class="list-group list-group-flush">
-        @for (word of words; track word.uuid) {
-        <li class="list-group-item d-flex justify-content-between align-items-start">
-          <div class="me-3">
-            <div class="fw-semibold">{{ word.sentence }}</div>
-            <div class="text-muted small">{{ word.translation }}</div>
-            <div class="text-muted small">
-              <a [routerLink]="['/word', word.uuid]" routerLinkActive="selected">details</a>
-            </div>
 
+           <!-- HEADER ROW -->
+        <div class="list-group-item bg-light fw-semibold border-bottom">
+          <div class="row">
+            <div class="col-4">Sentence</div>
+            <div class="col-3">Translation</div>
+            <div class="col-3">Description</div>
           </div>
-          <span class="badge text-bg-secondary">
-            {{ word.language.name }} → {{ word.languageTo.name }}
-          </span>
-        </li>
-        }
-      </ul>
-    </div>
+        </div>
+
+        <ul class="list-group list-group-flush">
+
+          @for (word of words; track word.uuid) {
+
+            <li class="list-group-item">
+              <div class="row align-items-center">
+
+                <!-- Sentence -->
+                <div class="col-4 text-muted small">
+                  {{ word.sentence }}
+                </div>
+
+                <!-- Translation -->
+                <div class="col-3 text-muted small">
+                  {{ word.translation }}
+                </div>
+
+                <!-- Description (optional) -->
+                <div class="col-3 text-muted small">
+                  @if (word.description) {
+                    {{ word.description }}
+                  }
+                </div>
+
+                <!-- Language badge + details -->
+                <div class="col-2 text-end">
+                  <span class="badge text-bg-secondary d-block mb-1">
+                    {{ word.language.name }} → {{ word.languageTo.name }}
+                  </span>
+
+                  <a [routerLink]="['/word', word.uuid]"
+                     routerLinkActive="selected"
+                     class="small">
+                    details
+                  </a>
+                </div>
+
+              </div>
+            </li>
+
+          }
+
+        </ul>
+      </div>
 
     }
   </main>

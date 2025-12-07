@@ -28,6 +28,11 @@ How to start it
 ```shell
 ng serve --configuration=local-nginx
 ```
+### Connect to the remote API running on Hetzner
+```shell
+ng serve --configuration=hetzner-nginx-ssl
+```
+
 ## Keycloak Angular
 [Keycloak Angular](https://www.npmjs.com/package/keycloak-angular)
 
