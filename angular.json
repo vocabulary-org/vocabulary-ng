@@ -46,30 +46,6 @@
                 }
               ]
             },
-            "azure": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.azure.ts"
-                }
-              ]
-            },
-            "azure-nginx": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.azure-nginx.ts"
-                }
-              ]
-            },
-            "azure-nginx-ssl": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.azure-nginx-ssl.ts"
-                }
-              ]
-            },
             "hetzner-nginx-ssl": {
               "fileReplacements": [
                 {
@@ -115,15 +91,6 @@
             },
             "local-nginx-ssl": {
               "buildTarget": "vocabulary-ng:build:local-nginx-ssl"
-            },
-            "azure": {
-              "buildTarget": "vocabulary-ng:build:azure"
-            },
-            "azure-nginx": {
-              "buildTarget": "vocabulary-ng:build:azure-nginx"
-            },
-            "azure-nginx-ssl": {
-              "buildTarget": "vocabulary-ng:build:azure-nginx-ssl"
             },
             "hetzner-nginx-ssl": {
               "buildTarget": "vocabulary-ng:build:hetzner-nginx-ssl"
