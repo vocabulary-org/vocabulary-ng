@@ -27,4 +27,8 @@ export class WordService {
   getById(uuid: string): Observable<Word> {
     return this.http.get<Word>(`${this.apiUrl}/${uuid}`);
   }
+
+  delete(uuid: string): Observable<void> {
+  return this.http.delete<void>(`${this.apiUrl}/${uuid}`);
+}
 }
