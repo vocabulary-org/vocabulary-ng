@@ -31,7 +31,7 @@
             </div>
 
             <!-- Description (optional) -->
-            <div class="col-3 text-muted small">
+            <div class="col-2 text-muted small">
               @if (word.description) {
               {{ word.description }}
               }
@@ -52,10 +52,20 @@
             </div>
 
             <div class="col-1 text-end">
+              <a [routerLink]="['/word/edit', word.uuid]" class="btn btn-info btn-block p-1">
+                Update
+              </a>
+            </div>
+
+            <div class="col-1 text-end">
               <button class="btn btn-warning p-1" (click)="onDelete(word)">
                 Delete
               </button>
             </div>
+
+            
+
+
           </div>
         </li>
 

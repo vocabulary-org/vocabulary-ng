@@ -1,5 +1,5 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="container mt-4">
-  <h2 class="mb-4">Add New Word</h2>
+  <h2>{{ isEdit ? 'Update Word' : 'Add New Word' }}</h2>
 
   <!-- Sentence -->
   <div class="mb-3">
@@ -81,7 +81,9 @@
 
 
   <!-- Submit -->
-  <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Add New Word</button>
+  <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+      {{ isEdit ? 'Update' : 'Add' }}
+  </button>
   @if (message) {
     <div [ngClass]="{ 'error': isError, 'success': !isError }">
       {{ message }}

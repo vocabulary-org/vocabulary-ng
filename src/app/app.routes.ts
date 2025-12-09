@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 import { canActivateAuthRole } from './shared/guards/auth-role.guard';
 
 import { WordListComponent } from './word/word-list/word-list.component';
-import { WordCreateComponent } from './word/word-create/word-create.component';
+import { WordCreateUpdateComponent } from './word/word-create-update/word-create-update.component';
 import { LandingComponent } from './landing/landing.component';
 import { WordDetailComponent } from './word/word-detail/word-detail.component';
 import { RolesComponent } from './roles/roles.component';
@@ -24,7 +24,7 @@ export const routes: Routes = [
 
   {
     path: 'word/new-word',
-    component: WordCreateComponent,
+    component: WordCreateUpdateComponent,
     canActivate: [canActivateAuthRole],
     data: { role: 'USER' },
   },
@@ -32,6 +32,13 @@ export const routes: Routes = [
   {
     path: 'word/:uuid',
     component: WordDetailComponent,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'USER' },
+  },
+
+  {
+    path: 'word/edit/:uuid',
+    component: WordCreateUpdateComponent,
     canActivate: [canActivateAuthRole],
     data: { role: 'USER' },
   },

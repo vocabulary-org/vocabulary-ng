@@ -3,7 +3,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Page } from '../../model/page.model';
 import { CreateWordRequest, Word } from '../../model/word.model';
-import { environment as env }  from '../../../../environments/environment';
+import { environment as env } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +29,10 @@ export class WordService {
   }
 
   delete(uuid: string): Observable<void> {
-  return this.http.delete<void>(`${this.apiUrl}/${uuid}`);
-}
+    return this.http.delete<void>(`${this.apiUrl}/${uuid}`);
+  }
+
+  updateWord(uuid: string, word: CreateWordRequest): Observable<void> {
+    return this.http.patch<void>(`${this.apiUrl}/${uuid}`, word);
+  }
 }

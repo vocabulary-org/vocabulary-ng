@@ -11,18 +11,26 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Language } from '../../shared/model/language';
 import { LanguageService } from '../../shared/service/word/language.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-word-create',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
-  templateUrl: './word-create.component.html',
-  styleUrl: './word-create.component.css',
+  templateUrl: './word-create-update.component.html',
+  styleUrl: './word-create-update.component.css',
 })
-export class WordCreateComponent {
+
+
+export class WordCreateUpdateComponent {
   private readonly wordService = inject(WordService);
   private readonly languageService = inject(LanguageService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+
   languages: Language[] = [];
+  isEdit: boolean = false;
+  uuid!: string;
 
   form = new FormGroup({
     sentence: new FormControl('', {
@@ -39,7 +47,7 @@ export class WordCreateComponent {
     }),
     languageTo: new FormControl<Language | null>(null, {
       validators: [Validators.required],
-    })
+    }),
   });
 
   message: string | null = null;
@@ -47,6 +55,14 @@ export class WordCreateComponent {
 
   ngOnInit(): void {
     this.loadLanguages();
+    // check if we are in edit mode (URL: /words/edit/:uuid)
+    const paramUuid = this.route.snapshot.paramMap.get('uuid');
+    if (paramUuid) {
+      this.isEdit = true;
+      this.uuid = paramUuid;
+      this.loadWordForEdit();
+    }
+
   }
 
   private loadLanguages(): void {
@@ -67,14 +83,58 @@ export class WordCreateComponent {
     });
   }
 
+  private loadWordForEdit(): void {
+  this.wordService.getById(this.uuid).subscribe({
+    next: (word: Word) => {
+      const langFrom = this.languages.find(l => l.uuid === word.language.uuid) ?? null;
+      const langTo   = this.languages.find(l => l.uuid === word.languageTo.uuid) ?? null;
+
+      this.form.patchValue({
+        sentence: word.sentence,
+        translation: word.translation,
+        description: word.description,
+        language: langFrom,
+        languageTo: langTo,
+      });
+    },
+    error: (err) => {
+      console.error('Error loading word for edit', err);
+      this.isError = true;
+      this.message = '❌ Unable to load the word for editing.';
+    },
+  });
+}
+
+
   onSubmit() {
     const word: CreateWordRequest = {
       sentence: this.form.value.sentence!,
       translation: this.form.value.translation!,
       description: this.form.value.description!,
-      language: { uuid: this.form.value.language!.uuid},     
-      languageTo: { uuid: this.form.value.languageTo!.uuid} 
+      language: { uuid: this.form.value.language!.uuid },
+      languageTo: { uuid: this.form.value.languageTo!.uuid },
     };
+
+
+    if (this.isEdit) {
+    // 🔁 UPDATE
+    this.wordService.updateWord(this.uuid, word).subscribe({
+      next: (response) => {
+        this.isError = false;
+        this.message = '✅ Your word has been successfully updated.';
+        // optional: navigate back to list
+        // this.router.navigate(['/words']);
+      },
+      error: (error: HttpErrorResponse) => {
+        this.isError = true;
+        const body = error.error;
+        this.message =
+          body && body.message ? body.message : '❌ Something went wrong while updating.';
+        console.error('Update error status:', error.status, 'body:', body);
+      },
+    });
+    return;
+  }
 
     this.wordService.addWord(word).subscribe({
       next: (response: HttpResponse<Word>) => {
