@@ -11,7 +11,7 @@
           <div class="col-3">Sentence</div>
           <div class="col-3">Translation</div>
           <div class="col-3">Description</div>
-          <div class="col-3"> </div>
+          <div class="col-3"></div>
         </div>
       </div>
 
@@ -19,53 +19,55 @@
         @for (word of words; track word.uuid) {
 
         <li class="list-group-item">
-          <div class="row align-items-center">
+          <div class="row">
             <!-- Sentence -->
-            <div class="col-3 text-muted small">
+            <div class="col-sm-3">
               {{ word.sentence }}
             </div>
 
             <!-- Translation -->
-            <div class="col-3 text-muted small">
+            <div class="col-sm-3">
               {{ word.translation }}
             </div>
 
             <!-- Description (optional) -->
-            <div class="col-2 text-muted small">
+            <div class="col-sm-2">
               @if (word.description) {
               {{ word.description }}
               }
             </div>
 
             <!-- Language badge + details -->
-            <div class="col-1 text-end">
-              <span >
+            <div class="col-sm-1">
+              <span>
                 {{ flags[word.language.name] }}
                 {{ flags[word.languageTo.name] }}
               </span>
             </div>
 
-            <div class="col-1 text-end">
-              <a [routerLink]="['/word', word.uuid]" class="btn btn-info btn-block p-1">
+            <div class="col-sm-1">
+              <a
+                [routerLink]="['/word', word.uuid]"
+                class="btn-info"
+              >
                 View
               </a>
             </div>
 
-            <div class="col-1 text-end">
-              <a [routerLink]="['/word/edit', word.uuid]" class="btn btn-info btn-block p-1">
+            <div class="col-sm-1">
+              <a
+                [routerLink]="['/word/edit', word.uuid]"
+                class="btn-info"
+              >
                 Update
               </a>
             </div>
 
-            <div class="col-1 text-end">
-              <button class="btn btn-warning p-1" (click)="onDelete(word)">
+            <div class="col-sm-1">
+              <button class="btn-warning" (click)="onDelete(word)">
                 Delete
               </button>
             </div>
-
-            
-
-
           </div>
         </li>
 
