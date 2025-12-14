@@ -1,0 +1,10 @@
+{
+    "navigationFallback": {
+        "rewrite": "/index.html",
+        "exclude": [
+            "/assets/*",
+            "/public/*",
+            "/*.{css,js,png,jpg,jpeg,gif,svg,ico,webp,txt,map}"
+        ]
+    }
+}
