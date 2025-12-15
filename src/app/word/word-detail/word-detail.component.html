@@ -4,7 +4,19 @@
       <div class="card-header bg-primary text-white">
         <h5 class="mb-0">Word Details</h5>
       </div>
+
+
+
       <div class="card-body">
+
+        <!-- Languages -->
+        <p class="mb-1 text-end">
+              <span>
+                {{ flags[word.language.name] }}
+                {{ flags[word.languageTo.name] }}
+              </span>
+        </p>
+
         <!-- Sentence & Translation -->
         <h3 class="card-title text-dark">
           {{ word.sentence }}
@@ -13,12 +25,7 @@
           Translation: <span class="fw-semibold">{{ word.translation }}</span>
         </h5>
 
-        <!-- Languages -->
-        <p class="mb-1">
-          <span class="badge bg-info text-dark">{{ word.language.name }}</span>
-          <i class="bi bi-arrow-right"></i>
-          <span class="badge bg-success">{{ word.languageTo.name }}</span>
-        </p>
+
 
         <!-- Description -->
         <p class="mt-3">
