@@ -44,15 +44,26 @@
                 {{ flags[word.languageTo.name] }}
               </span>
             </div>
-<div class="col-sm-3 align-self-start">
-  <div class="d-flex justify-content-end gap-2 align-items-start">
-    <a [routerLink]="['/word', word.uuid]" class="btn btn-primary btn-sm px-2">View</a>
-    <a [routerLink]="['/word/edit', word.uuid]" class="btn btn-warning btn-sm px-2">Update</a>
-    <button class="btn btn-danger btn-sm px-2" (click)="onDelete(word)">Delete</button>
-  </div>
-</div>
-
-
+            <div class="col-sm-3 align-self-start">
+              <div class="d-flex justify-content-end gap-2 align-items-start">
+                <a
+                  [routerLink]="['/word', word.uuid]"
+                  class="btn btn-primary btn-sm px-2"
+                  >View</a
+                >
+                <a
+                  [routerLink]="['/word/edit', word.uuid]"
+                  class="btn btn-warning btn-sm px-2"
+                  >Update</a
+                >
+                <button
+                  class="btn btn-danger btn-sm px-2"
+                  (click)="onDelete(word)"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
           </div>
         </li>
 
