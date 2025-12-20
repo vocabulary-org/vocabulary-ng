@@ -12,8 +12,9 @@ export class WordService {
   private readonly apiUrl = `${env.apiBaseUrl}/me/words`;
   private http = inject(HttpClient);
 
-  listWords(): Observable<Page<Word>> {
-    return this.http.get<Page<Word>>(this.apiUrl);
+  listWords(page: number = 0, size: number = 10): Observable<Page<Word>> {
+    const params = { page: page.toString(), size: size.toString() };
+    return this.http.get<Page<Word>>(this.apiUrl, { params });
   }
 
   addWord(word: CreateWordRequest): Observable<HttpResponse<Word>> {
