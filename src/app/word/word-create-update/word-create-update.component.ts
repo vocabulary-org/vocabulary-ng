@@ -12,6 +12,8 @@ import { CommonModule } from '@angular/common';
 import { Language } from '../../shared/model/language';
 import { LanguageService } from '../../shared/service/word/language.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '../../shared/service/word/translate.service';
+import { TranslateRequest } from '../../shared/model/translate-request.model';
 
 @Component({
   selector: 'app-word-create',
@@ -25,12 +27,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class WordCreateUpdateComponent {
   private readonly wordService = inject(WordService);
   private readonly languageService = inject(LanguageService);
+  private readonly translateService = inject(TranslateService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
   languages: Language[] = [];
   isEdit: boolean = false;
   uuid!: string;
+  isTranslating = false;
 
   form = new FormGroup({
     sentence: new FormControl('', {
@@ -157,6 +161,41 @@ export class WordCreateUpdateComponent {
       },
     });
   }
+
+
+  autoTranslate(): void {
+    const sentenceCtrl = this.form.get('sentence');
+    const translationCtrl = this.form.get('translation');
+
+    const sentence = (sentenceCtrl?.value ?? '').trim();
+    if (!sentence || !translationCtrl) {
+      return;
+    }
+
+    const req: TranslateRequest = {
+      text: sentence,
+      from: 'en',       // TODO: replace with your UI selection if you have it
+      to: ['it'],       // TODO: replace with your UI selection if you have it
+    };
+
+    this.isTranslating = true;
+
+    this.translateService.translate(req).subscribe({
+      next: (res) => {
+        // pick the first translation (since you requested one target language here)
+        const translatedText = res.translations?.[0]?.text ?? '';
+        translationCtrl.setValue(translatedText);
+        translationCtrl.markAsDirty();
+      },
+      error: (err) => {
+        console.error('Translate failed', err);
+      },
+      complete: () => {
+        this.isTranslating = false;
+      },
+    });
+  }
+
 
   get sentenceIsInvalid() {
     return (
