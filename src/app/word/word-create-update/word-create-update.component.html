@@ -1,5 +1,33 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="container mt-4">
-  <h2>{{ isEdit ? 'Update Word' : 'Add New Word' }}</h2>
+  <h2>{{ isEdit ? "Update Word" : "Add New Word" }}</h2>
+
+  <!-- Language FROM -->
+  <div class="mb-3">
+    <label for="language" class="form-label">Language from</label>
+    <select id="language" class="form-select" formControlName="language">
+      <option [ngValue]="null">-- Select language --</option>
+
+      @for (lang of languages; track lang.uuid) {
+      <option [ngValue]="lang">
+        {{ lang.name }}
+      </option>
+      }
+    </select>
+  </div>
+
+  <!-- Language TO -->
+  <div class="mb-3">
+    <label for="languageTo" class="form-label">Language to</label>
+    <select id="languageTo" class="form-select" formControlName="languageTo">
+      <option [ngValue]="null">-- Select language --</option>
+
+      @for (lang of languages; track lang.uuid) {
+      <option [ngValue]="lang">
+        {{ lang.name }}
+      </option>
+      }
+    </select>
+  </div>
 
   <!-- Sentence -->
   <div class="mb-3">
@@ -11,7 +39,7 @@
       class="form-control"
     />
     @if (sentenceIsInvalid) {
-      <div class="text-danger small">Please enter a valid Sentence</div>
+    <div class="text-danger small">Please enter a valid Sentence</div>
     }
   </div>
 
@@ -25,11 +53,21 @@
       class="form-control"
     />
     @if (translationIsInvalid) {
-      <div class="text-danger small">Please enter a valid Translation</div>
+    <div class="text-danger small">Please enter a valid Translation</div>
     }
   </div>
 
-    <!-- Translation -->
+  <!-- Put this close to your translation field -->
+  <button
+    type="button"
+    class="btn btn-outline-primary btn-sm"
+    (click)="autoTranslate()"
+    [disabled]="form.get('sentence')?.invalid || isTranslating"
+  >
+    {{ isTranslating ? "Translating..." : "Auto translate" }}
+  </button>
+
+  <!-- Translation -->
   <div class="mb-3">
     <label for="description" class="form-label">Description</label>
     <input
@@ -39,54 +77,17 @@
       class="form-control"
     />
     @if (translationIsInvalid) {
-      <div class="text-danger small">Please enter a valid Description</div>
+    <div class="text-danger small">Please enter a valid Description</div>
     }
   </div>
 
-  <!-- Language FROM -->
-<div class="mb-3">
-  <label for="language" class="form-label">Language from</label>
-  <select
-    id="language"
-    class="form-select"
-    formControlName="language"
-  >
-    <option [ngValue]="null">-- Select language --</option>
-
-    @for (lang of languages; track lang.uuid) {
-      <option [ngValue]="lang">
-        {{ lang.name }}
-      </option>
-    }
-  </select>
-</div>
-
-<!-- Language TO -->
-<div class="mb-3">
-  <label for="languageTo" class="form-label">Language to</label>
-  <select
-    id="languageTo"
-    class="form-select"
-    formControlName="languageTo"
-  >
-    <option [ngValue]="null">-- Select language --</option>
-
-    @for (lang of languages; track lang.uuid) {
-      <option [ngValue]="lang">
-        {{ lang.name }}
-      </option>
-    }
-  </select>
-</div>
-
-
   <!-- Submit -->
   <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
-      {{ isEdit ? 'Update' : 'Add' }}
+    {{ isEdit ? "Update" : "Add" }}
   </button>
   @if (message) {
-    <div [ngClass]="{ 'error': isError, 'success': !isError }">
-      {{ message }}
-    </div>
+  <div [ngClass]="{ error: isError, success: !isError }">
+    {{ message }}
+  </div>
   }
 </form>
