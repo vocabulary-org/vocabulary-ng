@@ -52,7 +52,11 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.hetzner-nginx-ssl.ts"
                 }
-              ]
+              ],
+              "sourceMap": true,
+              "optimization": false,
+              "namedChunks": true
+
             },
             "production": {
               "budgets": [
