@@ -5,4 +5,6 @@ export interface Language {
 }
 
 
-export type LanguageRef = Omit<Language, 'name'>; // no name
+export interface LanguageRef {
+  uuid: string;
+}

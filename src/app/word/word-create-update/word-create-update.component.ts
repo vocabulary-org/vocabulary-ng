@@ -169,13 +169,14 @@ export class WordCreateUpdateComponent {
     const toLang = this.form.value.languageTo;
 
     if (!sentence || !fromLang || !toLang) {
+      console.log('you need to set all of these')
       return;
     }
 
     const req: TranslateRequest = {
       text: sentence,
-      from: fromLang.name,   // ✅ string
-      to: [toLang.name]     // ✅ string[]
+      from: fromLang.code,   // ✅ string
+      to: [toLang.code]     // ✅ string[]
     };
 
 
@@ -187,9 +188,6 @@ export class WordCreateUpdateComponent {
         const translatedText = res.translations?.[0]?.text ?? '';
         this.form.controls.translation.setValue(translatedText);
         this.form.controls.translation.markAsDirty();
-
-
-
       },
       error: (err) => {
         console.error('Translate failed', err);
