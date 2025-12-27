@@ -43,6 +43,7 @@
     }
   </div>
 
+
   <!-- Translation -->
   <div class="mb-3">
     <label for="translation" class="form-label">Translation</label>
@@ -56,16 +57,23 @@
     <div class="text-danger small">Please enter a valid Translation</div>
     }
   </div>
-
   <!-- Put this close to your translation field -->
   <button
     type="button"
     class="btn btn-outline-primary btn-sm"
     (click)="autoTranslate()"
-    [disabled]="form.get('sentence')?.invalid || isTranslating"
+    [disabled]="
+      isQuotaReached ||
+      form.controls.sentence.invalid ||
+      form.controls.language.invalid ||
+      form.controls.languageTo.invalid ||
+      isTranslating
+  "
   >
     {{ isTranslating ? "Translating..." : "Auto translate" }}
   </button>
+
+
 
   <!-- Translation -->
   <div class="mb-3">
@@ -85,6 +93,16 @@
   <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
     {{ isEdit ? "Update" : "Add" }}
   </button>
+
+  @if (isEdit) {
+  <button
+    type="button"
+    class="btn btn-secondary ms-2"
+    (click)="onCancel()"
+  >
+    Cancel
+  </button>
+}
   @if (message) {
   <div [ngClass]="{ error: isError, success: !isError }">
     {{ message }}

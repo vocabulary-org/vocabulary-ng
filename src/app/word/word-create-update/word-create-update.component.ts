@@ -36,6 +36,10 @@ export class WordCreateUpdateComponent {
   isEdit: boolean = false;
   uuid!: string;
   isTranslating = false;
+  private originalFormValue: any;
+  isQuotaReached = false;
+
+
 
   form = new FormGroup({
     sentence: new FormControl('', {
@@ -59,6 +63,17 @@ export class WordCreateUpdateComponent {
   isError = false;
 
   ngOnInit(): void {
+    this.translateService.isQuotaReached().subscribe({
+  next: (reached) => {
+    this.isQuotaReached = reached;
+  },
+  error: (err) => {
+    console.error('Failed to check quota', err);
+    // fail-safe: disable translation if unsure
+    this.isQuotaReached = true;
+  },
+});
+
 
     // check if we are in edit mode (URL: /words/edit/:uuid)
     const paramUuid = this.route.snapshot.paramMap.get('uuid');
@@ -98,10 +113,8 @@ export class WordCreateUpdateComponent {
     }).subscribe({
       next: ({ langs, word }) => {
         this.languages = langs;
-
         const langFrom = langs.find(l => l.uuid === word.language.uuid) ?? null;
         const langTo = langs.find(l => l.uuid === word.languageTo.uuid) ?? null;
-
         this.form.patchValue({
           sentence: word.sentence,
           translation: word.translation,
@@ -109,6 +122,7 @@ export class WordCreateUpdateComponent {
           language: langFrom,
           languageTo: langTo,
         });
+        this.originalFormValue = this.form.getRawValue();
       },
       error: (err) => {
         console.error('Error loading word for edit', err);
@@ -136,7 +150,10 @@ export class WordCreateUpdateComponent {
           this.isError = false;
           this.message = '✅ Your word has been successfully updated.';
           // optional: navigate back to list
-          // this.router.navigate(['/words']);
+          setTimeout(() => {
+              this.router.navigate(['/word/list']); // ✅ redirect to list
+          }, 800)
+        
         },
         error: (error: HttpErrorResponse) => {
           this.isError = true;
@@ -171,26 +188,31 @@ export class WordCreateUpdateComponent {
     });
   }
 
+onCancel(): void {
+  if (!this.originalFormValue) {
+    return;
+  }
+  this.form.reset(this.originalFormValue);
+  this.form.markAsPristine();
+  this.form.markAsUntouched();
+}
+
+
 
   autoTranslate(): void {
     const sentence = this.form.value.sentence?.trim();
     const fromLang = this.form.value.language;
     const toLang = this.form.value.languageTo;
-
     if (!sentence || !fromLang || !toLang) {
       console.log('you need to set all of these')
       return;
     }
-
     const req: TranslateRequest = {
       text: sentence,
-      from: fromLang.code,   // ✅ string
-      to: [toLang.code]     // ✅ string[]
+      from: fromLang.code,   
+      to: [toLang.code]    
     };
-
-
     this.isTranslating = true;
-
     this.translateService.translate(req).subscribe({
       next: (res) => {
         // pick the first translation (since you requested one target language here)
@@ -199,6 +221,10 @@ export class WordCreateUpdateComponent {
         this.form.controls.translation.markAsDirty();
       },
       error: (err) => {
+        this.isError = true;
+        const body = err.error; // could be string (text/plain) or object (application/json)
+        this.message =
+          body && body.message ? body.message : '❌ Something went wrong.';
         console.error('Translate failed', err);
       },
       complete: () => {

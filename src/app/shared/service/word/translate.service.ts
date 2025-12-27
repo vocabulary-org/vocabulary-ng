@@ -16,4 +16,9 @@ export class TranslateService {
 translate(request: TranslateRequest): Observable<TranslateResponse> {
     return this.http.post<TranslateResponse>(this.apiUrl, request);
   }
+
+isQuotaReached() {
+  return this.http.get<boolean>(`${this.apiUrl}/quota-reached`);
+}
+
 }
