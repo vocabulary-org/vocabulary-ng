@@ -14,6 +14,7 @@ import { LanguageService } from '../../shared/service/word/language.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '../../shared/service/word/translate.service';
 import { TranslateRequest } from '../../shared/model/translate-request.model';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-word-create',
@@ -58,14 +59,17 @@ export class WordCreateUpdateComponent {
   isError = false;
 
   ngOnInit(): void {
-    this.loadLanguages();
+
     // check if we are in edit mode (URL: /words/edit/:uuid)
     const paramUuid = this.route.snapshot.paramMap.get('uuid');
-    if (paramUuid) {
-      this.isEdit = true;
-      this.uuid = paramUuid;
-      this.loadWordForEdit();
+    if (!paramUuid) {
+      this.loadLanguages();
+      return;
     }
+
+    this.isEdit = true;
+    this.uuid = paramUuid;
+    this.loadWordForEdit();
 
   }
 
@@ -88,10 +92,15 @@ export class WordCreateUpdateComponent {
   }
 
   private loadWordForEdit(): void {
-    this.wordService.getById(this.uuid).subscribe({
-      next: (word: Word) => {
-        const langFrom = this.languages.find(l => l.uuid === word.language.uuid) ?? null;
-        const langTo = this.languages.find(l => l.uuid === word.languageTo.uuid) ?? null;
+    forkJoin({
+      langs: this.languageService.getAllLanguages(),
+      word: this.wordService.getById(this.uuid),
+    }).subscribe({
+      next: ({ langs, word }) => {
+        this.languages = langs;
+
+        const langFrom = langs.find(l => l.uuid === word.language.uuid) ?? null;
+        const langTo = langs.find(l => l.uuid === word.languageTo.uuid) ?? null;
 
         this.form.patchValue({
           sentence: word.sentence,
