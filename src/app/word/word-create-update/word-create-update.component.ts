@@ -12,13 +12,13 @@ import { CommonModule } from '@angular/common';
 import { Language } from '../../shared/model/language';
 import { LanguageService } from '../../shared/service/word/language.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '../../shared/service/word/translate.service';
-import { TranslateRequest } from '../../shared/model/translate-request.model';
+import { forkJoin } from 'rxjs';
+import { AutoTranslationComponent } from "../auto-translation/auto-translation.component";
 
 @Component({
   selector: 'app-word-create',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, AutoTranslationComponent],
   templateUrl: './word-create-update.component.html',
   styleUrl: './word-create-update.component.css',
 })
@@ -27,7 +27,6 @@ import { TranslateRequest } from '../../shared/model/translate-request.model';
 export class WordCreateUpdateComponent {
   private readonly wordService = inject(WordService);
   private readonly languageService = inject(LanguageService);
-  private readonly translateService = inject(TranslateService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
@@ -35,6 +34,10 @@ export class WordCreateUpdateComponent {
   isEdit: boolean = false;
   uuid!: string;
   isTranslating = false;
+  originalFormValue: any;
+  isQuotaReached = false;
+  message: string | null = null;
+  isError = false;
 
   form = new FormGroup({
     sentence: new FormControl('', {
@@ -54,18 +57,20 @@ export class WordCreateUpdateComponent {
     }),
   });
 
-  message: string | null = null;
-  isError = false;
+
 
   ngOnInit(): void {
-    this.loadLanguages();
+
     // check if we are in edit mode (URL: /words/edit/:uuid)
     const paramUuid = this.route.snapshot.paramMap.get('uuid');
-    if (paramUuid) {
-      this.isEdit = true;
-      this.uuid = paramUuid;
-      this.loadWordForEdit();
+    if (!paramUuid) {
+      this.loadLanguages();
+      return;
     }
+
+    this.isEdit = true;
+    this.uuid = paramUuid;
+    this.loadWordForEdit();
 
   }
 
@@ -88,11 +93,14 @@ export class WordCreateUpdateComponent {
   }
 
   private loadWordForEdit(): void {
-    this.wordService.getById(this.uuid).subscribe({
-      next: (word: Word) => {
-        const langFrom = this.languages.find(l => l.uuid === word.language.uuid) ?? null;
-        const langTo = this.languages.find(l => l.uuid === word.languageTo.uuid) ?? null;
-
+    forkJoin({
+      langs: this.languageService.getAllLanguages(),
+      word: this.wordService.getById(this.uuid),
+    }).subscribe({
+      next: ({ langs, word }) => {
+        this.languages = langs;
+        const langFrom = langs.find(l => l.uuid === word.language.uuid) ?? null;
+        const langTo = langs.find(l => l.uuid === word.languageTo.uuid) ?? null;
         this.form.patchValue({
           sentence: word.sentence,
           translation: word.translation,
@@ -100,6 +108,7 @@ export class WordCreateUpdateComponent {
           language: langFrom,
           languageTo: langTo,
         });
+        this.originalFormValue = this.form.getRawValue();
       },
       error: (err) => {
         console.error('Error loading word for edit', err);
@@ -127,7 +136,10 @@ export class WordCreateUpdateComponent {
           this.isError = false;
           this.message = '✅ Your word has been successfully updated.';
           // optional: navigate back to list
-          // this.router.navigate(['/words']);
+          setTimeout(() => {
+            this.router.navigate(['/word/list']); // ✅ redirect to list
+          }, 800)
+
         },
         error: (error: HttpErrorResponse) => {
           this.isError = true;
@@ -162,41 +174,22 @@ export class WordCreateUpdateComponent {
     });
   }
 
-
-  autoTranslate(): void {
-    const sentence = this.form.value.sentence?.trim();
-    const fromLang = this.form.value.language;
-    const toLang = this.form.value.languageTo;
-
-    if (!sentence || !fromLang || !toLang) {
-      console.log('you need to set all of these')
+  onCancel(): void {
+    if (!this.originalFormValue) {
       return;
     }
-
-    const req: TranslateRequest = {
-      text: sentence,
-      from: fromLang.code,   // ✅ string
-      to: [toLang.code]     // ✅ string[]
-    };
-
-
-    this.isTranslating = true;
-
-    this.translateService.translate(req).subscribe({
-      next: (res) => {
-        // pick the first translation (since you requested one target language here)
-        const translatedText = res.translations?.[0]?.text ?? '';
-        this.form.controls.translation.setValue(translatedText);
-        this.form.controls.translation.markAsDirty();
-      },
-      error: (err) => {
-        console.error('Translate failed', err);
-      },
-      complete: () => {
-        this.isTranslating = false;
-      },
-    });
+    this.form.reset(this.originalFormValue);
+    this.form.markAsPristine();
+    this.form.markAsUntouched();
   }
+
+
+
+  onTranslated(text: string): void {
+    this.form.controls.translation.setValue(text);
+    this.form.controls.translation.markAsDirty();
+  }
+
 
 
   get sentenceIsInvalid() {
