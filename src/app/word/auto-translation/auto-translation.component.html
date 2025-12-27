@@ -1,0 +1,15 @@
+<button type="button" class="btn btn-outline-primary" (click)="autoTranslate()" [disabled]="!canTranslate()">
+  @if (isTranslating) { Translating... } @else { Auto translate }
+</button>
+
+@if (isQuotaReached) {
+<small class="text-muted d-block mt-1">
+  Translation quota reached for this month.
+</small>
+}
+
+@if (message) {
+<div class="error">
+  {{ message }}
+</div>
+}

@@ -32,12 +32,7 @@
   <!-- Sentence -->
   <div class="mb-3">
     <label for="sentence" class="form-label">Sentence</label>
-    <input
-      id="sentence"
-      type="text"
-      [formControl]="form.controls.sentence"
-      class="form-control"
-    />
+    <input id="sentence" type="text" [formControl]="form.controls.sentence" class="form-control" />
     @if (sentenceIsInvalid) {
     <div class="text-danger small">Please enter a valid Sentence</div>
     }
@@ -47,43 +42,20 @@
   <!-- Translation -->
   <div class="mb-3">
     <label for="translation" class="form-label">Translation</label>
-    <input
-      id="translation"
-      type="text"
-      formControlName="translation"
-      class="form-control"
-    />
+    <input id="translation" type="text" formControlName="translation" class="form-control" />
     @if (translationIsInvalid) {
     <div class="text-danger small">Please enter a valid Translation</div>
     }
   </div>
-  <!-- Put this close to your translation field -->
-  <button
-    type="button"
-    class="btn btn-outline-primary btn-sm"
-    (click)="autoTranslate()"
-    [disabled]="
-      isQuotaReached ||
-      form.controls.sentence.invalid ||
-      form.controls.language.invalid ||
-      form.controls.languageTo.invalid ||
-      isTranslating
-  "
-  >
-    {{ isTranslating ? "Translating..." : "Auto translate" }}
-  </button>
 
-
+  <app-word-translation-panel [sentence]="form.controls.sentence.value ?? ''"
+    [fromCode]="form.controls.language.value?.code ?? null" [toCode]="form.controls.languageTo.value?.code ?? null"
+    (translated)="onTranslated($event)"></app-word-translation-panel>
 
   <!-- Translation -->
   <div class="mb-3">
     <label for="description" class="form-label">Description</label>
-    <input
-      id="description"
-      type="text"
-      formControlName="description"
-      class="form-control"
-    />
+    <input id="description" type="text" formControlName="description" class="form-control" />
     @if (translationIsInvalid) {
     <div class="text-danger small">Please enter a valid Description</div>
     }
@@ -95,14 +67,10 @@
   </button>
 
   @if (isEdit) {
-  <button
-    type="button"
-    class="btn btn-secondary ms-2"
-    (click)="onCancel()"
-  >
+  <button type="button" class="btn btn-secondary ms-2" (click)="onCancel()">
     Cancel
   </button>
-}
+  }
   @if (message) {
   <div [ngClass]="{ error: isError, success: !isError }">
     {{ message }}
