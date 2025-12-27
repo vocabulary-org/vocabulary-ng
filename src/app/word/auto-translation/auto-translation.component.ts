@@ -1,12 +1,10 @@
-
-
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateService } from '../../shared/service/word/translate.service';
 import { TranslateRequest } from '../../shared/model/translate-request.model';
 
 @Component({
-  selector: 'app-word-translation-panel',
+  selector: 'app-word-translation',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './auto-translation.component.html',

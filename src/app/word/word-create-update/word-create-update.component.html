@@ -48,9 +48,11 @@
     }
   </div>
 
-  <app-word-translation-panel [sentence]="form.controls.sentence.value ?? ''"
+  <app-word-translation 
+    [sentence]="form.controls.sentence.value ?? ''"
     [fromCode]="form.controls.language.value?.code ?? null" [toCode]="form.controls.languageTo.value?.code ?? null"
-    (translated)="onTranslated($event)"></app-word-translation-panel>
+    (translated)="onTranslated($event)">
+  </app-word-translation>
 
   <!-- Translation -->
   <div class="mb-3">
