@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, inject, input } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateService } from '../../shared/service/word/translate.service';
 import { TranslateRequest } from '../../shared/model/translate-request.model';
@@ -17,7 +17,7 @@ export class AutoTranslationComponent {
   toCode   = input.required<string | null>();
 
 
-  @Output() translated = new EventEmitter<string>();
+  translated = output<string>();
 
   isTranslating = false;
   isQuotaReached = false;
