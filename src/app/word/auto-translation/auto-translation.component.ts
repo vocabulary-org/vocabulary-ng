@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Output, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateService } from '../../shared/service/word/translate.service';
 import { TranslateRequest } from '../../shared/model/translate-request.model';
@@ -12,9 +12,10 @@ import { TranslateRequest } from '../../shared/model/translate-request.model';
 export class AutoTranslationComponent {
   private readonly translateService = inject(TranslateService);
 
-  @Input({ required: true }) sentence = '';
-  @Input({ required: true }) fromCode: string | null = null;
-  @Input({ required: true }) toCode: string | null = null;
+  sentence = input.required<string>();
+  fromCode = input.required<string | null>();
+  toCode   = input.required<string | null>();
+
 
   @Output() translated = new EventEmitter<string>();
 
@@ -30,16 +31,16 @@ export class AutoTranslationComponent {
   }
 
   canTranslate(): boolean {
-    return !!this.sentence?.trim() && !!this.fromCode && !!this.toCode && !this.isQuotaReached && !this.isTranslating;
+    return !!this.sentence().trim() && !!this.fromCode && !!this.toCode && !this.isQuotaReached && !this.isTranslating;
   }
 
   autoTranslate(): void {
     if (!this.canTranslate()) return;
 
     const req: TranslateRequest = {
-      text: this.sentence.trim(),
-      from: this.fromCode!,
-      to: [this.toCode!],
+      text: this.sentence().trim(),
+      from: this.fromCode()!,
+      to: [this.toCode()!],
     };
 
     this.isTranslating = true;
