@@ -3,6 +3,13 @@ import { CommonModule } from '@angular/common';
 import { TranslateService } from '../../shared/service/word/translate.service';
 import { TranslateRequest } from '../../shared/model/translate-request.model';
 
+export type AutoTranslationInput = {
+  sentence: string;
+  fromCode: string | null;
+  toCode: string | null;
+};
+
+
 @Component({
   selector: 'app-word-translation',
   standalone: true,
@@ -11,11 +18,7 @@ import { TranslateRequest } from '../../shared/model/translate-request.model';
 })
 export class AutoTranslationComponent {
   private readonly translateService = inject(TranslateService);
-
-  sentence = input.required<string>();
-  fromCode = input.required<string | null>();
-  toCode   = input.required<string | null>();
-
+  translation = input.required<AutoTranslationInput>();
 
   translated = output<string>();
 
@@ -31,16 +34,16 @@ export class AutoTranslationComponent {
   }
 
   canTranslate(): boolean {
-    return !!this.sentence().trim() && !!this.fromCode && !!this.toCode && !this.isQuotaReached && !this.isTranslating;
+    return !!this.translation().sentence.trim() && !!this.translation().fromCode && !!this.translation().toCode && !this.isQuotaReached && !this.isTranslating;
   }
 
   autoTranslate(): void {
     if (!this.canTranslate()) return;
 
     const req: TranslateRequest = {
-      text: this.sentence().trim(),
-      from: this.fromCode()!,
-      to: [this.toCode()!],
+      text: this.translation().sentence.trim(),
+      from: this.translation().fromCode!,
+      to: [this.translation().toCode!],
     };
 
     this.isTranslating = true;

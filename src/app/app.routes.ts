@@ -6,8 +6,11 @@ import { WordListComponent } from './word/word-list/word-list.component';
 import { WordCreateUpdateComponent } from './word/word-create-update/word-create-update.component';
 import { LandingComponent } from './landing/landing.component';
 import { WordDetailComponent } from './word/word-detail/word-detail.component';
-import { RolesComponent } from './roles/roles.component';
+
 import { NewUserComponent } from './user/new-user/new-user.component';
+import { RolesComponent } from './settings/roles/roles.component';
+
+import { SettingsUserLanguagesComponent } from './settings/settings-user-languages/settings-user-languages.component';
 
 export const routes: Routes = [
   {
@@ -44,8 +47,16 @@ export const routes: Routes = [
   },
 
   {
-    path: 'roles',
+    path: 'settings/languages',
+    component: SettingsUserLanguagesComponent,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'USER' },
+  },
+  {
+    path: 'settings/roles',
     component: RolesComponent,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'USER' },
   },
 
   {
