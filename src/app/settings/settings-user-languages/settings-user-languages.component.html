@@ -1,0 +1,17 @@
+<h3>User language preferences</h3>
+
+@if (loading()) {
+  <p>Loading...</p>
+} @else {
+
+  <p>
+    <strong>From:</strong>
+    {{ model().language?.uuid ?? 'Not set' }}
+  </p>
+
+  <p>
+    <strong>To:</strong>
+    {{ model().languageTo?.uuid ?? 'Not set' }}
+  </p>
+
+}

@@ -2,6 +2,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { UserLanguagesService } from '../../shared/service/user/user-languages.service';
 import { UserLanguages } from '../../shared/model/user-languages';
+import { LanguagesStore } from '../../shared/store/language.store';
 
 
 @Component({
@@ -17,7 +18,10 @@ export class SettingsUserLanguagesComponent implements OnInit {
   saved   = signal(false);
   error   = signal<string | null>(null);
 
-  constructor(private userLanguagesService: UserLanguagesService) {}
+    constructor(
+    private languagesStore: LanguagesStore,
+    private userLanguagesService: UserLanguagesService,
+  ) {}
 
   ngOnInit(): void {
     this.userLanguagesService.get().subscribe({
