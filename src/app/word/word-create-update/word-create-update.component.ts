@@ -10,10 +10,12 @@ import { CreateWordRequest, Word } from '../../shared/model/word.model';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Language } from '../../shared/model/language';
-import { LanguageService } from '../../shared/service/word/language.service';
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { AutoTranslationComponent } from "../auto-translation/auto-translation.component";
+import { LanguagesStore } from '../../shared/store/language.store';
+
 
 @Component({
   selector: 'app-word-create',
@@ -26,7 +28,7 @@ import { AutoTranslationComponent } from "../auto-translation/auto-translation.c
 
 export class WordCreateUpdateComponent {
   private readonly wordService = inject(WordService);
-  private readonly languageService = inject(LanguageService);
+  private readonly languageStore = inject(LanguagesStore);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
@@ -75,7 +77,7 @@ export class WordCreateUpdateComponent {
   }
 
   private loadLanguages(): void {
-    this.languageService.getAllLanguages().subscribe({
+    this.languageStore.getAll$().subscribe({
       next: (langs) => {
         this.languages = langs;
 
@@ -94,7 +96,7 @@ export class WordCreateUpdateComponent {
 
   private loadWordForEdit(): void {
     forkJoin({
-      langs: this.languageService.getAllLanguages(),
+      langs: this.languageStore.getAll$(),
       word: this.wordService.getById(this.uuid),
     }).subscribe({
       next: ({ langs, word }) => {
