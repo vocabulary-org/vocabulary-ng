@@ -2,16 +2,47 @@
 
 @if (loading()) {
   <p>Loading...</p>
+} @else if (error()) {
+  <p style="color: red">{{ error() }}</p>
 } @else {
 
-  <p>
-    <strong>From:</strong>
-    {{ model().language?.uuid ?? 'Not set' }}
-  </p>
+  <div>
+    <label>From</label>
+    <select
+      class="form-select"
+      [disabled]="!editing()"
+      [value]="model().language?.uuid ?? ''"
+      (change)="onFromChanged($any($event.target).value)"
+    >
+      <option value="">Not set</option>
+      @for (l of languages; track l.uuid) {
+        <option [value]="l.uuid">{{ l.name }}</option>
+      }
+    </select>
+  </div>
 
-  <p>
-    <strong>To:</strong>
-    {{ model().languageTo?.uuid ?? 'Not set' }}
-  </p>
+  <br />
 
+  <div>
+    <label>To</label>
+    <select
+      class="form-select"
+      [disabled]="!editing()"
+      [value]="model().languageTo?.uuid ?? ''"
+      (change)="onToChanged($any($event.target).value)"
+    >
+      <option value="">Not set</option>
+      @for (l of languages; track l.uuid) {
+        <option [value]="l.uuid">{{ l.name }}</option>
+      }
+    </select>
+  </div>
+
+  <br />
+
+  @if (!editing()) {
+    <button (click)="editing.set(true)">Edit</button>
+  } @else {
+    <button (click)="editing.set(false)">Done</button>
+  }
 }

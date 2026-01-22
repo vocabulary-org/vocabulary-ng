@@ -1,5 +1,5 @@
 export interface UserLanguages {
-  uuid?: string;
+   uuid: { uuid: string } | null;
   language: { uuid: string } | null;
   languageTo: { uuid: string } | null;
 }
