@@ -9,6 +9,8 @@ import { Language } from '../../shared/model/language';
   templateUrl: './settings-user-languages.component.html',
 })
 export class SettingsUserLanguagesComponent implements OnInit {
+
+
   model = signal<UserLanguages>({} as UserLanguages);
 
   loading = signal(true);
@@ -16,6 +18,9 @@ export class SettingsUserLanguagesComponent implements OnInit {
   saved = signal(false);
   error = signal<string | null>(null);
   editing = signal(false);
+
+
+
 
   languages: Language[] = [];
 
@@ -29,7 +34,6 @@ export class SettingsUserLanguagesComponent implements OnInit {
     this.userLanguagesService.get().subscribe({
       next: (res) => {
         this.model.set(res);
-        this.loading.set(false);
       },
       error: () => {
         // If your API returns 404 when not set, you can keep an empty model
@@ -50,17 +54,4 @@ export class SettingsUserLanguagesComponent implements OnInit {
     });
   }
 
-onFromChanged(uuid: string): void {
-  this.model.set({
-    ...this.model(),
-    language: uuid ? { uuid } : null,
-  });
-}
-
-onToChanged(uuid: string): void {
-  this.model.set({
-    ...this.model(),
-    languageTo: uuid ? { uuid } : null,
-  });
-}
 }
