@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { WordService } from '../../shared/service/word/word.service';
 import {
   FormControl,
@@ -15,6 +15,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { AutoTranslationComponent } from "../auto-translation/auto-translation.component";
 import { LanguagesStore } from '../../shared/store/language.store';
+import { UserLanguages } from '../../shared/model/user-languages';
+import { UserLanguagesService } from '../../shared/service/user/user-languages.service';
 
 
 @Component({
@@ -29,8 +31,11 @@ import { LanguagesStore } from '../../shared/store/language.store';
 export class WordCreateUpdateComponent {
   private readonly wordService = inject(WordService);
   private readonly languageStore = inject(LanguagesStore);
+  private readonly userLanguagesService = inject(UserLanguagesService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+
+
 
   languages: Language[] = [];
   isEdit: boolean = false;
@@ -65,11 +70,11 @@ export class WordCreateUpdateComponent {
 
     // check if we are in edit mode (URL: /words/edit/:uuid)
     const paramUuid = this.route.snapshot.paramMap.get('uuid');
+    this.loadLanguages();
     if (!paramUuid) {
-      this.loadLanguages();
+      this.loadWordForCreate()
       return;
     }
-
     this.isEdit = true;
     this.uuid = paramUuid;
     this.loadWordForEdit();
@@ -107,6 +112,31 @@ export class WordCreateUpdateComponent {
           sentence: word.sentence,
           translation: word.translation,
           description: word.description,
+          language: langFrom,
+          languageTo: langTo,
+        });
+        this.originalFormValue = this.form.getRawValue();
+      },
+      error: (err) => {
+        console.error('Error loading word for edit', err);
+        this.isError = true;
+        this.message = '❌ Unable to load the word for editing.';
+      },
+    });
+  }
+
+
+  private loadWordForCreate(): void {
+    forkJoin({
+      langs: this.languageStore.getAll$(),
+      userLang: this.userLanguagesService.get()
+
+    }).subscribe({
+      next: ({ langs, userLang }) => {
+        this.languages = langs;
+        const langFrom = langs.find(l => l.uuid === userLang.language?.uuid) ?? null;
+        const langTo = langs.find(l => l.uuid === userLang.languageTo?.uuid) ?? null;
+        this.form.patchValue({
           language: langFrom,
           languageTo: langTo,
         });
