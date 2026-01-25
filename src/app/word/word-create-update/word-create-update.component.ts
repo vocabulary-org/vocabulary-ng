@@ -37,14 +37,17 @@ export class WordCreateUpdateComponent {
 
 
 
-  languages: Language[] = [];
-  isEdit: boolean = false;
-  uuid!: string;
-  isTranslating = false;
+// State
+languages = signal<Language[]>([]);
+isEdit = signal(false);
+uuid = signal<string | null>(null);
+isTranslating = signal(false);
+isQuotaReached = signal(false);
+message = signal<string | null>(null);
+isError = signal(false);
+
   originalFormValue: any;
-  isQuotaReached = false;
-  message: string | null = null;
-  isError = false;
+
 
   form = new FormGroup({
     sentence: new FormControl('', {
@@ -75,8 +78,8 @@ export class WordCreateUpdateComponent {
       this.loadWordForCreate()
       return;
     }
-    this.isEdit = true;
-    this.uuid = paramUuid;
+    this.isEdit.set(true)
+    this.uuid.set(paramUuid);
     this.loadWordForEdit();
 
   }
@@ -84,7 +87,7 @@ export class WordCreateUpdateComponent {
   private loadLanguages(): void {
     this.languageStore.getAll$().subscribe({
       next: (langs) => {
-        this.languages = langs;
+        this.languages.set(langs);
 
         // optional: set some defaults, e.g. EN -> IT
         // const en = langs.find(l => l.name === 'English');
@@ -102,10 +105,10 @@ export class WordCreateUpdateComponent {
   private loadWordForEdit(): void {
     forkJoin({
       langs: this.languageStore.getAll$(),
-      word: this.wordService.getById(this.uuid),
+      word: this.wordService.getById(this.uuid()!),
     }).subscribe({
       next: ({ langs, word }) => {
-        this.languages = langs;
+        this.languages.set(langs);
         const langFrom = langs.find(l => l.uuid === word.language.uuid) ?? null;
         const langTo = langs.find(l => l.uuid === word.languageTo.uuid) ?? null;
         this.form.patchValue({
@@ -119,8 +122,8 @@ export class WordCreateUpdateComponent {
       },
       error: (err) => {
         console.error('Error loading word for edit', err);
-        this.isError = true;
-        this.message = '❌ Unable to load the word for editing.';
+        this.isError.set(true);
+        this.message.set('❌ Unable to load the word for editing.');
       },
     });
   }
@@ -133,7 +136,7 @@ export class WordCreateUpdateComponent {
 
     }).subscribe({
       next: ({ langs, userLang }) => {
-        this.languages = langs;
+        this.languages.set(langs)
         const langFrom = langs.find(l => l.uuid === userLang.language?.uuid) ?? null;
         const langTo = langs.find(l => l.uuid === userLang.languageTo?.uuid) ?? null;
         this.form.patchValue({
@@ -144,8 +147,8 @@ export class WordCreateUpdateComponent {
       },
       error: (err) => {
         console.error('Error loading word for edit', err);
-        this.isError = true;
-        this.message = '❌ Unable to load the word for editing.';
+        this.isError.set(true);
+        this.message.set('❌ Unable to load the word for editing.');
       },
     });
   }
@@ -161,12 +164,12 @@ export class WordCreateUpdateComponent {
     };
 
 
-    if (this.isEdit) {
+    if (this.isEdit()) {
       // 🔁 UPDATE
-      this.wordService.updateWord(this.uuid, word).subscribe({
+      this.wordService.updateWord(this.uuid()!, word).subscribe({
         next: (response) => {
-          this.isError = false;
-          this.message = '✅ Your word has been successfully updated.';
+          this.isError.set(false);
+          this.message.set('✅ Your word has been successfully updated.');
           // optional: navigate back to list
           setTimeout(() => {
             this.router.navigate(['/word/list']); // ✅ redirect to list
@@ -174,7 +177,7 @@ export class WordCreateUpdateComponent {
 
         },
         error: (error: HttpErrorResponse) => {
-          this.isError = true;
+          this.isError.set(true);
           const body = error.error;
           this.message =
             body && body.message ? body.message : '❌ Something went wrong while updating.';
@@ -187,17 +190,17 @@ export class WordCreateUpdateComponent {
     this.wordService.addWord(word).subscribe({
       next: (response: HttpResponse<Word>) => {
         if (response.status === 201) {
-          this.isError = false;
-          this.message = '✅ Your word has been successfully added.';
+          this.isError.set(false);
+          this.message.set('✅ Your word has been successfully added.');
           this.form.reset({});
         } else {
-          this.isError = true;
-          this.message = `Unexpected status: ${response.status}`;
+          this.isError.set(true);
+          this.message.set(`Unexpected status: ${response.status}`);
           console.error('Error status:', response.status);
         }
       },
       error: (error: HttpErrorResponse) => {
-        this.isError = true;
+        this.isError.set(true);
         const body = error.error; // could be string (text/plain) or object (application/json)
         this.message =
           body && body.message ? body.message : '❌ Something went wrong.';
