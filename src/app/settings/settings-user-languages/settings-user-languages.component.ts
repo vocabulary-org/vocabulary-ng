@@ -3,14 +3,13 @@ import { UserLanguagesService } from '../../shared/service/user/user-languages.s
 import { UserLanguages } from '../../shared/model/user-languages';
 import { LanguagesStore } from '../../shared/store/language.store';
 import { Language } from '../../shared/model/language';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-settings-user-languages',
   templateUrl: './settings-user-languages.component.html',
 })
 export class SettingsUserLanguagesComponent implements OnInit {
-
-
   model = signal<UserLanguages>({} as UserLanguages);
 
   loading = signal(true);
@@ -19,10 +18,7 @@ export class SettingsUserLanguagesComponent implements OnInit {
   error = signal<string | null>(null);
   editing = signal(false);
 
-
-
-
-  languages: Language[] = [];
+  languages = signal<Language[]>([]);
 
   constructor(
     private languagesStore: LanguagesStore,
@@ -30,28 +26,29 @@ export class SettingsUserLanguagesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadLanguages()
-    this.userLanguagesService.get().subscribe({
-      next: (res) => {
-        this.model.set(res);
-      },
-      error: () => {
-        // If your API returns 404 when not set, you can keep an empty model
-        this.model.set({} as UserLanguages);
-        this.loading.set(false);
-      },
-    });
+    this.load();
   }
 
-  private loadLanguages(): void {
-    this.languagesStore.getAll$().subscribe({
-      next: (langs) => {
-        this.languages = langs;
+  private load(): void {
+    forkJoin({
+      langs: this.languagesStore.getAll$(),
+      userLang: this.userLanguagesService.get(),
+    }).subscribe({
+      next: ({ langs, userLang }) => {
+        this.languages.set(langs);
+        const langFrom =
+          langs.find((l) => l.uuid === userLang.language?.uuid) ?? null;
+        const langTo =
+          langs.find((l) => l.uuid === userLang.languageTo?.uuid) ?? null;
+        this.model.set({
+          ...userLang,
+          language: langFrom,
+          languageTo: langTo,
+        });
       },
       error: (err) => {
-        console.error('Error loading languages', err);
+        console.error('Error loading word for edit', err);
       },
     });
   }
-
 }

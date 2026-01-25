@@ -8,9 +8,9 @@
       <option [ngValue]="null">-- Select language --</option>
 
       @for (lang of languages(); track lang.uuid) {
-      <option [ngValue]="lang">
-        {{ lang.name }}
-      </option>
+        <option [ngValue]="lang">
+          {{ lang.name }}
+        </option>
       }
     </select>
   </div>
@@ -22,9 +22,9 @@
       <option [ngValue]="null">-- Select language --</option>
 
       @for (lang of languages(); track lang.uuid) {
-      <option [ngValue]="lang">
-        {{ lang.name }}
-      </option>
+        <option [ngValue]="lang">
+          {{ lang.name }}
+        </option>
       }
     </select>
   </div>
@@ -39,7 +39,7 @@
       class="form-control"
     />
     @if (sentenceIsInvalid) {
-    <div class="text-danger small">Please enter a valid Sentence</div>
+      <div class="text-danger small">Please enter a valid Sentence</div>
     }
   </div>
 
@@ -53,7 +53,7 @@
       class="form-control"
     />
     @if (translationIsInvalid) {
-    <div class="text-danger small">Please enter a valid Translation</div>
+      <div class="text-danger small">Please enter a valid Translation</div>
     }
   </div>
 
@@ -61,7 +61,7 @@
     [translation]="{
       sentence: form.controls.sentence.value ?? '',
       fromCode: form.controls.language.value?.code ?? null,
-      toCode: form.controls.languageTo.value?.code ?? null
+      toCode: form.controls.languageTo.value?.code ?? null,
     }"
     (translated)="onTranslated($event)"
   >
@@ -77,7 +77,7 @@
       class="form-control"
     />
     @if (translationIsInvalid) {
-    <div class="text-danger small">Please enter a valid Description</div>
+      <div class="text-danger small">Please enter a valid Description</div>
     }
   </div>
 
@@ -87,12 +87,13 @@
   </button>
 
   @if (isEdit()) {
-  <button type="button" class="btn btn-secondary ms-2" (click)="onCancel()">
-    Cancel
-  </button>
-  } @if (message()) {
-  <div [ngClass]="{ error: isError, success: !isError }">
-    {{ message() }}
-  </div>
+    <button type="button" class="btn btn-secondary ms-2" (click)="onCancel()">
+      Cancel
+    </button>
+  }
+  @if (message()) {
+    <div [ngClass]="{ error: isError, success: !isError }">
+      {{ message() }}
+    </div>
   }
 </form>
