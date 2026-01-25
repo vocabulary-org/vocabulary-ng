@@ -6,16 +6,17 @@
   <div class="card-body">
     <div class="row g-3">
       <div class="col-md-6">
-        <label for="language-select" class="form-label fw-bold"
-          >From Language</label
-        >
+        <label for="language-select" class="form-label fw-bold">From Language</label>
         <div class="input-group">
-          <select id="language-select" class="form-select" [disabled]="true">
+          <select id="language-select" class="form-select"
+           [disabled]="!editing()"
+           (change)="onFromChange($event)">
             <option value="">-- Select Language --</option>
             @for (l of languages(); track l.uuid) {
               <option
                 [value]="l.uuid"
                 [selected]="l.uuid === model().language?.uuid"
+                
               >
                 {{ l.name }}
               </option>
@@ -28,12 +29,15 @@
         <label for="languageTo-select" class="form-label fw-bold"
           >To Language</label
         >
-        <select id="languageTo-select" class="form-select" [disabled]="true">
+        <select id="languageTo-select" class="form-select" 
+        [disabled]="!editing()"
+        (change)="onToChange($event)">
           <option value="">-- Select Language --</option>
           @for (l of languages(); track l.uuid) {
             <option
               [value]="l.uuid"
               [selected]="l.uuid === model().languageTo?.uuid"
+              
             >
               {{ l.name }}
             </option>
@@ -66,4 +70,22 @@
       }
     </div>
   </div>
+
+  <!-- Buttons -->
+  <div class="col-12 d-flex gap-2 mt-2">
+    @if (!editing()) {
+      <button class="btn btn-outline-primary" (click)="enableEdit()">
+        Edit
+      </button>
+    } @else {
+      <button class="btn btn-primary" (click)="save()">
+        Save
+      </button>
+
+      <button class="btn btn-outline-secondary" (click)="cancel()" [disabled]="saving()">
+        Cancel
+      </button>
+    }
+  </div>
+
 </div>

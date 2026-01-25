@@ -51,4 +51,38 @@ export class SettingsUserLanguagesComponent implements OnInit {
       },
     });
   }
+
+  onToChange(event: Event) {
+    const uuid = (event.target as HTMLSelectElement).value;
+    this.model.update((m) => ({
+      ...m,
+      languageTo: { uuid },
+    }));
+  }
+
+  onFromChange(event: Event) {
+    const uuid = (event.target as HTMLSelectElement).value;
+    this.model.update((m) => ({
+      ...m,
+      language: { uuid },
+    }));
+  }
+
+  enableEdit(): void {
+    this.editing.set(true);
+  }
+
+  cancel(): void {
+    this.editing.set(false);
+  }
+
+  save(): void {
+    this.userLanguagesService.createOrUpdate(this.model()).subscribe({
+      next: (updated) => {
+        this.model.set(updated);
+        this.editing.set(false); // back to read-only
+      },
+      complete: () => this.saving.set(false),
+    });
+  }
 }
