@@ -25,8 +25,36 @@
           <a routerLink="/word/new-word" class="nav-link">Add Word</a>
         </li>
 
-        <li class="nav-item">
-          <a routerLink="/roles" class="nav-link">My Roles</a>
+        <!-- SETTINGS DROPDOWN -->
+        <li class="nav-item dropdown" *kaHasRoles="['USER']">
+          <a
+            class="nav-link dropdown-toggle"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Settings
+          </a>
+
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+              <a
+                class="dropdown-item"
+                routerLink="/settings/languages"
+              >
+                Languages
+              </a>
+            </li>
+
+            <li>
+              <a
+                class="dropdown-item"
+                routerLink="/settings/roles"
+              >
+                Roles
+              </a>
+            </li>
+          </ul>
         </li>
 
         <!-- Authenticated / not authenticated -->

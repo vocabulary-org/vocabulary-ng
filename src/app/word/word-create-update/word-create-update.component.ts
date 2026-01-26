@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { WordService } from '../../shared/service/word/word.service';
 import {
   FormControl,
@@ -10,10 +10,14 @@ import { CreateWordRequest, Word } from '../../shared/model/word.model';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Language } from '../../shared/model/language';
-import { LanguageService } from '../../shared/service/word/language.service';
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { AutoTranslationComponent } from "../auto-translation/auto-translation.component";
+import { LanguagesStore } from '../../shared/store/language.store';
+import { UserLanguages } from '../../shared/model/user-languages';
+import { UserLanguagesService } from '../../shared/service/user/user-languages.service';
+
 
 @Component({
   selector: 'app-word-create',
@@ -26,18 +30,24 @@ import { AutoTranslationComponent } from "../auto-translation/auto-translation.c
 
 export class WordCreateUpdateComponent {
   private readonly wordService = inject(WordService);
-  private readonly languageService = inject(LanguageService);
+  private readonly languageStore = inject(LanguagesStore);
+  private readonly userLanguagesService = inject(UserLanguagesService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
-  languages: Language[] = [];
-  isEdit: boolean = false;
-  uuid!: string;
-  isTranslating = false;
+
+
+// State
+languages = signal<Language[]>([]);
+isEdit = signal(false);
+uuid = signal<string | null>(null);
+isTranslating = signal(false);
+isQuotaReached = signal(false);
+message = signal<string | null>(null);
+isError = signal(false);
+
   originalFormValue: any;
-  isQuotaReached = false;
-  message: string | null = null;
-  isError = false;
+
 
   form = new FormGroup({
     sentence: new FormControl('', {
@@ -63,21 +73,21 @@ export class WordCreateUpdateComponent {
 
     // check if we are in edit mode (URL: /words/edit/:uuid)
     const paramUuid = this.route.snapshot.paramMap.get('uuid');
+    this.loadLanguages();
     if (!paramUuid) {
-      this.loadLanguages();
+      this.loadWordForCreate()
       return;
     }
-
-    this.isEdit = true;
-    this.uuid = paramUuid;
+    this.isEdit.set(true)
+    this.uuid.set(paramUuid);
     this.loadWordForEdit();
 
   }
 
   private loadLanguages(): void {
-    this.languageService.getAllLanguages().subscribe({
+    this.languageStore.getAll$().subscribe({
       next: (langs) => {
-        this.languages = langs;
+        this.languages.set(langs);
 
         // optional: set some defaults, e.g. EN -> IT
         // const en = langs.find(l => l.name === 'English');
@@ -94,11 +104,11 @@ export class WordCreateUpdateComponent {
 
   private loadWordForEdit(): void {
     forkJoin({
-      langs: this.languageService.getAllLanguages(),
-      word: this.wordService.getById(this.uuid),
+      langs: this.languageStore.getAll$(),
+      word: this.wordService.getById(this.uuid()!),
     }).subscribe({
       next: ({ langs, word }) => {
-        this.languages = langs;
+        this.languages.set(langs);
         const langFrom = langs.find(l => l.uuid === word.language.uuid) ?? null;
         const langTo = langs.find(l => l.uuid === word.languageTo.uuid) ?? null;
         this.form.patchValue({
@@ -112,8 +122,33 @@ export class WordCreateUpdateComponent {
       },
       error: (err) => {
         console.error('Error loading word for edit', err);
-        this.isError = true;
-        this.message = '❌ Unable to load the word for editing.';
+        this.isError.set(true);
+        this.message.set('❌ Unable to load the word for editing.');
+      },
+    });
+  }
+
+
+  private loadWordForCreate(): void {
+    forkJoin({
+      langs: this.languageStore.getAll$(),
+      userLang: this.userLanguagesService.get()
+
+    }).subscribe({
+      next: ({ langs, userLang }) => {
+        this.languages.set(langs)
+        const langFrom = langs.find(l => l.uuid === userLang.language?.uuid) ?? null;
+        const langTo = langs.find(l => l.uuid === userLang.languageTo?.uuid) ?? null;
+        this.form.patchValue({
+          language: langFrom,
+          languageTo: langTo,
+        });
+        this.originalFormValue = this.form.getRawValue();
+      },
+      error: (err) => {
+        console.error('Error loading word for edit', err);
+        this.isError.set(true);
+        this.message.set('❌ Unable to load the word for editing.');
       },
     });
   }
@@ -129,12 +164,12 @@ export class WordCreateUpdateComponent {
     };
 
 
-    if (this.isEdit) {
+    if (this.isEdit()) {
       // 🔁 UPDATE
-      this.wordService.updateWord(this.uuid, word).subscribe({
+      this.wordService.updateWord(this.uuid()!, word).subscribe({
         next: (response) => {
-          this.isError = false;
-          this.message = '✅ Your word has been successfully updated.';
+          this.isError.set(false);
+          this.message.set('✅ Your word has been successfully updated.');
           // optional: navigate back to list
           setTimeout(() => {
             this.router.navigate(['/word/list']); // ✅ redirect to list
@@ -142,7 +177,7 @@ export class WordCreateUpdateComponent {
 
         },
         error: (error: HttpErrorResponse) => {
-          this.isError = true;
+          this.isError.set(true);
           const body = error.error;
           this.message =
             body && body.message ? body.message : '❌ Something went wrong while updating.';
@@ -155,17 +190,17 @@ export class WordCreateUpdateComponent {
     this.wordService.addWord(word).subscribe({
       next: (response: HttpResponse<Word>) => {
         if (response.status === 201) {
-          this.isError = false;
-          this.message = '✅ Your word has been successfully added.';
+          this.isError.set(false);
+          this.message.set('✅ Your word has been successfully added.');
           this.form.reset({});
         } else {
-          this.isError = true;
-          this.message = `Unexpected status: ${response.status}`;
+          this.isError.set(true);
+          this.message.set(`Unexpected status: ${response.status}`);
           console.error('Error status:', response.status);
         }
       },
       error: (error: HttpErrorResponse) => {
-        this.isError = true;
+        this.isError.set(true);
         const body = error.error; // could be string (text/plain) or object (application/json)
         this.message =
           body && body.message ? body.message : '❌ Something went wrong.';

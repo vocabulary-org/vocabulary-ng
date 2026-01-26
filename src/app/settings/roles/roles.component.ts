@@ -1,6 +1,7 @@
 // roles.component.ts
 import { Component, OnInit } from '@angular/core';
-import { RolesService } from '../shared/service/roles.service';
+import { RolesService } from '../../shared/service/roles.service';
+
 
 
 @Component({
