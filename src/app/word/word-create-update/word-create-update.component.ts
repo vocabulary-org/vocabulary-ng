@@ -13,11 +13,10 @@ import { Language } from '../../shared/model/language';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
-import { AutoTranslationComponent } from "../auto-translation/auto-translation.component";
+import { AutoTranslationComponent } from '../auto-translation/auto-translation.component';
 import { LanguagesStore } from '../../shared/store/language.store';
 import { UserLanguages } from '../../shared/model/user-languages';
 import { UserLanguagesService } from '../../shared/service/user/user-languages.service';
-
 
 @Component({
   selector: 'app-word-create',
@@ -26,8 +25,6 @@ import { UserLanguagesService } from '../../shared/service/user/user-languages.s
   templateUrl: './word-create-update.component.html',
   styleUrl: './word-create-update.component.css',
 })
-
-
 export class WordCreateUpdateComponent {
   private readonly wordService = inject(WordService);
   private readonly languageStore = inject(LanguagesStore);
@@ -35,19 +32,16 @@ export class WordCreateUpdateComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
-
-
-// State
-languages = signal<Language[]>([]);
-isEdit = signal(false);
-uuid = signal<string | null>(null);
-isTranslating = signal(false);
-isQuotaReached = signal(false);
-message = signal<string | null>(null);
-isError = signal(false);
+  // State
+  languages = signal<Language[]>([]);
+  isEdit = signal(false);
+  uuid = signal<string | null>(null);
+  isTranslating = signal(false);
+  isQuotaReached = signal(false);
+  message = signal<string | null>(null);
+  isError = signal(false);
 
   originalFormValue: any;
-
 
   form = new FormGroup({
     sentence: new FormControl('', {
@@ -67,39 +61,16 @@ isError = signal(false);
     }),
   });
 
-
-
   ngOnInit(): void {
-
     // check if we are in edit mode (URL: /words/edit/:uuid)
     const paramUuid = this.route.snapshot.paramMap.get('uuid');
-    this.loadLanguages();
     if (!paramUuid) {
-      this.loadWordForCreate()
+      this.loadWordForCreate();
       return;
     }
-    this.isEdit.set(true)
+    this.isEdit.set(true);
     this.uuid.set(paramUuid);
     this.loadWordForEdit();
-
-  }
-
-  private loadLanguages(): void {
-    this.languageStore.getAll$().subscribe({
-      next: (langs) => {
-        this.languages.set(langs);
-
-        // optional: set some defaults, e.g. EN -> IT
-        // const en = langs.find(l => l.name === 'English');
-        // const it = langs.find(l => l.name === 'Italian');
-        // if (en && it) {
-        //   this.form.patchValue({ language: en, languageTo: it });
-        // }
-      },
-      error: (err) => {
-        console.error('Error loading languages', err);
-      },
-    });
   }
 
   private loadWordForEdit(): void {
@@ -109,8 +80,10 @@ isError = signal(false);
     }).subscribe({
       next: ({ langs, word }) => {
         this.languages.set(langs);
-        const langFrom = langs.find(l => l.uuid === word.language.uuid) ?? null;
-        const langTo = langs.find(l => l.uuid === word.languageTo.uuid) ?? null;
+        const langFrom =
+          langs.find((l) => l.uuid === word.language.uuid) ?? null;
+        const langTo =
+          langs.find((l) => l.uuid === word.languageTo.uuid) ?? null;
         this.form.patchValue({
           sentence: word.sentence,
           translation: word.translation,
@@ -128,17 +101,17 @@ isError = signal(false);
     });
   }
 
-
   private loadWordForCreate(): void {
     forkJoin({
       langs: this.languageStore.getAll$(),
-      userLang: this.userLanguagesService.get()
-
+      userLang: this.userLanguagesService.get(),
     }).subscribe({
       next: ({ langs, userLang }) => {
-        this.languages.set(langs)
-        const langFrom = langs.find(l => l.uuid === userLang.language?.uuid) ?? null;
-        const langTo = langs.find(l => l.uuid === userLang.languageTo?.uuid) ?? null;
+        this.languages.set(langs);
+        const langFrom =
+          langs.find((l) => l.uuid === userLang.language?.uuid) ?? null;
+        const langTo =
+          langs.find((l) => l.uuid === userLang.languageTo?.uuid) ?? null;
         this.form.patchValue({
           language: langFrom,
           languageTo: langTo,
@@ -153,7 +126,6 @@ isError = signal(false);
     });
   }
 
-
   onSubmit() {
     const word: CreateWordRequest = {
       sentence: this.form.value.sentence!,
@@ -162,7 +134,6 @@ isError = signal(false);
       language: { uuid: this.form.value.language!.uuid },
       languageTo: { uuid: this.form.value.languageTo!.uuid },
     };
-
 
     if (this.isEdit()) {
       // 🔁 UPDATE
@@ -173,14 +144,15 @@ isError = signal(false);
           // optional: navigate back to list
           setTimeout(() => {
             this.router.navigate(['/word/list']); // ✅ redirect to list
-          }, 800)
-
+          }, 800);
         },
         error: (error: HttpErrorResponse) => {
           this.isError.set(true);
           const body = error.error;
           this.message =
-            body && body.message ? body.message : '❌ Something went wrong while updating.';
+            body && body.message
+              ? body.message
+              : '❌ Something went wrong while updating.';
           console.error('Update error status:', error.status, 'body:', body);
         },
       });
@@ -218,14 +190,20 @@ isError = signal(false);
     this.form.markAsUntouched();
   }
 
+  swapLanguages(): void {
+    const from = this.form.value.language;
+    const to = this.form.value.languageTo;
 
+    this.form.patchValue({
+      language: to,
+      languageTo: from,
+    });
+  }
 
   onTranslated(text: string): void {
     this.form.controls.translation.setValue(text);
     this.form.controls.translation.markAsDirty();
   }
-
-
 
   get sentenceIsInvalid() {
     return (
