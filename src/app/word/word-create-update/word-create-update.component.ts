@@ -164,7 +164,9 @@ export class WordCreateUpdateComponent {
         if (response.status === 201) {
           this.isError.set(false);
           this.message.set('✅ Your word has been successfully added.');
-          this.form.reset({});
+          this.form.controls.sentence.reset();
+          this.form.controls.translation.reset();
+          this.form.controls.description.reset();
         } else {
           this.isError.set(true);
           this.message.set(`Unexpected status: ${response.status}`);
