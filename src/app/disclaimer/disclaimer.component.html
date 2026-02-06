@@ -1,3 +1,19 @@
-<div class="alert alert-warning text-center mb-0">
-  🚧 This website is under active development. Functionality may be unstable, and data may be changed or deleted at any time. Please do not store personal or sensitive information.
+<div class="alert alert-warning text-center mb-0 py-2 py-md-3">
+  <!-- Desktop: full text always visible -->
+  <span class="d-none d-md-inline">
+    🚧 This website is under active development. Functionality may be unstable, and data may be changed or deleted at any time. Please do not store personal or sensitive information.
+  </span>
+  
+  <!-- Mobile: clickable to expand -->
+  <div class="d-md-none">
+    <div (click)="showFullAlert.set(!showFullAlert())" class="user-select-none small" role="button">
+      🚧 Under development 
+      <small class="ms-1">{{ showFullAlert() ? '▲' : '▼' }}</small>
+    </div>
+    @if (showFullAlert()) {
+      <div class="mt-2 small">
+        Functionality may be unstable, and data may be changed or deleted at any time. Please do not store personal or sensitive information.
+      </div>
+    }
+  </div>
 </div>

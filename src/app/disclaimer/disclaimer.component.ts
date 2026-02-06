@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 @Component({
   selector: 'app-disclaimer',
@@ -7,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrl: './disclaimer.component.css'
 })
 export class DisclaimerComponent {
+    showFullAlert = signal(false);
 
 }
