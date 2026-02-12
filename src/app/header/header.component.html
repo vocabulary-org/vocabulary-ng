@@ -27,31 +27,26 @@
 
         <!-- SETTINGS DROPDOWN -->
         <li class="nav-item dropdown" *kaHasRoles="['USER']">
-          <a
-            class="nav-link dropdown-toggle"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
+          <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Settings
           </a>
 
           <ul class="dropdown-menu dropdown-menu-end">
             <li>
-              <a
-                class="dropdown-item"
-                routerLink="/settings/languages"
-              >
+              <a class="dropdown-item" routerLink="/settings/languages">
                 Languages
               </a>
             </li>
 
             <li>
-              <a
-                class="dropdown-item"
-                routerLink="/settings/roles"
-              >
+              <a class="dropdown-item" routerLink="/settings/roles">
                 Roles
+              </a>
+            </li>
+
+            <li>
+              <a class="dropdown-item" routerLink="/settings/delete-user">
+                Delete My Account
               </a>
             </li>
           </ul>
@@ -59,17 +54,17 @@
 
         <!-- Authenticated / not authenticated -->
         @if (!authenticated) {
-          <li class="nav-item">
-            <button class="btn nav-link" (click)="login()" style="cursor: pointer;">Login</button>
-          </li>
+        <li class="nav-item">
+          <button class="btn nav-link" (click)="login()" style="cursor: pointer;">Login</button>
+        </li>
 
-          <li class="nav-item">
-            <a routerLink="/register" class="nav-link">Register</a>
-          </li>
+        <li class="nav-item">
+          <a routerLink="/register" class="nav-link">Register</a>
+        </li>
         } @else {
-          <li class="nav-item">
-            <button class="btn nav-link" (click)="logout()" style="cursor: pointer;">Logout</button>
-          </li>
+        <li class="nav-item">
+          <button class="btn nav-link" (click)="logout()" style="cursor: pointer;">Logout</button>
+        </li>
         }
 
       </ul>
