@@ -11,6 +11,7 @@ import { NewUserComponent } from './user/new-user/new-user.component';
 import { RolesComponent } from './settings/roles/roles.component';
 
 import { SettingsUserLanguagesComponent } from './settings/settings-user-languages/settings-user-languages.component';
+import { DeleteUserComponent } from './user/delete-user/delete-user.component';
 
 export const routes: Routes = [
   {
@@ -55,6 +56,12 @@ export const routes: Routes = [
   {
     path: 'settings/roles',
     component: RolesComponent,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'USER' },
+  },
+  {
+    path: 'settings/delete-user',
+    component: DeleteUserComponent,
     canActivate: [canActivateAuthRole],
     data: { role: 'USER' },
   },

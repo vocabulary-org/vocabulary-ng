@@ -1,0 +1,66 @@
+<div class="card border-danger">
+  <div class="card-body">
+
+    <h5 class="card-title text-danger fw-bold">
+      Delete Account
+    </h5>
+
+    <p class="card-text">
+      This action is permanent. All your data will be removed.
+    </p>
+
+    <!-- First step: show delete button -->
+    @if (!confirming()) {
+      <button
+        type="button"
+        class="btn btn-outline-danger"
+        [disabled]="loading()"
+        (click)="requestDelete()">
+        Delete Account
+      </button>
+    }
+
+    <!-- Confirmation block -->
+    @if (confirming()) {
+      <div class="alert alert-warning mt-3">
+
+        <p class="mb-3 fw-semibold">
+          Are you sure you want to permanently delete your account?
+        </p>
+
+        <div class="d-flex gap-2">
+
+          <button
+            type="button"
+            class="btn btn-danger"
+            [disabled]="loading()"
+            (click)="confirmDelete()">
+            @if (!loading()) {
+              Yes, Delete
+            } @else {
+              Deleting...
+            }
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            [disabled]="loading()"
+            (click)="cancel()">
+            Cancel
+          </button>
+
+        </div>
+
+      </div>
+    }
+
+    <!-- Error message -->
+    @if (error()) {
+      <div class="text-danger mt-3">
+        {{ error() }}
+      </div>
+    }
+
+  </div>
+</div>

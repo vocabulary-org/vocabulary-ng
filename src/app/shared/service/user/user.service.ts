@@ -11,6 +11,7 @@ import { environment as env }  from '../../../../environments/environment';
 export class UserService {
 
   private readonly apiUrl = `${env.apiBaseUrl}/public/users`;
+  private readonly apiDeleteUrl = `${env.apiBaseUrl}/me/users`;
 
   constructor(private http: HttpClient) {}
 
@@ -20,5 +21,9 @@ export class UserService {
       user,
       { observe: 'response' } // 👈 tells Angular to return the full response
     );
+  }
+
+  deleteUser(): Observable<void> {
+    return this.http.delete<void>(`${this.apiDeleteUrl}`);
   }
 }
