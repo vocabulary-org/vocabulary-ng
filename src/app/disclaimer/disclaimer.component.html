@@ -1,19 +1,29 @@
-<div class="alert alert-warning text-center mb-0 py-2 py-md-3">
-  <!-- Desktop: full text always visible -->
-  <span class="d-none d-md-inline">
-    🚧 This website is under active development. Functionality may be unstable, and data may be changed or deleted at any time. Please do not store personal or sensitive information.
-  </span>
-  
-  <!-- Mobile: clickable to expand -->
-  <div class="d-md-none">
-    <div (click)="showFullAlert.set(!showFullAlert())" class="user-select-none small" role="button">
-      🚧 Under development 
-      <small class="ms-1">{{ showFullAlert() ? '▲' : '▼' }}</small>
-    </div>
-    @if (showFullAlert()) {
-      <div class="mt-2 small">
-        Functionality may be unstable, and data may be changed or deleted at any time. Please do not store personal or sensitive information.
+<div class="container mt-3">
+  <div class="card border-warning-subtle bg-warning-subtle text-center">
+    <div class="card-body py-2">
+      <!-- Desktop -->
+      <div class="d-none d-md-block small text-body-secondary">
+        <strong>Beta</strong> &mdash; This service is under active development. Features may change and data may be reset without notice.
+        By continuing, you agree to our
+        <a routerLink="/terms">Terms</a> and
+        <a routerLink="/privacy">Privacy Policy</a>.
       </div>
-    }
+
+      <!-- Mobile: collapsible -->
+      <div class="d-md-none">
+        <div (click)="expanded.set(!expanded())" class="user-select-none small text-body-secondary d-flex align-items-center justify-content-center gap-1" role="button">
+          <strong>Beta</strong> &mdash; Under active development
+          <small class="ms-1">{{ expanded() ? '&#9650;' : '&#9660;' }}</small>
+        </div>
+        @if (expanded()) {
+          <div class="mt-2 small text-body-secondary">
+            Features may change and data may be reset without notice.
+            By continuing, you agree to our
+            <a routerLink="/terms">Terms</a> and
+            <a routerLink="/privacy">Privacy Policy</a>.
+          </div>
+        }
+      </div>
+    </div>
   </div>
 </div>
