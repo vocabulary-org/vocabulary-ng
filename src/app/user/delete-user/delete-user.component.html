@@ -1,66 +1,70 @@
-<div class="card border-danger">
-  <div class="card-body">
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
 
-    <h5 class="card-title text-danger fw-bold">
-      Delete Account
-    </h5>
+      <div class="mb-4">
+        <h2 class="fw-bold"><i class="bi bi-trash me-2"></i>Delete Account</h2>
+        <p class="text-body-secondary">Permanently remove your account and all associated data from Vocabulary.</p>
+      </div>
 
-    <p class="card-text">
-      This action is permanent. All your data will be removed.
-    </p>
+      <div class="card shadow-sm border-danger">
+        <div class="card-body p-4">
 
-    <!-- First step: show delete button -->
-    @if (!confirming()) {
-      <button
-        type="button"
-        class="btn btn-outline-danger"
-        [disabled]="loading()"
-        (click)="requestDelete()">
-        Delete Account
-      </button>
-    }
+          <h5 class="text-danger fw-bold mb-3">
+            <i class="bi bi-exclamation-triangle me-2"></i>Danger Zone
+          </h5>
 
-    <!-- Confirmation block -->
-    @if (confirming()) {
-      <div class="alert alert-warning mt-3">
+          <p class="text-body-secondary">
+            This action is <strong>permanent and cannot be undone</strong>. All your vocabulary entries, language preferences, and account data will be permanently deleted.
+          </p>
 
-        <p class="mb-3 fw-semibold">
-          Are you sure you want to permanently delete your account?
-        </p>
+          @if (!confirming()) {
+            <button
+              type="button"
+              class="btn btn-outline-danger"
+              [disabled]="loading()"
+              (click)="requestDelete()">
+              <i class="bi bi-trash me-1"></i>Delete My Account
+            </button>
+          }
 
-        <div class="d-flex gap-2">
+          @if (confirming()) {
+            <div class="alert alert-warning mt-3 mb-0">
+              <p class="mb-3 fw-semibold">
+                <i class="bi bi-question-circle me-1"></i>Are you sure you want to permanently delete your account?
+              </p>
+              <div class="d-flex gap-2">
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  [disabled]="loading()"
+                  (click)="confirmDelete()">
+                  @if (!loading()) {
+                    <i class="bi bi-trash me-1"></i>Yes, Delete
+                  } @else {
+                    <span class="spinner-border spinner-border-sm me-1" role="status"></span>Deleting...
+                  }
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  [disabled]="loading()"
+                  (click)="cancel()">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          }
 
-          <button
-            type="button"
-            class="btn btn-danger"
-            [disabled]="loading()"
-            (click)="confirmDelete()">
-            @if (!loading()) {
-              Yes, Delete
-            } @else {
-              Deleting...
-            }
-          </button>
-
-          <button
-            type="button"
-            class="btn btn-secondary"
-            [disabled]="loading()"
-            (click)="cancel()">
-            Cancel
-          </button>
+          @if (error()) {
+            <div class="alert alert-danger mt-3 mb-0">
+              <i class="bi bi-x-circle me-1"></i>{{ error() }}
+            </div>
+          }
 
         </div>
-
       </div>
-    }
 
-    <!-- Error message -->
-    @if (error()) {
-      <div class="text-danger mt-3">
-        {{ error() }}
-      </div>
-    }
-
+    </div>
   </div>
 </div>

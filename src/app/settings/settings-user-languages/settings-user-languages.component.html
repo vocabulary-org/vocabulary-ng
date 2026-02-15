@@ -1,91 +1,130 @@
-<div class="card shadow-sm">
-  <div class="card-header bg-light">
-    <h5 class="mb-0">User Language Settings</h5>
-  </div>
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
 
-  <div class="card-body">
-    <div class="row g-3">
-      <div class="col-md-6">
-        <label for="language-select" class="form-label fw-bold">From Language</label>
-        <div class="input-group">
-          <select id="language-select" class="form-select"
-           [disabled]="!editing()"
-           (change)="onFromChange($event)">
-            <option value="">-- Select Language --</option>
-            @for (l of languages(); track l.uuid) {
-              <option
-                [value]="l.uuid"
-                [selected]="l.uuid === model().language?.uuid"
-                
-              >
-                {{ l.name }}
-              </option>
-            }
-          </select>
-        </div>
+      <!-- Page header -->
+      <div class="mb-4">
+        <h2 class="fw-bold"><i class="bi bi-translate me-2"></i>Set Your Languages</h2>
+        <p class="text-body-secondary">Choose your preferred languages for vocabulary learning. These will be used as defaults when adding new words.</p>
       </div>
 
-      <div class="col-md-6">
-        <label for="languageTo-select" class="form-label fw-bold"
-          >To Language</label
-        >
-        <select id="languageTo-select" class="form-select" 
-        [disabled]="!editing()"
-        (change)="onToChange($event)">
-          <option value="">-- Select Language --</option>
-          @for (l of languages(); track l.uuid) {
-            <option
-              [value]="l.uuid"
-              [selected]="l.uuid === model().languageTo?.uuid"
-              
-            >
-              {{ l.name }}
-            </option>
+      <!-- Language selection card -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light">
+          <h5 class="mb-0"><i class="bi bi-gear me-2"></i>Default Languages</h5>
+        </div>
+
+        <div class="card-body">
+          <p class="text-body-secondary small mb-3">Choose the languages you want to translate between. Your "From" language is the one you're learning from, and "To" is the language you're translating into.</p>
+
+          <div class="row g-4">
+            <div class="col-md-6">
+              <label for="language-select" class="form-label fw-semibold">
+                <i class="bi bi-box-arrow-right me-1 text-primary"></i>From Language
+              </label>
+              <select id="language-select" class="form-select"
+                [disabled]="!editing()"
+                (change)="onFromChange($event)">
+                <option value="">-- Select Language --</option>
+                @for (l of languages(); track l.uuid) {
+                  <option
+                    [value]="l.uuid"
+                    [selected]="l.uuid === model().language?.uuid">
+                    {{ flags[l.name] }} {{ l.name }}
+                  </option>
+                }
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label for="languageTo-select" class="form-label fw-semibold">
+                <i class="bi bi-box-arrow-in-right me-1 text-success"></i>To Language
+              </label>
+              <select id="languageTo-select" class="form-select"
+                [disabled]="!editing()"
+                (change)="onToChange($event)">
+                <option value="">-- Select Language --</option>
+                @for (l of languages(); track l.uuid) {
+                  <option
+                    [value]="l.uuid"
+                    [selected]="l.uuid === model().languageTo?.uuid">
+                    {{ flags[l.name] }} {{ l.name }}
+                  </option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <!-- Current selection preview -->
+          @if (model().language && model().languageTo && getLanguageName(model().language) && getLanguageName(model().languageTo)) {
+            <div class="alert alert-light border mt-4 mb-0 text-center">
+              <span class="fs-5">
+                {{ flags[getLanguageName(model().language)] }} {{ getLanguageName(model().language) }}
+              </span>
+              <i class="bi bi-arrow-right mx-3 text-body-secondary"></i>
+              <span class="fs-5">
+                {{ flags[getLanguageName(model().languageTo)] }} {{ getLanguageName(model().languageTo) }}
+              </span>
+            </div>
           }
-        </select>
+
+          <!-- Status messages -->
+          <div class="mt-3">
+            @if (saving()) {
+              <div class="text-primary d-flex align-items-center">
+                <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                <span>Saving changes...</span>
+              </div>
+            }
+
+            @if (saved()) {
+              <div class="alert alert-success py-2 mt-2 mb-0" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i>Preferences updated!
+              </div>
+            }
+
+            @if (error()) {
+              <div class="alert alert-danger py-2 mt-2 mb-0" role="alert">
+                {{ error() }}
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="card-footer bg-white d-flex gap-2">
+          @if (!editing()) {
+            <button class="btn btn-outline-primary" (click)="enableEdit()">
+              <i class="bi bi-pencil me-1"></i>Edit
+            </button>
+          } @else {
+            <button class="btn btn-primary" (click)="save()">
+              <i class="bi bi-check-lg me-1"></i>Save
+            </button>
+            <button class="btn btn-outline-secondary" (click)="cancel()" [disabled]="saving()">
+              Cancel
+            </button>
+          }
+        </div>
       </div>
-    </div>
 
-    <div class="mt-3">
-      @if (saving()) {
-        <div class="text-primary d-flex align-items-center">
-          <div
-            class="spinner-border spinner-border-sm me-2"
-            role="status"
-          ></div>
-          <span>Saving changes...</span>
+      <!-- Available languages info -->
+      <div class="card shadow-sm">
+        <div class="card-header bg-light">
+          <h5 class="mb-0"><i class="bi bi-globe me-2"></i>Available Languages</h5>
         </div>
-      }
+        <div class="card-body">
+          <p class="text-body-secondary small mb-3">The following languages are currently supported in Vocabulary.</p>
+          <div class="d-flex flex-wrap gap-2">
+            @for (l of languages(); track l.uuid) {
+              <span class="badge bg-light text-dark border fs-6 px-3 py-2">
+                {{ flags[l.name] }} {{ l.name }}
+              </span>
+            }
+          </div>
+        </div>
+      </div>
 
-      @if (saved()) {
-        <div class="alert alert-success py-2 mt-2" role="alert">
-          <i class="bi bi-check-circle-fill me-2"></i> Preferences updated!
-        </div>
-      }
-
-      @if (error()) {
-        <div class="alert alert-danger py-2 mt-2" role="alert">
-          {{ error() }}
-        </div>
-      }
     </div>
   </div>
-
-  <!-- Buttons -->
-  <div class="col-12 d-flex gap-2 mt-2">
-    @if (!editing()) {
-      <button class="btn btn-outline-primary" (click)="enableEdit()">
-        Edit
-      </button>
-    } @else {
-      <button class="btn btn-primary" (click)="save()">
-        Save
-      </button>
-
-      <button class="btn btn-outline-secondary" (click)="cancel()" [disabled]="saving()">
-        Cancel
-      </button>
-    }
-  </div>
-
 </div>

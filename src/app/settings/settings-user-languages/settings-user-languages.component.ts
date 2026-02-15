@@ -3,6 +3,7 @@ import { UserLanguagesService } from '../../shared/service/user/user-languages.s
 import { UserLanguages } from '../../shared/model/user-languages';
 import { LanguagesStore } from '../../shared/store/language.store';
 import { Language } from '../../shared/model/language';
+import { LANGUAGE_FLAGS } from '../../shared/model/flag';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -10,6 +11,7 @@ import { forkJoin } from 'rxjs';
   templateUrl: './settings-user-languages.component.html',
 })
 export class SettingsUserLanguagesComponent implements OnInit {
+  readonly flags = LANGUAGE_FLAGS;
   model = signal<UserLanguages>({} as UserLanguages);
 
   loading = signal(true);
@@ -66,6 +68,12 @@ export class SettingsUserLanguagesComponent implements OnInit {
       ...m,
       language: { uuid },
     }));
+  }
+
+  getLanguageName(ref: { uuid: string } | null): string {
+    if (!ref) return '';
+    const lang = this.languages().find((l) => l.uuid === ref.uuid);
+    return lang ? lang.name : '';
   }
 
   enableEdit(): void {
