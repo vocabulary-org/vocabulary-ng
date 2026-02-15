@@ -17,12 +17,25 @@
           <a routerLink="/" class="nav-link">Home</a>
         </li>
 
-        <li class="nav-item" *kaHasRoles="['USER']">
-          <a routerLink="/word/list" class="nav-link">My Words</a>
-        </li>
+        <!-- WORDS DROPDOWN -->
+        <li class="nav-item dropdown" *kaHasRoles="['USER']">
+          <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Words
+          </a>
 
-        <li class="nav-item" *kaHasRoles="['USER']">
-          <a routerLink="/word/new-word" class="nav-link">Add Word</a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" routerLink="/word/list">
+                My Words
+              </a>
+            </li>
+
+            <li>
+              <a class="dropdown-item" routerLink="/word/new-word">
+                Add Word
+              </a>
+            </li>
+          </ul>
         </li>
 
         <!-- SETTINGS DROPDOWN -->
