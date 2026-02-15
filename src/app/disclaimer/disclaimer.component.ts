@@ -1,12 +1,12 @@
 import { Component, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-disclaimer',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './disclaimer.component.html',
   styleUrl: './disclaimer.component.css'
 })
 export class DisclaimerComponent {
-    showFullAlert = signal(false);
-
+  expanded = signal(false);
 }
