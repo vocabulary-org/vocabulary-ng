@@ -1,65 +1,91 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()" class="container mt-4">
-  <h2 class="mb-4">Register to Vocabulary</h2>
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
 
-  <!-- Sentence -->
-  <div class="mb-3">
-    <label for="username" class="form-label">Username</label>
-    <input
-      id="sentence"
-      type="text"
-      [formControl]="form.controls.username"
-      class="form-control"
-    />
-    @if (usernamesInvalid) {
-      <div class="text-danger small">Please enter a valid username</div>
-    }
-  </div>
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <h2 class="card-title fw-bold mb-1">Register to Vocabulary</h2>
+          <p class="text-body-secondary mb-4">Create your account to get started</p>
 
-    <div class="mb-3">
-    <label for="firstName" class="form-label">First Name</label>
-    <input
-      id="firstName"
-      type="text"
-      [formControl]="form.controls.firstName"
-      class="form-control"
-    />
-    @if (firstNameIsInvalid) {
-      <div class="text-danger small">Please enter a valid first name</div>
-    }
-  </div>
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-    <div class="mb-3">
-    <label for="lastName" class="form-label">LastName</label>
-    <input
-      id="lastName"
-      type="text"
-      [formControl]="form.controls.lastName"
-      class="form-control"
-    />
-    @if (lastNameIsInvalid) {
-      <div class="text-danger small">Please enter a valid last name</div>
-    }
-  </div>
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input
+                id="username"
+                type="text"
+                [formControl]="form.controls.username"
+                class="form-control"
+                placeholder="Choose a username"
+              />
+              @if (usernamesInvalid) {
+                <div class="text-danger small mt-1">Please enter a valid username</div>
+              }
+            </div>
 
-    <div class="mb-3">
-    <label for="email" class="form-label">E-mail</label>
-    <input
-      id="email"
-      type="text"
-      [formControl]="form.controls.email"
-      class="form-control"
-    />
-    @if (emailIsInvalid) {
-      <div class="text-danger small">Please enter a valid e-mail</div>
-    }
-  </div>
+            <div class="row g-3 mb-3">
+              <div class="col-6">
+                <label for="firstName" class="form-label">First Name</label>
+                <input
+                  id="firstName"
+                  type="text"
+                  [formControl]="form.controls.firstName"
+                  class="form-control"
+                />
+                @if (firstNameIsInvalid) {
+                  <div class="text-danger small mt-1">Please enter a valid first name</div>
+                }
+              </div>
+              <div class="col-6">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input
+                  id="lastName"
+                  type="text"
+                  [formControl]="form.controls.lastName"
+                  class="form-control"
+                />
+                @if (lastNameIsInvalid) {
+                  <div class="text-danger small mt-1">Please enter a valid last name</div>
+                }
+              </div>
+            </div>
 
-  <!-- Submit -->
-  <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Register</button>
-  @if (message) {
-    <div [ngClass]="{ 'error': isError, 'success': !isError }">
-      {{ message }}
+            <div class="mb-4">
+              <label for="email" class="form-label">E-mail</label>
+              <input
+                id="email"
+                type="email"
+                [formControl]="form.controls.email"
+                class="form-control"
+                placeholder="you@example.com"
+              />
+              @if (emailIsInvalid) {
+                <div class="text-danger small mt-1">Please enter a valid e-mail</div>
+              }
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100" [disabled]="form.invalid">Register</button>
+
+            @if (message) {
+              <div class="alert mt-3 mb-0" [ngClass]="isError ? 'alert-danger' : 'alert-success'">
+                {{ message }}
+              </div>
+            }
+
+          </form>
+
+          <hr class="my-4">
+
+          <div class="text-center">
+            <p class="text-body-secondary small mb-2">Or skip registration and sign in directly</p>
+            <button (click)="login()" class="btn btn-outline-secondary w-100">
+              <i class="bi bi-google me-2"></i>Log in with Google
+            </button>
+          </div>
+
+        </div>
+      </div>
+
     </div>
-  }
-
-</form>
+  </div>
+</div>
