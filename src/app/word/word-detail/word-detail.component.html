@@ -1,43 +1,64 @@
-<div class="container my-4">
-  @if (word) {
-  <div class="card shadow-sm border-0">
-    <div class="card-header bg-primary text-white">
-      <h5 class="mb-0">Word Details</h5>
-    </div>
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
 
-    <div class="card-body">
-      <!-- Languages -->
-      <p class="mb-1 text-end">
-        <span>
-          {{ flags[word.language.name] }}
-          {{ flags[word.languageTo.name] }}
-        </span>
-      </p>
+      @if (word) {
+        <div class="card shadow-sm">
+          <div class="card-body p-4">
 
-      <!-- Sentence & Translation -->
-      <h3 class="card-title text-dark">
-        {{ word.sentence }}
-      </h3>
-      <h5 class="card-subtitle mb-3 text-muted">
-        Translation: <span class="fw-semibold">{{ word.translation }}</span>
-      </h5>
+            <!-- Language badges -->
+            <div class="d-flex align-items-center justify-content-between mb-4">
+              <h5 class="mb-0 fw-bold text-body-secondary">Word Details</h5>
+              <div class="d-flex gap-2">
+                <span class="badge bg-primary-subtle text-primary-emphasis fs-6">
+                  {{ flags[word.language.name] }} {{ word.language.name }}
+                </span>
+                <span class="text-body-secondary">&rarr;</span>
+                <span class="badge bg-success-subtle text-success-emphasis fs-6">
+                  {{ flags[word.languageTo.name] }} {{ word.languageTo.name }}
+                </span>
+              </div>
+            </div>
 
-      <!-- Description -->
-       @if (word.description.trim()) {
-              <p class="mt-3">
-        <strong>Description:</strong><br />
-        {{ word.description }}
-      </p>
+            <!-- Sentence & Translation -->
+            <div class="row g-4 mb-4">
+              <div class="col-md-6">
+                <div class="card bg-light border-0 h-100">
+                  <div class="card-body">
+                    <p class="text-body-secondary small mb-1">Sentence</p>
+                    <p class="fs-4 fw-semibold mb-0">{{ word.sentence }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card bg-light border-0 h-100">
+                  <div class="card-body">
+                    <p class="text-body-secondary small mb-1">Translation</p>
+                    <p class="fs-4 fw-semibold mb-0">{{ word.translation }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-       }
+            <!-- Description -->
+            @if (word.description.trim()) {
+              <div class="card bg-light border-0">
+                <div class="card-body">
+                  <p class="text-body-secondary small mb-1">Description</p>
+                  <p class="mb-0">{{ word.description }}</p>
+                </div>
+              </div>
+            }
 
+          </div>
+        </div>
+      } @else {
+        <div class="text-center py-5">
+          <div class="spinner-border text-primary" role="status"></div>
+          <p class="mt-2 text-body-secondary">Loading word details...</p>
+        </div>
+      }
 
     </div>
   </div>
-  } @else {
-  <div class="text-center py-5">
-    <div class="spinner-border text-primary" role="status"></div>
-    <p class="mt-2">Loading word details...</p>
-  </div>
-  }
 </div>
