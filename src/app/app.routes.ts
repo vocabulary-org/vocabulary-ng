@@ -12,6 +12,9 @@ import { RolesComponent } from './settings/roles/roles.component';
 
 import { SettingsUserLanguagesComponent } from './settings/settings-user-languages/settings-user-languages.component';
 import { DeleteUserComponent } from './user/delete-user/delete-user.component';
+import { PrivacyComponent } from './legal/privacy/privacy.component';
+import { TermsComponent } from './legal/terms/terms.component';
+import { CookiesComponent } from './legal/cookies/cookies.component';
 
 export const routes: Routes = [
   {
@@ -69,5 +72,18 @@ export const routes: Routes = [
   {
     path: 'register',
     component: NewUserComponent,
+  },
+
+  {
+    path: 'privacy',
+    component: PrivacyComponent,
+  },
+  {
+    path: 'terms',
+    component: TermsComponent,
+  },
+  {
+    path: 'cookies',
+    component: CookiesComponent,
   },
 ];
