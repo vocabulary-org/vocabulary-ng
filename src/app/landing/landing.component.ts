@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import Keycloak from 'keycloak-js';
 
 @Component({
   selector: 'app-landing',
@@ -8,5 +9,9 @@ import { RouterLink } from '@angular/router';
   styleUrl: './landing.component.css'
 })
 export class LandingComponent {
+  private readonly keycloak = inject(Keycloak);
 
+  login() {
+    this.keycloak.login();
+  }
 }
