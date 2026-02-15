@@ -9,6 +9,7 @@ import {
 import { User } from '../../shared/model/user.model';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import Keycloak from 'keycloak-js';
 
 @Component({
   selector: 'app-new-user',
@@ -20,6 +21,7 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 })
 export class NewUserComponent {
   private readonly userService = inject(UserService);
+  private readonly keycloak = inject(Keycloak);
 
   form = new FormGroup({
     username: new FormControl('', {
@@ -66,6 +68,10 @@ export class NewUserComponent {
       }
     });
   }
+  login() {
+    this.keycloak.login();
+  }
+
   get usernamesInvalid() {
     return (
       this.form.controls.username.touched &&
