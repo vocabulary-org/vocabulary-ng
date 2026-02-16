@@ -71,6 +71,80 @@ ipconfig getifaddr en0
 ng serve --host 0.0.0.0 --port 4200
 ```
 
+## 🌐 Frontend Deployment (Angular + Azure Static Web App + Cloudflare)
+
+The `vocabulary-ng` application is deployed using **Azure Static Web Apps**, with **Cloudflare** managing DNS, SSL termination, and reverse proxy.
+
+### 🔗 Production URL
+
+https://www.myvocabulary.net
+
+---
+
+### 🏗 Architecture
+
+Browser  
+↓  
+Cloudflare (DNS + SSL + WAF + CDN)  
+↓  
+Azure Static Web App  
+↓  
+Angular 19 Application  
+
+---
+
+### ⚙️ Cloudflare DNS Configuration
+
+Create the following DNS record in Cloudflare:
+
+Type: CNAME  
+Name: www  
+Content: polite-ocean-00b80a103.3.azurestaticapps.net  
+Proxy status: Proxied (🟠)  
+TTL: Auto  
+
+During Azure domain validation, you may temporarily switch Proxy to **DNS only (⚪)** if verification fails.
+
+---
+
+### ☁️ Azure Configuration
+
+1. Go to Azure → Static Web App → Custom domains  
+2. Add: www.myvocabulary.net  
+3. Choose CNAME validation  
+4. Wait for the Managed SSL certificate to be provisioned  
+
+Azure automatically issues a free HTTPS certificate for the custom domain.
+
+---
+
+### 🔐 SSL Settings (Cloudflare)
+
+Set SSL/TLS mode to:
+
+Full (strict)
+
+This ensures secure end-to-end HTTPS between Cloudflare and Azure.
+
+---
+
+### 🚀 Build Command
+
+ng build --configuration production
+
+Deployment is handled automatically via Azure Static Web Apps GitHub integration.
+
+---
+
+### 🧠 Notes
+
+- The `www` subdomain points directly to Azure (not to the root domain).
+- SSL provisioning may take a few minutes after domain validation.
+- After successful validation, ensure Cloudflare Proxy is enabled (🟠).
+
+
+---
+
 
 # Default Doc
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.5.
