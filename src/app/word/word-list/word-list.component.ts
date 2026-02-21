@@ -28,7 +28,7 @@ export class WordListComponent implements OnInit, OnDestroy {
   public searchControl = new FormControl('', { nonNullable: true });
   public searchActive = false;
 
-  public sortDir: 'asc' | 'desc' = 'asc';
+  public sortDir?: 'asc' | 'desc';
   public filterMyLanguages = false;
   public noLanguageSettings = false;
 
@@ -100,6 +100,7 @@ export class WordListComponent implements OnInit, OnDestroy {
     this.sortDir = this.sortDir === 'asc' ? 'desc' : 'asc';
     this.reload(0);
   }
+
 
   public onLanguageFilterChange(): void {
     this.noLanguageSettings = false;

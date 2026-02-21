@@ -73,10 +73,13 @@
         <div class="list-group-item bg-light fw-semibold border-bottom">
           <div class="row">
             <div class="col-sm-3">
-              <span role="button" style="cursor: pointer; user-select: none;" (click)="toggleSort()"
-                [title]="sortDir === 'asc' ? 'Sorted A→Z, click for Z→A' : 'Sorted Z→A, click for A→Z'">
+              <span role="button" style="cursor: pointer; user-select: none;" (click)="toggleSort()">
                 Sentence
-                <i class="bi ms-1" [class.bi-sort-alpha-down]="sortDir === 'asc'" [class.bi-sort-alpha-up]="sortDir === 'desc'"></i>
+                <i class="bi ms-1"
+                  [class.bi-sort-alpha-down]="sortDir === 'asc'"
+                  [class.bi-sort-alpha-up]="sortDir === 'desc'"
+                  [class.bi-filter]="!sortDir"
+                  [class.text-body-secondary]="!sortDir"></i>
               </span>
             </div>
             <div class="col-sm-3">Translation</div>

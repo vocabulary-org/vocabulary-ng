@@ -24,7 +24,7 @@ export class WordService {
     page: number = 0,
     size: number = 10,
     searchTerm?: string,
-    sortDir: 'asc' | 'desc' = 'asc',
+    sortDir?: 'asc' | 'desc',
     languageUuid?: string,
     languageToUuid?: string
   ): Observable<Page<Word>> {
@@ -32,7 +32,9 @@ export class WordService {
       .set('page', page.toString())
       .set('size', size.toString());
 
-    params = params.set('sort', `sentence,${sortDir}`);
+    if (sortDir) {
+      params = params.set('sort', `sentence,${sortDir}`);
+    }
 
     if (searchTerm && searchTerm.trim()) {
       params = params
