@@ -1,22 +1,43 @@
 <footer class="bg-light border-top mt-auto py-3">
   <div class="container">
     <div class="row align-items-center">
-      <div class="col-md-4 text-center text-md-start mb-2 mb-md-0">
+      <!-- Copyright: desktop only -->
+      <div class="col-md-4 text-center text-md-start mb-2 mb-md-0 d-none d-md-block">
         <small class="text-body-secondary">&copy; {{ currentYear }} Vocabulary</small>
       </div>
-      <div class="col-md-8">
+
+      <!-- Nav links: desktop only -->
+      <div class="col-md-8 d-none d-md-block">
         <ul class="nav justify-content-center justify-content-md-end mb-0">
           <li class="nav-item"><a class="nav-link text-body-secondary px-2" routerLink="/privacy">Privacy Policy</a></li>
           <li class="nav-item"><a class="nav-link text-body-secondary px-2" routerLink="/terms">Terms of Service</a></li>
           <li class="nav-item"><a class="nav-link text-body-secondary px-2" routerLink="/cookies">Cookie Policy</a></li>
           <li class="nav-item dropup">
             <a class="nav-link text-body-secondary px-2 dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Contact</a>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu dropdown-menu-end">
               <li><a class="dropdown-item" href="mailto:vocabularyapporg@gmail.com?subject=Vocabulary%20-%20Feature%20Request" target="_blank" rel="noopener">Request a Feature</a></li>
               <li><a class="dropdown-item" href="mailto:vocabularyapporg@gmail.com?subject=Vocabulary%20-%20Bug%20Report" target="_blank" rel="noopener">Report a Problem</a></li>
             </ul>
           </li>
         </ul>
+      </div>
+
+      <!-- Mobile: Policies links left, Contact dropdown right -->
+      <div class="col-12 d-md-none d-flex align-items-center justify-content-between">
+        <div class="d-flex flex-column">
+          <a class="text-body-secondary text-decoration-none" style="font-size: 0.72rem;" routerLink="/privacy">Privacy Policy</a>
+          <a class="text-body-secondary text-decoration-none" style="font-size: 0.72rem;" routerLink="/terms">Terms of Service</a>
+          <a class="text-body-secondary text-decoration-none" style="font-size: 0.72rem;" routerLink="/cookies">Cookie Policy</a>
+        </div>
+        <div class="dropdown">
+          <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Contact
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="mailto:vocabularyapporg@gmail.com?subject=Vocabulary%20-%20Feature%20Request" target="_blank" rel="noopener">Request a Feature</a></li>
+            <li><a class="dropdown-item" href="mailto:vocabularyapporg@gmail.com?subject=Vocabulary%20-%20Bug%20Report" target="_blank" rel="noopener">Report a Problem</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
