@@ -82,8 +82,8 @@
                   [class.text-body-secondary]="!sortDir"></i>
               </span>
             </div>
-            <div class="col-sm-3">Translation</div>
-            <div class="col-sm-2">Description</div>
+            <div class="col-sm-3 d-none d-sm-block">Translation</div>
+            <div class="col-sm-2 d-none d-sm-block">Description</div>
             <div class="col-sm-4"></div>
           </div>
         </div>
@@ -93,24 +93,24 @@
             <li class="list-group-item">
               <div class="row">
                 <!-- Sentence -->
-                <div class="col-sm-3">
+                <div class="col-sm-3 fw-semibold">
                   {{ word.sentence }}
                 </div>
 
                 <!-- Translation -->
-                <div class="col-sm-3">
+                <div class="col-sm-3 fst-italic text-body-secondary">
                   {{ word.translation }}
                 </div>
 
                 <!-- Description (optional) -->
-                <div class="col-sm-2">
+                <div class="col-sm-2 d-none d-sm-block">
                   @if (word.description) {
                     {{ word.description }}
                   }
                 </div>
 
-                <!-- Language badge -->
-                <div class="col-sm-1">
+                <!-- Language badge: desktop only -->
+                <div class="col-sm-1 d-none d-sm-block">
                   <span>
                     {{ flags[word.language.name] }}
                     {{ flags[word.languageTo.name] }}
@@ -119,22 +119,25 @@
 
                 <!-- Actions -->
                 <div class="col-sm-3 align-self-start">
-                  <div class="d-flex justify-content-end gap-2 align-items-start">
-                    <a
-                      [routerLink]="['/word', word.uuid]"
-                      class="btn btn-primary btn-sm px-2"
-                      >View</a
-                    >
-                    <a
-                      [routerLink]="['/word/edit', word.uuid]"
-                      class="btn btn-warning btn-sm px-2"
-                      >Update</a
-                    >
-                    <button
-                      class="btn btn-danger btn-sm px-2"
-                      (click)="onDelete(word)"
-                    >
-                      Delete
+                  <div class="d-flex align-items-center gap-2">
+                    <!-- Flags: mobile only, aligned left -->
+                    <span class="d-sm-none">
+                      {{ flags[word.language.name] }}
+                      {{ flags[word.languageTo.name] }}
+                    </span>
+                    <!-- Spacer pushes buttons to the right on both mobile and desktop -->
+                    <span class="flex-grow-1"></span>
+                    <a [routerLink]="['/word', word.uuid]" class="btn btn-primary btn-sm px-2">
+                      <i class="bi bi-eye d-sm-none"></i>
+                      <span class="d-none d-sm-inline">View</span>
+                    </a>
+                    <a [routerLink]="['/word/edit', word.uuid]" class="btn btn-warning btn-sm px-2">
+                      <i class="bi bi-pencil d-sm-none"></i>
+                      <span class="d-none d-sm-inline">Update</span>
+                    </a>
+                    <button class="btn btn-danger btn-sm px-2" (click)="onDelete(word)">
+                      <i class="bi bi-trash d-sm-none"></i>
+                      <span class="d-none d-sm-inline">Delete</span>
                     </button>
                   </div>
                 </div>
