@@ -93,7 +93,7 @@
             <li class="list-group-item">
               <div class="row">
                 <!-- Sentence -->
-                <div class="col-sm-3 fw-semibold">
+                <div class="col-sm-3">
                   {{ word.sentence }}
                 </div>
 
@@ -103,14 +103,14 @@
                 </div>
 
                 <!-- Description (optional) -->
-                <div class="col-sm-2 d-none d-sm-block">
+                <div class="col-sm-2 d-none d-sm-block small text-body-secondary">
                   @if (word.description) {
                     {{ word.description }}
                   }
                 </div>
 
                 <!-- Language badge: desktop only -->
-                <div class="col-sm-1 d-none d-sm-block">
+                <div class="col-sm-1 d-none d-sm-block text-end">
                   <span>
                     {{ flags[word.language.name] }}
                     {{ flags[word.languageTo.name] }}
@@ -127,17 +127,14 @@
                     </span>
                     <!-- Spacer pushes buttons to the right on both mobile and desktop -->
                     <span class="flex-grow-1"></span>
-                    <a [routerLink]="['/word', word.uuid]" class="btn btn-primary btn-sm px-2">
-                      <i class="bi bi-eye d-sm-none"></i>
-                      <span class="d-none d-sm-inline">View</span>
+                    <a [routerLink]="['/word', word.uuid]" class="btn btn-primary btn-sm px-2" title="View">
+                      <i class="bi bi-eye"></i>
                     </a>
-                    <a [routerLink]="['/word/edit', word.uuid]" class="btn btn-warning btn-sm px-2">
-                      <i class="bi bi-pencil d-sm-none"></i>
-                      <span class="d-none d-sm-inline">Update</span>
+                    <a [routerLink]="['/word/edit', word.uuid]" class="btn btn-warning btn-sm px-2" title="Update">
+                      <i class="bi bi-pencil"></i>
                     </a>
-                    <button class="btn btn-danger btn-sm px-2" (click)="onDelete(word)">
-                      <i class="bi bi-trash d-sm-none"></i>
-                      <span class="d-none d-sm-inline">Delete</span>
+                    <button class="btn btn-danger btn-sm px-2" (click)="onDelete(word)" title="Delete">
+                      <i class="bi bi-trash"></i>
                     </button>
                   </div>
                 </div>

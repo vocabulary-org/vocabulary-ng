@@ -1,5 +1,5 @@
 <!-- Hero -->
-<section class="py-5 bg-primary bg-gradient text-white">
+<section class="py-3 py-lg-5 bg-primary bg-gradient text-white">
   <div class="container">
     <div class="row align-items-center g-5">
       <div class="col-lg-6 text-center text-lg-start">
@@ -18,7 +18,7 @@
           <p class="small opacity-50"><a (click)="forgotPassword()" role="button" class="text-white" style="cursor: pointer; text-decoration: underline;">Forgot password?</a></p>
         }
       </div>
-      <div class="col-lg-6 text-center position-relative" style="height: 350px;">
+      <div class="col-lg-6 text-center position-relative d-none d-lg-block" style="height: 350px;">
         @for (image of images; track image) {
           <img [src]="image"
                class="img-fluid rounded shadow position-absolute top-50 start-50 translate-middle"
@@ -33,41 +33,53 @@
 </section>
 
 <!-- Features -->
-<section class="py-5">
+<section class="py-3 py-md-5">
   <div class="container">
     <h2 class="text-center fw-bold mb-2">How it works</h2>
-    <p class="text-center text-body-secondary mb-5">Three simple steps to build your vocabulary</p>
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-0 bg-light text-center">
-          <div class="card-body py-4">
-            <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 64px; height: 64px;">
-              <i class="bi bi-book-half fs-2 text-primary"></i>
+    <p class="text-center text-body-secondary mb-3 mb-md-5">Three simple steps to build your vocabulary</p>
+    <div class="row g-2 g-md-4">
+      <div class="col-4">
+        <div class="card shadow-sm border-0 bg-light text-center">
+          <div class="card-body py-2 py-md-4 px-2 px-md-3 feature-toggle"
+               data-bs-toggle="collapse" data-bs-target="#organizeDesc" aria-expanded="false">
+            <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-1 mb-md-3" style="width: clamp(40px, 8vw, 64px); height: clamp(40px, 8vw, 64px);">
+              <i class="bi bi-book-half text-primary" style="font-size: clamp(1rem, 3vw, 1.5rem);"></i>
             </div>
-            <h5 class="fw-semibold">Organize</h5>
-            <p class="text-body-secondary mb-0">Keep words tidy like a notebook — only smarter, searchable, and always with you.</p>
+            <h6 class="fw-semibold mb-0">Organize</h6>
+            <i class="bi bi-chevron-down chevron d-md-none small text-body-secondary"></i>
+          </div>
+          <div class="collapse d-md-block px-2 pb-2" id="organizeDesc">
+            <p class="text-body-secondary mb-0 small">Keep words tidy like a notebook — only smarter, searchable, and always with you.</p>
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-0 text-center" style="background: rgba(25, 135, 84, 0.06);">
-          <div class="card-body py-4">
-            <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 64px; height: 64px;">
-              <i class="bi bi-lightning-charge fs-2 text-success"></i>
+      <div class="col-4">
+        <div class="card shadow-sm border-0 text-center" style="background: rgba(25, 135, 84, 0.06);">
+          <div class="card-body py-2 py-md-4 px-2 px-md-3 feature-toggle"
+               data-bs-toggle="collapse" data-bs-target="#learnDesc" aria-expanded="false">
+            <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-1 mb-md-3" style="width: clamp(40px, 8vw, 64px); height: clamp(40px, 8vw, 64px);">
+              <i class="bi bi-lightning-charge text-success" style="font-size: clamp(1rem, 3vw, 1.5rem);"></i>
             </div>
-            <h5 class="fw-semibold">Learn</h5>
-            <p class="text-body-secondary mb-0">Use flashcards and spaced repetition to lock new words into long-term memory.</p>
+            <h6 class="fw-semibold mb-0">Learn</h6>
+            <i class="bi bi-chevron-down chevron d-md-none small text-body-secondary"></i>
+          </div>
+          <div class="collapse d-md-block px-2 pb-2" id="learnDesc">
+            <p class="text-body-secondary mb-0 small">Use flashcards and spaced repetition to lock new words into long-term memory.</p>
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-0 text-center" style="background: rgba(220, 53, 69, 0.06);">
-          <div class="card-body py-4">
-            <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 64px; height: 64px;">
-              <i class="bi bi-globe fs-2 text-danger"></i>
+      <div class="col-4">
+        <div class="card shadow-sm border-0 text-center" style="background: rgba(220, 53, 69, 0.06);">
+          <div class="card-body py-2 py-md-4 px-2 px-md-3 feature-toggle"
+               data-bs-toggle="collapse" data-bs-target="#growDesc" aria-expanded="false">
+            <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-1 mb-md-3" style="width: clamp(40px, 8vw, 64px); height: clamp(40px, 8vw, 64px);">
+              <i class="bi bi-globe text-danger" style="font-size: clamp(1rem, 3vw, 1.5rem);"></i>
             </div>
-            <h5 class="fw-semibold">Grow</h5>
-            <p class="text-body-secondary mb-0">Track progress across multiple languages and celebrate your milestones.</p>
+            <h6 class="fw-semibold mb-0">Grow</h6>
+            <i class="bi bi-chevron-down chevron d-md-none small text-body-secondary"></i>
+          </div>
+          <div class="collapse d-md-block px-2 pb-2" id="growDesc">
+            <p class="text-body-secondary mb-0 small">Track progress across multiple languages and celebrate your milestones.</p>
           </div>
         </div>
       </div>

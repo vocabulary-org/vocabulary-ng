@@ -3,7 +3,7 @@
 
   <div class="row align-items-end g-2">
     <!-- Language FROM -->
-    <div class="col-md-5">
+    <div class="col">
       <label for="languageFrom" class="form-label fw-bold">Language from</label>
       <select id="languageFrom" class="form-select" formControlName="language">
         @for (l of languages(); track l.uuid) {
@@ -13,10 +13,10 @@
     </div>
 
     <!-- Swap button -->
-    <div class="col-md-2 text-center">
+    <div class="col-auto text-center">
       <button
         type="button"
-        class="btn btn-outline-secondary mt-4 px-3"
+        class="btn btn-outline-secondary btn-sm mt-4 px-2"
         (click)="swapLanguages()"
         [disabled]="!form.value.language || !form.value.languageTo"
         title="Swap languages"
@@ -26,7 +26,7 @@
     </div>
 
     <!-- Language TO -->
-    <div class="col-md-5">
+    <div class="col">
       <label for="languageTo" class="form-label fw-bold">Language to</label>
       <select id="languageTo" class="form-select" formControlName="languageTo">
         @for (l of languages(); track l.uuid) {

@@ -1,0 +1,14 @@
+@media (max-width: 767.98px) {
+  .feature-toggle {
+    cursor: pointer;
+  }
+
+  .feature-toggle .chevron {
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .feature-toggle[aria-expanded="true"] .chevron {
+    transform: rotate(180deg);
+  }
+}
