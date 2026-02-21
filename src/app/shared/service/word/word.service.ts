@@ -20,36 +20,42 @@ export class WordService {
    * @param searchTerm - Optional search query (searches in sentence field)
    * @returns Observable with paginated results
    */
-  listWords(page: number = 0, size: number = 10, searchTerm?: string): Observable<Page<Word>> {
+  listWords(
+    page: number = 0,
+    size: number = 10,
+    searchTerm?: string,
+    sortDir: 'asc' | 'desc' = 'asc',
+    languageUuid?: string,
+    languageToUuid?: string
+  ): Observable<Page<Word>> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
 
-    // Add search filter if provided
-    // Searches in sentence field using containsIgnoreCase
+    params = params.set('sort', `sentence,${sortDir}`);
+
     if (searchTerm && searchTerm.trim()) {
-      const term = searchTerm.trim();
-      
-      // Search in sentence field
       params = params
-        .set('filter.k.field', 'sentence')
-        .set('filter.k.operator', 'containsIgnoreCase')
-        .set('filter.k.value', term);
+        .set('filter.k1.field', 'sentence')
+        .set('filter.k1.operator', 'containsIgnoreCase')
+        .set('filter.k1.value', searchTerm.trim());
+    }
+
+    if (languageUuid) {
+      params = params
+        .set('filter.k2.field', 'language')
+        .set('filter.k2.operator', 'eq')
+        .set('filter.k2.value', languageUuid);
+    }
+
+    if (languageToUuid) {
+      params = params
+        .set('filter.k3.field', 'languageTo')
+        .set('filter.k3.operator', 'eq')
+        .set('filter.k3.value', languageToUuid);
     }
 
     return this.http.get<Page<Word>>(this.apiUrl, { params });
-  }
-
-  /**
-   * Search for words by sentence, translation, or description
-   * This is a convenience method that calls listWords with search filter
-   * @param searchTerm - The search query
-   * @param page - Page number (0-based)
-   * @param size - Number of items per page
-   * @returns Observable with paginated search results
-   */
-  search(searchTerm: string, page: number = 0, size: number = 10): Observable<Page<Word>> {
-    return this.listWords(page, size, searchTerm);
   }
 
   addWord(word: CreateWordRequest): Observable<HttpResponse<Word>> {

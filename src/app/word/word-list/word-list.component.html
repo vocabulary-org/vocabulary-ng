@@ -4,33 +4,26 @@
     <div class="search-section mb-4">
       <div class="card shadow-sm">
         <div class="card-body">
-          <div class="search-input-wrapper">
-            <div class="input-group">
-              <span class="input-group-text">
-                <i class="bi bi-search"></i>
-              </span>
-              <input
-                type="text"
-                [formControl]="searchControl"
-                class="form-control"
-                placeholder="Search by sentence"
-                aria-label="Search words"
-              />
-              @if (searchControl.value) {
-                <button
-                  class="btn btn-outline-secondary"
-                  type="button"
-                  (click)="clearSearch()"
-                  aria-label="Clear search"
-                >
-                  ✕
-                </button>
-              }
-            </div>
-            @if (searchActive) {
-              <small class="text-muted mt-1 d-block">
-                Searching for: "{{ searchControl.value }}"
-              </small>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="bi bi-search"></i>
+            </span>
+            <input
+              type="text"
+              [formControl]="searchControl"
+              class="form-control"
+              placeholder="Search by sentence"
+              aria-label="Search words"
+            />
+            @if (searchControl.value) {
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                (click)="clearSearch()"
+                aria-label="Clear search"
+              >
+                ✕
+              </button>
             }
           </div>
         </div>
@@ -38,14 +31,12 @@
     </div>
 
     <!-- Loading Indicator -->
-    @if (loading || isSearching) {
+    @if (loading) {
       <div class="text-center my-4">
         <div class="spinner-border text-primary" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
-        <p class="mt-2">
-          {{ isSearching ? "Searching..." : "Loading words..." }}
-        </p>
+        <p class="mt-2">Loading...</p>
       </div>
     }
 
@@ -62,7 +53,7 @@
     }
 
     <!-- No Results -->
-    @if (!loading && !isSearching && words.length === 0) {
+    @if (!loading && words.length === 0) {
       <div class="alert alert-warning">
         @if (searchActive) {
           No words found matching "{{ searchControl.value }}".
@@ -76,12 +67,18 @@
     }
 
     <!-- Words List -->
-    @if (!loading && !isSearching && words.length > 0) {
+    @if (!loading && words.length > 0) {
       <div class="card shadow-sm">
         <!-- HEADER ROW -->
         <div class="list-group-item bg-light fw-semibold border-bottom">
           <div class="row">
-            <div class="col-sm-3">Sentence</div>
+            <div class="col-sm-3">
+              <span role="button" style="cursor: pointer; user-select: none;" (click)="toggleSort()"
+                [title]="sortDir === 'asc' ? 'Sorted A→Z, click for Z→A' : 'Sorted Z→A, click for A→Z'">
+                Sentence
+                <i class="bi ms-1" [class.bi-sort-alpha-down]="sortDir === 'asc'" [class.bi-sort-alpha-up]="sortDir === 'desc'"></i>
+              </span>
+            </div>
             <div class="col-sm-3">Translation</div>
             <div class="col-sm-2">Description</div>
             <div class="col-sm-4"></div>
@@ -109,17 +106,17 @@
                   }
                 </div>
 
-                <!-- Language badge + details -->
+                <!-- Language badge -->
                 <div class="col-sm-1">
                   <span>
                     {{ flags[word.language.name] }}
                     {{ flags[word.languageTo.name] }}
                   </span>
                 </div>
+
+                <!-- Actions -->
                 <div class="col-sm-3 align-self-start">
-                  <div
-                    class="d-flex justify-content-end gap-2 align-items-start"
-                  >
+                  <div class="d-flex justify-content-end gap-2 align-items-start">
                     <a
                       [routerLink]="['/word', word.uuid]"
                       class="btn btn-primary btn-sm px-2"
@@ -145,8 +142,46 @@
       </div>
     }
 
+    <!-- Language Filter -->
+    <div class="d-flex align-items-center gap-3 mt-3 flex-wrap">
+      <div class="form-check form-switch mb-0">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          role="switch"
+          id="filterMyLanguages"
+          [(ngModel)]="filterMyLanguages"
+          (change)="onLanguageFilterChange()"
+        />
+        <label class="form-check-label small" for="filterMyLanguages">My languages only</label>
+      </div>
+      @if (languageFromName || languageToName) {
+        <div class="d-flex align-items-center gap-2">
+          <span class="small">
+            {{ flags[languageFromName!] }} {{ languageFromName }}
+            <i class="bi bi-arrow-right mx-1"></i>
+            {{ flags[languageToName!] }} {{ languageToName }}
+          </span>
+          <button
+            class="btn btn-sm btn-outline-secondary"
+            type="button"
+            (click)="swapLanguages()"
+            title="Swap languages"
+          >
+            <i class="bi bi-arrow-left-right"></i>
+          </button>
+        </div>
+      }
+      @if (noLanguageSettings) {
+        <small class="text-warning">
+          <i class="bi bi-exclamation-triangle"></i>
+          No language preferences set. <a routerLink="/settings/languages" class="text-warning">Configure them here.</a>
+        </small>
+      }
+    </div>
+
     <!-- Pagination Controls -->
-    @if (page && !loading && !isSearching) {
+    @if (page && !loading) {
       <nav class="mt-3">
         <ul class="pagination justify-content-center">
           <li class="page-item" [class.disabled]="page.page.number === 0">
