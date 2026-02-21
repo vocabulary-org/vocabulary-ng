@@ -57,4 +57,10 @@ export class LandingComponent implements OnInit, OnDestroy {
   login() {
     this.keycloak.login();
   }
+
+  forgotPassword() {
+    const redirectUri = encodeURIComponent(window.location.origin + '/');
+    const url = `${this.keycloak.authServerUrl}/realms/${this.keycloak.realm}/login-actions/reset-credentials?client_id=${this.keycloak.clientId}&redirect_uri=${redirectUri}`;
+    window.location.href = url;
+  }
 }
