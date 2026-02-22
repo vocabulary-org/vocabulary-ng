@@ -6,6 +6,7 @@ import { WordListComponent } from './word/word-list/word-list.component';
 import { WordCreateUpdateComponent } from './word/word-create-update/word-create-update.component';
 import { LandingComponent } from './landing/landing.component';
 import { WordDetailComponent } from './word/word-detail/word-detail.component';
+import { FlashcardComponent } from './flashcard/flashcard.component';
 
 import { NewUserComponent } from './user/new-user/new-user.component';
 import { RolesComponent } from './settings/roles/roles.component';
@@ -46,6 +47,13 @@ export const routes: Routes = [
   {
     path: 'word/edit/:uuid',
     component: WordCreateUpdateComponent,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'USER' },
+  },
+
+  {
+    path: 'flashcard',
+    component: FlashcardComponent,
     canActivate: [canActivateAuthRole],
     data: { role: 'USER' },
   },
