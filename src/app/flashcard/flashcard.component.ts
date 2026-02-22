@@ -28,6 +28,8 @@ export class FlashcardComponent implements OnInit {
   currentIndex = 0;
   reviewed: ReviewEntry[] = [];
   error?: string;
+  isFlipped = false;
+  skipTransition = false;
 
   private languageUuid?: string;
   private languageToUuid?: string;
@@ -68,7 +70,8 @@ export class FlashcardComponent implements OnInit {
 
   private loadWords(): void {
     this.state = 'loading';
-    this.flashcardService.getWordsForReview(this.languageUuid!, this.languageToUuid!, 5).subscribe({
+    this.isFlipped = false;
+    this.flashcardService.getWordsForReview(this.languageUuid!, this.languageToUuid!, 10).subscribe({
       next: (words) => {
         if (words.length === 0) {
           this.state = 'no-words';
@@ -87,6 +90,7 @@ export class FlashcardComponent implements OnInit {
   }
 
   reveal(): void {
+    this.isFlipped = true;
     this.state = 'translation';
   }
 
@@ -94,11 +98,26 @@ export class FlashcardComponent implements OnInit {
     this.flashcardService.review(this.currentWord.uuid, result).subscribe({
       next: () => {
         this.reviewed.push({ word: this.currentWord, result });
-        if (this.currentIndex + 1 >= this.words.length) {
-          this.state = 'complete';
+
+        const advance = () => {
+          if (this.currentIndex + 1 >= this.words.length) {
+            this.state = 'complete';
+          } else {
+            this.currentIndex++;
+            this.state = 'sentence';
+          }
+        };
+
+        if (this.isFlipped) {
+          // Reset flip instantly (no reverse animation), then advance
+          this.skipTransition = true;
+          this.isFlipped = false;
+          setTimeout(() => {
+            this.skipTransition = false;
+            advance();
+          }, 50);
         } else {
-          this.currentIndex++;
-          this.state = 'sentence';
+          advance();
         }
       },
       error: () => {
