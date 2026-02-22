@@ -9,6 +9,7 @@
         <div class="d-flex gap-2 justify-content-center justify-content-lg-start">
           @if (authenticated) {
             <a routerLink="/word/list" class="btn btn-light btn-sm px-2 px-lg-4 fw-semibold" style="font-size: clamp(0.75rem, 2.5vw, 1rem);">My Words</a>
+            <a routerLink="/flashcard" class="btn btn-outline-light btn-sm px-2 px-lg-4 fw-semibold" style="font-size: clamp(0.75rem, 2.5vw, 1rem);">Flashcards</a>
           } @else {
             <a routerLink="/register" class="btn btn-light btn-sm px-2 px-lg-4 fw-semibold" style="font-size: clamp(0.75rem, 2.5vw, 1rem);">Get Started</a>
           }
@@ -64,7 +65,10 @@
             <i class="bi bi-chevron-down chevron d-md-none small text-body-secondary"></i>
           </div>
           <div class="collapse d-md-block px-2 pb-2" id="learnDesc">
-            <p class="text-body-secondary mb-0 small">Use flashcards and spaced repetition to lock new words into long-term memory.</p>
+            <p class="text-body-secondary mb-1 small">Use flashcards and spaced repetition to lock new words into long-term memory.</p>
+            @if (authenticated) {
+              <a routerLink="/flashcard" class="small fw-semibold text-success">Practice now →</a>
+            }
           </div>
         </div>
       </div>
