@@ -70,7 +70,7 @@
     @if (!loading && words.length > 0) {
       <div class="card shadow-sm">
         <!-- HEADER ROW -->
-        <div class="list-group-item bg-light fw-semibold border-bottom">
+        <div class="list-group-item bg-light fw-semibold border-bottom ps-4">
           <div class="row">
             <div class="col-sm-3">
               <span role="button" style="cursor: pointer; user-select: none;" (click)="toggleSort()">
@@ -90,7 +90,7 @@
 
         <ul class="list-group list-group-flush">
           @for (word of words; track word.uuid) {
-            <li class="list-group-item">
+            <li class="list-group-item py-3">
               <div class="row">
                 <!-- Sentence -->
                 <div class="col-sm-3">
@@ -181,6 +181,10 @@
           No language preferences set. <a routerLink="/settings/languages" class="text-warning">Configure them here.</a>
         </small>
       }
+      <span class="flex-grow-1"></span>
+      <a routerLink="/word/new-word" class="btn btn-primary btn-sm">
+        <i class="bi bi-plus-lg me-1"></i>Add Word
+      </a>
     </div>
 
     <!-- Pagination Controls -->
