@@ -10,7 +10,7 @@ export class FlashcardService {
 
   constructor(private http: HttpClient) {}
 
-  getWordsForReview(languageUuid: string, languageToUuid: string, limit: number = 5): Observable<WordView[]> {
+  getWordsForReview(languageUuid: string, languageToUuid: string, limit: number = 10): Observable<WordView[]> {
     const params = new HttpParams()
       .set('language', languageUuid)
       .set('languageTo', languageToUuid)
