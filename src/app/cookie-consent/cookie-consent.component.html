@@ -1,0 +1,14 @@
+@if (visible()) {
+  <div class="fixed-bottom bg-body border-top shadow-sm py-3">
+    <div class="container d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+      <p class="mb-0 small text-body-secondary">
+        We use cookies to analyse traffic and improve your experience.
+        See our <a routerLink="/cookies">Cookie Policy</a> and <a routerLink="/privacy">Privacy Policy</a>.
+      </p>
+      <div class="d-flex gap-2 flex-shrink-0">
+        <button class="btn btn-sm btn-outline-secondary" (click)="reject()">Reject</button>
+        <button class="btn btn-sm btn-primary" (click)="accept()">Accept</button>
+      </div>
+    </div>
+  </div>
+}

@@ -3,13 +3,40 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
+import { LocalStorageService } from './local-storage.service';
+
+const CONSENT_KEY = 'analytics_consent';
 
 @Injectable({ providedIn: 'root' })
 export class GoogleAnalyticsService {
   private readonly router = inject(Router);
+  private readonly localStorage = inject(LocalStorageService);
 
-  initialize(): void {
-    const id = (environment as any).googleAnalyticsId;
+  private get id(): string | undefined {
+    return (environment as any).googleAnalyticsId;
+  }
+
+  getConsent(): 'accepted' | 'rejected' | null {
+    return this.localStorage.getItem(CONSENT_KEY);
+  }
+
+  accept(): void {
+    this.localStorage.setItem(CONSENT_KEY, 'accepted');
+    this.load();
+  }
+
+  reject(): void {
+    this.localStorage.setItem(CONSENT_KEY, 'rejected');
+  }
+
+  initializeIfConsented(): void {
+    if (this.getConsent() === 'accepted') {
+      this.load();
+    }
+  }
+
+  private load(): void {
+    const id = this.id;
     if (!id) return;
 
     const script = document.createElement('script');
