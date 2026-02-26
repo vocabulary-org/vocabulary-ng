@@ -16,6 +16,7 @@ import { DeleteUserComponent } from './user/delete-user/delete-user.component';
 import { PrivacyComponent } from './legal/privacy/privacy.component';
 import { TermsComponent } from './legal/terms/terms.component';
 import { CookiesComponent } from './legal/cookies/cookies.component';
+import { AboutComponent } from './about/about.component';
 
 export const routes: Routes = [
   {
@@ -93,5 +94,9 @@ export const routes: Routes = [
   {
     path: 'cookies',
     component: CookiesComponent,
+  },
+  {
+    path: 'about',
+    component: AboutComponent,
   },
 ];
