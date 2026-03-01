@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../shared/service/user/user.service';
 import {
   FormControl,
@@ -10,6 +10,7 @@ import { User } from '../../shared/model/user.model';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import Keycloak from 'keycloak-js';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-new-user',
@@ -19,9 +20,13 @@ import Keycloak from 'keycloak-js';
   templateUrl: './new-user.component.html',
   styleUrl: './new-user.component.css',
 })
-export class NewUserComponent {
+export class NewUserComponent implements OnInit, OnDestroy {
   private readonly userService = inject(UserService);
   private readonly keycloak = inject(Keycloak);
+  private readonly ngZone = inject(NgZone);
+
+  readonly turnstileSiteKey = environment.turnstileSiteKey;
+  turnstileToken: string | null = null;
 
   form = new FormGroup({
     username: new FormControl('', {
@@ -41,7 +46,27 @@ export class NewUserComponent {
   message: string | null = null;
   isError = false;
 
+  ngOnInit(): void {
+    (window as any)['onTurnstileSuccess'] = (token: string) => {
+      this.ngZone.run(() => { this.turnstileToken = token; });
+    };
+    (window as any)['onTurnstileExpired'] = () => {
+      this.ngZone.run(() => { this.turnstileToken = null; });
+    };
+    (window as any)['onTurnstileError'] = () => {
+      this.ngZone.run(() => { this.turnstileToken = null; });
+    };
+  }
+
+  ngOnDestroy(): void {
+    delete (window as any)['onTurnstileSuccess'];
+    delete (window as any)['onTurnstileExpired'];
+    delete (window as any)['onTurnstileError'];
+  }
+
   onSubmit(): void {
+    if (!this.turnstileToken) return;
+
     const user: User = {
       username: this.form.value.username!,
       firstName: this.form.value.firstName!,
@@ -49,7 +74,7 @@ export class NewUserComponent {
       email: this.form.value.email!,
     };
 
-    this.userService.createUser(user).subscribe({
+    this.userService.createUser(user, this.turnstileToken).subscribe({
       next: (response: HttpResponse<User>) => {
         if (response.status === 201) {
           this.isError = false;
@@ -70,6 +95,10 @@ export class NewUserComponent {
   }
   login() {
     this.keycloak.login();
+  }
+
+  get isSubmitDisabled(): boolean {
+    return this.form.invalid || !this.turnstileToken;
   }
 
   get usernamesInvalid() {

@@ -15,11 +15,14 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  createUser(user: User): Observable<HttpResponse<User>> {
+  createUser(user: User, turnstileToken: string): Observable<HttpResponse<User>> {
     return this.http.post<User>(
       `${this.apiUrl}`,
       user,
-      { observe: 'response' } // 👈 tells Angular to return the full response
+      {
+        observe: 'response',
+        headers: { 'CF-Turnstile-Response': turnstileToken }
+      }
     );
   }
 

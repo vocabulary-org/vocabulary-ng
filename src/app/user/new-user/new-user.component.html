@@ -64,7 +64,16 @@
               }
             </div>
 
-            <button type="submit" class="btn btn-primary w-100" [disabled]="form.invalid">Register</button>
+            <div class="mb-3">
+              <div class="cf-turnstile"
+                   [attr.data-sitekey]="turnstileSiteKey"
+                   data-callback="onTurnstileSuccess"
+                   data-expired-callback="onTurnstileExpired"
+                   data-error-callback="onTurnstileError">
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100" [disabled]="isSubmitDisabled">Register</button>
 
             @if (message) {
               <div class="alert mt-3 mb-0" [ngClass]="isError ? 'alert-danger' : 'alert-success'">
