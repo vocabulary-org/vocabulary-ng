@@ -15,7 +15,7 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  createUser(user: User, turnstileToken: string | null): Observable<HttpResponse<User>> {
+  createUser(user: User, turnstileToken?: string): Observable<HttpResponse<User>> {
     const headers: Record<string, string> = {};
     if (turnstileToken) {
       headers['CF-Turnstile-Response'] = turnstileToken;

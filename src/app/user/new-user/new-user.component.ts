@@ -1,4 +1,4 @@
-import { Component, inject, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, inject, NgZone, OnDestroy } from '@angular/core';
 import { UserService } from '../../shared/service/user/user.service';
 import {
   FormControl,
@@ -20,14 +20,16 @@ import { environment } from '../../../environments/environment';
   templateUrl: './new-user.component.html',
   styleUrl: './new-user.component.css',
 })
-export class NewUserComponent implements OnInit, OnDestroy {
+export class NewUserComponent implements AfterViewInit, OnDestroy {
   private readonly userService = inject(UserService);
   private readonly keycloak = inject(Keycloak);
   private readonly ngZone = inject(NgZone);
 
-  readonly captchaEnabled = environment.captchaEnabled;
-  readonly turnstileSiteKey = environment.turnstileSiteKey;
+  readonly captchaEnabled = !!environment.turnstileSiteKey;
+  private readonly turnstileSiteKey = environment.turnstileSiteKey;
   turnstileToken: string | null = null;
+  private widgetId: string | null = null;
+  private turnstileScript: HTMLScriptElement | null = null;
 
   form = new FormGroup({
     username: new FormControl('', {
@@ -47,22 +49,40 @@ export class NewUserComponent implements OnInit, OnDestroy {
   message: string | null = null;
   isError = false;
 
-  ngOnInit(): void {
-    (window as any)['onTurnstileSuccess'] = (token: string) => {
-      this.ngZone.run(() => { this.turnstileToken = token; });
+  ngAfterViewInit(): void {
+    if (!this.captchaEnabled) return;
+
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+    script.async = true;
+    script.defer = true;
+    script.onload = () => {
+      const win = window as any;
+      this.widgetId = win.turnstile.render('#turnstile-container', {
+        sitekey: this.turnstileSiteKey,
+        callback: (token: string) => {
+          this.ngZone.run(() => { this.turnstileToken = token; });
+        },
+        'expired-callback': () => {
+          this.ngZone.run(() => { this.turnstileToken = null; });
+        },
+        'error-callback': () => {
+          this.ngZone.run(() => { this.turnstileToken = null; });
+        },
+      });
     };
-    (window as any)['onTurnstileExpired'] = () => {
-      this.ngZone.run(() => { this.turnstileToken = null; });
-    };
-    (window as any)['onTurnstileError'] = () => {
-      this.ngZone.run(() => { this.turnstileToken = null; });
-    };
+    document.head.appendChild(script);
+    this.turnstileScript = script;
   }
 
   ngOnDestroy(): void {
-    delete (window as any)['onTurnstileSuccess'];
-    delete (window as any)['onTurnstileExpired'];
-    delete (window as any)['onTurnstileError'];
+    const win = window as any;
+    if (this.widgetId !== null && win.turnstile) {
+      win.turnstile.remove(this.widgetId);
+    }
+    if (this.turnstileScript) {
+      document.head.removeChild(this.turnstileScript);
+    }
   }
 
   onSubmit(): void {
@@ -75,7 +95,7 @@ export class NewUserComponent implements OnInit, OnDestroy {
       email: this.form.value.email!,
     };
 
-    this.userService.createUser(user, this.turnstileToken).subscribe({
+    this.userService.createUser(user, this.turnstileToken ?? undefined).subscribe({
       next: (response: HttpResponse<User>) => {
         if (response.status === 201) {
           this.isError = false;
@@ -88,12 +108,13 @@ export class NewUserComponent implements OnInit, OnDestroy {
       },
       error: (error: HttpErrorResponse) => {
         this.isError = true;
-        const body = error.error; // could be string (text/plain) or object (application/json)
+        const body = error.error;
         this.message = (body && body.message) ? body.message : '❌ Something went wrong.';
         console.error('Error status:', error.status, 'body:', body);
       }
     });
   }
+
   login() {
     this.keycloak.login();
   }

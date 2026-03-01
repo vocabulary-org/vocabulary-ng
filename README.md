@@ -145,6 +145,42 @@ Deployment is handled automatically via Azure Static Web Apps GitHub integration
 
 ---
 
+## 🤖 Cloudflare Turnstile (CAPTCHA)
+
+The registration page uses [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/) to protect against bots.
+
+### How it works
+
+1. The Turnstile widget renders in the browser and runs invisible bot-detection checks.
+2. On success, Cloudflare returns a short-lived token to the frontend.
+3. The token is sent to the backend via the `CF-Turnstile-Response` request header.
+4. The backend verifies the token against Cloudflare's `siteverify` API using a secret key.
+
+### Configuration
+
+Turnstile is enabled only when `turnstileSiteKey` is set in the environment file. It is currently active for the `hetzner-nginx-ssl` environment only.
+
+| Environment | Turnstile |
+|---|---|
+| `environment.ts` (local) | Disabled (`turnstileSiteKey: ''`) |
+| `environment.local-nginx.ts` | Disabled |
+| `environment.local-nginx-ssl.ts` | Disabled |
+| `environment.hetzner-nginx-ssl.ts` | Enabled |
+
+### Local testing
+
+To test Turnstile locally, add `localhost` to the **Allowed Hostnames** list in the Cloudflare dashboard (Turnstile → your site → Settings).
+
+Alternatively, use Cloudflare's official test site key in `environment.ts` (always passes, no real verification):
+
+```typescript
+turnstileSiteKey: '1x00000000000000000000AA'
+```
+
+The corresponding backend test secret key is `1x0000000000000000000000000000000AA`.
+
+---
+
 
 # Default Doc
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.5.
