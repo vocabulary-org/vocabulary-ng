@@ -15,14 +15,15 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  createUser(user: User, turnstileToken: string): Observable<HttpResponse<User>> {
+  createUser(user: User, turnstileToken: string | null): Observable<HttpResponse<User>> {
+    const headers: Record<string, string> = {};
+    if (turnstileToken) {
+      headers['CF-Turnstile-Response'] = turnstileToken;
+    }
     return this.http.post<User>(
       `${this.apiUrl}`,
       user,
-      {
-        observe: 'response',
-        headers: { 'CF-Turnstile-Response': turnstileToken }
-      }
+      { observe: 'response', headers }
     );
   }
 

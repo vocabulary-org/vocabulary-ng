@@ -64,14 +64,16 @@
               }
             </div>
 
-            <div class="mb-3">
-              <div class="cf-turnstile"
-                   [attr.data-sitekey]="turnstileSiteKey"
-                   data-callback="onTurnstileSuccess"
-                   data-expired-callback="onTurnstileExpired"
-                   data-error-callback="onTurnstileError">
+            @if (captchaEnabled) {
+              <div class="mb-3">
+                <div class="cf-turnstile"
+                     [attr.data-sitekey]="turnstileSiteKey"
+                     data-callback="onTurnstileSuccess"
+                     data-expired-callback="onTurnstileExpired"
+                     data-error-callback="onTurnstileError">
+                </div>
               </div>
-            </div>
+            }
 
             <button type="submit" class="btn btn-primary w-100" [disabled]="isSubmitDisabled">Register</button>
 

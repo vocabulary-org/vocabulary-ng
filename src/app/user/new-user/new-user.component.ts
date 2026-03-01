@@ -25,6 +25,7 @@ export class NewUserComponent implements OnInit, OnDestroy {
   private readonly keycloak = inject(Keycloak);
   private readonly ngZone = inject(NgZone);
 
+  readonly captchaEnabled = environment.captchaEnabled;
   readonly turnstileSiteKey = environment.turnstileSiteKey;
   turnstileToken: string | null = null;
 
@@ -65,7 +66,7 @@ export class NewUserComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    if (!this.turnstileToken) return;
+    if (this.captchaEnabled && !this.turnstileToken) return;
 
     const user: User = {
       username: this.form.value.username!,
@@ -98,7 +99,7 @@ export class NewUserComponent implements OnInit, OnDestroy {
   }
 
   get isSubmitDisabled(): boolean {
-    return this.form.invalid || !this.turnstileToken;
+    return this.form.invalid || (this.captchaEnabled && !this.turnstileToken);
   }
 
   get usernamesInvalid() {
