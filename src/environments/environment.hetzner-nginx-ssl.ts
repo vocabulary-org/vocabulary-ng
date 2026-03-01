@@ -7,5 +7,7 @@ export const environment = {
 
   keycloakUrlPattern: /^(https:\/\/api\.myvocabulary\.net)(\/.*)?$/i,
 
-  googleAnalyticsId: 'G-085YRTFZLZ'
+  googleAnalyticsId: 'G-085YRTFZLZ',
+  turnstileSiteKey: '0x4AAAAAACkGX7dR6zDQX1Gh',
+  captchaEnabled: true
 };
