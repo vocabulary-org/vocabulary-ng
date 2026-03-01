@@ -4,6 +4,5 @@ export const environment = {
   apiBaseUrl:  'http://localhost:9090/api/v1/vocabulary',
   keycloakUrl: 'http://localhost:18081',
   keycloakUrlPattern: /^(http:\/\/localhost:9090)(\/.*)?$/i,
-  turnstileSiteKey: '',
-  captchaEnabled: false
+  turnstileSiteKey: ''
 };
