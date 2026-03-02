@@ -9,7 +9,7 @@ import { environment as env }  from '../../../environments/environment';
 })
 export class RolesService {
 
-  private readonly apiUrl = `${env.apiBaseUrl}/public/roles`;
+  private readonly apiUrl = `${env.apiBaseUrl}/me/roles`;
   
 
   constructor(private http: HttpClient) {}
