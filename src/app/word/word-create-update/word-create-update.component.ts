@@ -41,6 +41,8 @@ export class WordCreateUpdateComponent {
   message = signal<string | null>(null);
   isError = signal(false);
 
+  private messageTimer: ReturnType<typeof setTimeout> | null = null;
+
   originalFormValue: any;
 
   form = new FormGroup({
@@ -139,8 +141,7 @@ export class WordCreateUpdateComponent {
       // 🔁 UPDATE
       this.wordService.updateWord(this.uuid()!, word).subscribe({
         next: (response) => {
-          this.isError.set(false);
-          this.message.set('✅ Your word has been successfully updated.');
+          this.setSuccessMessage('✅ Your word has been successfully updated.');
           // optional: navigate back to list
           setTimeout(() => {
             this.router.navigate(['/word/list']); // ✅ redirect to list
@@ -162,8 +163,7 @@ export class WordCreateUpdateComponent {
     this.wordService.addWord(word).subscribe({
       next: (response: HttpResponse<Word>) => {
         if (response.status === 201) {
-          this.isError.set(false);
-          this.message.set('✅ Your word has been successfully added.');
+          this.setSuccessMessage('✅ Your word has been successfully added.');
           this.form.controls.sentence.reset();
           this.form.controls.translation.reset();
           this.form.controls.description.reset();
@@ -181,6 +181,18 @@ export class WordCreateUpdateComponent {
         console.error('Error status:', error.status, 'body:', body);
       },
     });
+  }
+
+  private setSuccessMessage(text: string): void {
+    if (this.messageTimer) clearTimeout(this.messageTimer);
+    this.isError.set(false);
+    this.message.set(text);
+    this.messageTimer = setTimeout(() => this.message.set(null), 4000);
+  }
+
+  clearMessage(): void {
+    if (this.messageTimer) clearTimeout(this.messageTimer);
+    this.message.set(null);
   }
 
   onCancel(): void {
