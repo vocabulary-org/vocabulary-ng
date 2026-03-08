@@ -48,6 +48,7 @@ export class NewUserComponent implements AfterViewInit, OnDestroy {
 
   message: string | null = null;
   isError = false;
+  isLoading = false;
 
   ngAfterViewInit(): void {
     if (!this.captchaEnabled) return;
@@ -95,8 +96,10 @@ export class NewUserComponent implements AfterViewInit, OnDestroy {
       email: this.form.value.email!,
     };
 
+    this.isLoading = true;
     this.userService.createUser(user, this.turnstileToken ?? undefined).subscribe({
       next: (response: HttpResponse<User>) => {
+        this.isLoading = false;
         if (response.status === 201) {
           this.isError = false;
           this.message = '✅ Check your email to complete registration.';
@@ -107,6 +110,7 @@ export class NewUserComponent implements AfterViewInit, OnDestroy {
         }
       },
       error: (error: HttpErrorResponse) => {
+        this.isLoading = false;
         this.isError = true;
         const body = error.error;
         this.message = (body && body.message) ? body.message : '❌ Something went wrong.';

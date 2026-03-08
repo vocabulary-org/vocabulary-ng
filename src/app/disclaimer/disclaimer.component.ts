@@ -8,5 +8,6 @@ import { RouterLink } from '@angular/router';
   styleUrl: './disclaimer.component.css'
 })
 export class DisclaimerComponent {
-  expanded = signal(false);
+    showFullAlert = signal(false);
+
 }

@@ -1,27 +1,21 @@
-<div class="bg-warning-subtle border-bottom border-warning-subtle py-2">
-  <div class="container">
-    <!-- Desktop -->
-    <div class="d-none d-md-block small text-body-secondary text-center">
-      <strong>Beta</strong> &mdash; This service is under active development. Features may change and data may be reset without notice.
-      By continuing, you agree to our
-      <a routerLink="/terms">Terms</a> and
-      <a routerLink="/privacy">Privacy Policy</a>.
+<div class="alert alert-warning text-center mb-0 py-2 py-md-3">
+  <!-- Desktop: full text always visible -->
+  <span class="d-none d-md-inline">
+    <strong>Beta</strong> &mdash; This service is under active development. Features may change and data may be reset without notice.
+    By continuing, you agree to our <a routerLink="/terms">Terms</a> and <a routerLink="/privacy">Privacy Policy</a>.
+  </span>
+  
+  <!-- Mobile: clickable to expand -->
+  <div class="d-md-none">
+    <div (click)="showFullAlert.set(!showFullAlert())" class="user-select-none small" role="button">
+      <strong>Beta</strong> &mdash; Under active development
+      <small class="ms-1">{{ showFullAlert() ? '▲' : '▼' }}</small>
     </div>
-
-    <!-- Mobile: collapsible -->
-    <div class="d-md-none">
-      <div (click)="expanded.set(!expanded())" class="user-select-none small text-body-secondary d-flex align-items-center justify-content-center gap-1" role="button">
-        <strong>Beta</strong> &mdash; Under active development
-        <small class="ms-1">{{ expanded() ? '&#9650;' : '&#9660;' }}</small>
+    @if (showFullAlert()) {
+      <div class="mt-2 small">
+        Features may change and data may be reset without notice.
+        By continuing, you agree to our <a routerLink="/terms">Terms</a> and <a routerLink="/privacy">Privacy Policy</a>.
       </div>
-      @if (expanded()) {
-        <div class="mt-2 small text-body-secondary text-center">
-          Features may change and data may be reset without notice.
-          By continuing, you agree to our
-          <a routerLink="/terms">Terms</a> and
-          <a routerLink="/privacy">Privacy Policy</a>.
-        </div>
-      }
-    </div>
+    }
   </div>
 </div>
