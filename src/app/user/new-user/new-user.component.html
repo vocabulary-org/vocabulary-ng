@@ -70,7 +70,11 @@
               </div>
             }
 
-            <button type="submit" class="btn btn-primary w-100" [disabled]="isSubmitDisabled">Register</button>
+            @if (isLoading) {
+              <div class="text-center text-body-secondary">Creating your account...</div>
+            } @else {
+              <button type="submit" class="btn btn-primary w-100" [disabled]="isSubmitDisabled">Register</button>
+            }
 
             @if (message) {
               <div class="alert mt-3 mb-0" [ngClass]="isError ? 'alert-danger' : 'alert-success'">
