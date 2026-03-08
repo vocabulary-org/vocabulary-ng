@@ -72,7 +72,7 @@
 
             @if (isLoading) {
               <div class="text-center text-body-secondary">Creating your account...</div>
-            } @else {
+            } @else if (!registrationSuccess) {
               <button type="submit" class="btn btn-primary w-100" [disabled]="isSubmitDisabled">Register</button>
             }
 

@@ -49,6 +49,7 @@ export class NewUserComponent implements AfterViewInit, OnDestroy {
   message: string | null = null;
   isError = false;
   isLoading = false;
+  registrationSuccess = false;
 
   ngAfterViewInit(): void {
     if (!this.captchaEnabled) return;
@@ -102,6 +103,7 @@ export class NewUserComponent implements AfterViewInit, OnDestroy {
         this.isLoading = false;
         if (response.status === 201) {
           this.isError = false;
+          this.registrationSuccess = true;
           this.message = '✅ Check your email to complete registration.';
         } else {
           this.isError = true;
