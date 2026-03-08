@@ -104,6 +104,7 @@ export class NewUserComponent implements AfterViewInit, OnDestroy {
         if (response.status === 201) {
           this.isError = false;
           this.registrationSuccess = true;
+          this.form.disable();
           this.message = '✅ Check your email to complete registration.';
         } else {
           this.isError = true;
