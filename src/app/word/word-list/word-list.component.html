@@ -25,14 +25,7 @@
 
     <!-- No Results -->
     @if (!loading && words.length === 0) {
-      <div class="alert alert-warning">
-        @if (searchActive) {
-          No words found matching "{{ searchControl.value }}".
-          <button class="btn btn-link" (click)="clearSearch()">Clear search</button>
-        } @else {
-          No words found.
-        }
-      </div>
+      <div class="alert alert-warning">No words found.</div>
     }
 
     <!-- Words List -->
@@ -85,89 +78,69 @@
     }
 
     <!-- Filters & Actions -->
-    <div class="d-flex flex-column gap-2 mt-3">
+    <div class="d-flex align-items-center gap-2 mt-3 flex-wrap">
 
-      <!-- Row 1 (mobile) / left side (desktop): Search -->
-      <div class="input-group input-group-sm">
-        <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <!-- My languages toggle -->
+      <div class="form-check form-switch mb-0 me-1">
         <input
-          type="text"
-          [formControl]="searchControl"
-          class="form-control"
-          placeholder="Search by sentence"
-          aria-label="Search words"
+          class="form-check-input"
+          type="checkbox"
+          role="switch"
+          id="filterMyLanguages"
+          [(ngModel)]="filterMyLanguages"
+          (change)="onLanguageFilterChange()"
         />
-        @if (searchControl.value) {
-          <button class="btn btn-outline-secondary" type="button" (click)="clearSearch()" aria-label="Clear search">✕</button>
-        }
+        <label class="form-check-label small" for="filterMyLanguages">My languages only</label>
       </div>
 
-      <!-- Row 2 (mobile) / right side (desktop): Language filters + Add button -->
-      <div class="d-flex align-items-center gap-2 flex-wrap">
-
-        <!-- My languages toggle -->
-        <div class="form-check form-switch mb-0 me-1">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            role="switch"
-            id="filterMyLanguages"
-            [(ngModel)]="filterMyLanguages"
-            (change)="onLanguageFilterChange()"
-          />
-          <label class="form-check-label small" for="filterMyLanguages">My languages only</label>
-        </div>
-
-        <!-- Language From dropdown -->
-        <select
-          class="form-select form-select-sm"
-          style="width: auto"
-          [(ngModel)]="filterFromUuid"
-          (change)="onLanguageDropdownChange()"
-          [disabled]="filterMyLanguages"
-        >
-          <option value="">Any</option>
-          @for (l of availableLanguages; track l.uuid) {
-            <option [value]="l.uuid">{{ flags[l.name] }} {{ l.name }}</option>
-          }
-        </select>
-
-        <i class="bi bi-arrow-right text-muted"></i>
-
-        <!-- Language To dropdown -->
-        <select
-          class="form-select form-select-sm"
-          style="width: auto"
-          [(ngModel)]="filterToUuid"
-          (change)="onLanguageDropdownChange()"
-          [disabled]="filterMyLanguages"
-        >
-          <option value="">Any</option>
-          @for (l of availableLanguages; track l.uuid) {
-            <option [value]="l.uuid">{{ flags[l.name] }} {{ l.name }}</option>
-          }
-        </select>
-
-        <!-- Swap button -->
-        @if (filterFromUuid || filterToUuid) {
-          <button class="btn btn-sm btn-outline-secondary" type="button" (click)="swapLanguages()" title="Swap languages">
-            <i class="bi bi-arrow-left-right"></i>
-          </button>
+      <!-- Language From dropdown -->
+      <select
+        class="form-select form-select-sm"
+        style="width: auto"
+        [(ngModel)]="filterFromUuid"
+        (change)="onLanguageDropdownChange()"
+        [disabled]="filterMyLanguages"
+      >
+        <option value="">Any</option>
+        @for (l of availableLanguages; track l.uuid) {
+          <option [value]="l.uuid">{{ flags[l.name] }} {{ l.name }}</option>
         }
+      </select>
 
-        @if (noLanguageSettings) {
-          <small class="text-warning">
-            <i class="bi bi-exclamation-triangle"></i>
-            No language preferences set. <a routerLink="/settings/languages" class="text-warning">Configure them here.</a>
-          </small>
+      <i class="bi bi-arrow-right text-muted"></i>
+
+      <!-- Language To dropdown -->
+      <select
+        class="form-select form-select-sm"
+        style="width: auto"
+        [(ngModel)]="filterToUuid"
+        (change)="onLanguageDropdownChange()"
+        [disabled]="filterMyLanguages"
+      >
+        <option value="">Any</option>
+        @for (l of availableLanguages; track l.uuid) {
+          <option [value]="l.uuid">{{ flags[l.name] }} {{ l.name }}</option>
         }
+      </select>
 
-        <span class="flex-grow-1"></span>
-        <a routerLink="/word/new-word" class="btn btn-primary btn-sm">
-          <i class="bi bi-plus-lg me-1"></i>Add Word
-        </a>
-      </div>
+      <!-- Swap button -->
+      @if (filterFromUuid || filterToUuid) {
+        <button class="btn btn-sm btn-outline-secondary" type="button" (click)="swapLanguages()" title="Swap languages">
+          <i class="bi bi-arrow-left-right"></i>
+        </button>
+      }
 
+      @if (noLanguageSettings) {
+        <small class="text-warning">
+          <i class="bi bi-exclamation-triangle"></i>
+          No language preferences set. <a routerLink="/settings/languages" class="text-warning">Configure them here.</a>
+        </small>
+      }
+
+      <span class="flex-grow-1"></span>
+      <a routerLink="/word/new-word" class="btn btn-primary btn-sm">
+        <i class="bi bi-plus-lg me-1"></i>Add Word
+      </a>
     </div>
 
     <!-- Pagination Controls -->
