@@ -158,7 +158,7 @@
           [(ngModel)]="filterMyLanguages"
           (change)="onLanguageFilterChange()"
         />
-        <label class="form-check-label small" for="filterMyLanguages">My languages</label>
+        <label class="form-check-label small" for="filterMyLanguages">My languages only</label>
       </div>
 
       <!-- Language From dropdown -->
@@ -167,6 +167,7 @@
         style="width: auto"
         [(ngModel)]="filterFromUuid"
         (change)="onLanguageDropdownChange()"
+        [disabled]="filterMyLanguages"
       >
         <option value="">Any</option>
         @for (l of availableLanguages; track l.uuid) {
@@ -182,6 +183,7 @@
         style="width: auto"
         [(ngModel)]="filterToUuid"
         (change)="onLanguageDropdownChange()"
+        [disabled]="filterMyLanguages"
       >
         <option value="">Any</option>
         @for (l of availableLanguages; track l.uuid) {
