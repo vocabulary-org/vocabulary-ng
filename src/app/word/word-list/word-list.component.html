@@ -1,4 +1,4 @@
-<div class="container overflow-x-hidden">
+<div class="container">
   <main class="overflow-x-hidden">
 
     <!-- Loading Indicator -->
@@ -25,14 +25,7 @@
 
     <!-- No Results -->
     @if (!loading && words.length === 0) {
-      <div class="alert alert-warning">
-        @if (searchActive) {
-          No words found matching "{{ searchControl.value }}".
-          <button class="btn btn-link p-0 ms-1" (click)="clearSearch()">Clear search</button>
-        } @else {
-          No words found.
-        }
-      </div>
+      <div class="alert alert-warning">No words found.</div>
     }
 
     <!-- Words List -->
@@ -57,7 +50,7 @@
           <tbody>
             @for (word of words; track word.uuid) {
               <tr>
-                <td class="text-break">
+                <td>
                   {{ word.sentence }}
                   <div class="d-sm-none text-body-secondary small mt-1">{{ word.translation }}</div>
                 </td>
@@ -83,21 +76,6 @@
         </table>
       </div>
     }
-
-    <!-- Search Bar -->
-    <div class="input-group input-group-sm mt-3">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input
-        type="text"
-        [formControl]="searchControl"
-        class="form-control"
-        placeholder="Search by sentence"
-        aria-label="Search words"
-      />
-      @if (searchControl.value) {
-        <button class="btn btn-outline-secondary" type="button" (click)="clearSearch()" aria-label="Clear search">✕</button>
-      }
-    </div>
 
     <!-- Filters & Actions -->
     <div class="d-flex align-items-center gap-2 mt-3 flex-wrap">
