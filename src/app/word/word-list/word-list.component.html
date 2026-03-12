@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container overflow-x-hidden">
   <main class="overflow-x-hidden">
 
     <!-- Loading Indicator -->
@@ -57,7 +57,7 @@
           <tbody>
             @for (word of words; track word.uuid) {
               <tr>
-                <td>
+                <td class="text-break">
                   {{ word.sentence }}
                   <div class="d-sm-none text-body-secondary small mt-1">{{ word.translation }}</div>
                 </td>
