@@ -1,5 +1,5 @@
 <div class="container">
-  <main>
+  <main class="overflow-x-hidden">
 
     <!-- Loading Indicator -->
     @if (loading) {
@@ -176,7 +176,7 @@
         <ul class="pagination justify-content-center">
           <li class="page-item" [class.disabled]="page.page.number === 0">
             <button
-              class="page-link"
+              class="page-link bg-light text-primary"
               (click)="goToPage(page.page.number - 1)"
               [disabled]="page.page.number === 0"
             >
@@ -184,7 +184,7 @@
             </button>
           </li>
           <li class="page-item disabled">
-            <span class="page-link">
+            <span class="page-link bg-light text-secondary">
               Page {{ page.page.number + 1 }} of {{ page.page.totalPages }}
             </span>
           </li>
@@ -193,7 +193,7 @@
             [class.disabled]="page.page.number >= page.page.totalPages - 1"
           >
             <button
-              class="page-link"
+              class="page-link bg-light text-primary"
               (click)="goToPage(page.page.number + 1)"
               [disabled]="page.page.number >= page.page.totalPages - 1"
             >
