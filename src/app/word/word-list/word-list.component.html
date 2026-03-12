@@ -48,7 +48,7 @@
                   [class.bi-sort-alpha-up]="sortDir === 'desc'"
                   [class.bi-filter]="!sortDir"></i>
               </th>
-              <th>Translation</th>
+              <th class="d-none d-sm-table-cell">Translation</th>
               <th class="d-none d-md-table-cell">Description</th>
               <th class="d-none d-sm-table-cell">Languages</th>
               <th class="text-end">Actions</th>
@@ -57,8 +57,11 @@
           <tbody>
             @for (word of words; track word.uuid) {
               <tr>
-                <td>{{ word.sentence }}</td>
-                <td class="text-body-secondary">{{ word.translation }}</td>
+                <td>
+                  {{ word.sentence }}
+                  <div class="d-sm-none text-body-secondary small mt-1">{{ word.translation }}</div>
+                </td>
+                <td class="d-none d-sm-table-cell text-body-secondary">{{ word.translation }}</td>
                 <td class="d-none d-md-table-cell text-body-secondary small">{{ word.description }}</td>
                 <td class="d-none d-sm-table-cell text-nowrap">
                   {{ flags[word.language.name] }} {{ flags[word.languageTo.name] }}
