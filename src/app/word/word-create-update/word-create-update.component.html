@@ -47,7 +47,7 @@
       [formControl]="form.controls.sentence"
       class="form-control"
       placeholder="e.g. The cat sat on the mat"
-      (focus)="clearMessage()"
+      (input)="clearMessage()"
     />
     @if (sentenceIsInvalid) {
       <div class="text-danger small">Please enter a valid Sentence</div>
