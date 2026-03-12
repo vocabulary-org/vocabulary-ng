@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { WordService } from '../../shared/service/word/word.service';
 import {
   FormControl,
@@ -26,6 +26,7 @@ import { UserLanguagesService } from '../../shared/service/user/user-languages.s
   styleUrl: './word-create-update.component.css',
 })
 export class WordCreateUpdateComponent {
+  @ViewChild('sentenceInput') sentenceInput!: ElementRef<HTMLInputElement>;
   private readonly wordService = inject(WordService);
   private readonly languageStore = inject(LanguagesStore);
   private readonly userLanguagesService = inject(UserLanguagesService);
@@ -167,6 +168,7 @@ export class WordCreateUpdateComponent {
           this.form.controls.sentence.reset();
           this.form.controls.translation.reset();
           this.form.controls.description.reset();
+          setTimeout(() => this.sentenceInput.nativeElement.focus());
         } else {
           this.isError.set(true);
           this.message.set(`Unexpected status: ${response.status}`);
