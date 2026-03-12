@@ -1,7 +1,7 @@
 <div class="container">
   <main>
     <!-- Search Bar -->
-    <div class="search-section mb-4">
+    <div class="search-section mb-3">
       <div class="card shadow-sm">
         <div class="card-body">
           <div class="input-group">
@@ -89,8 +89,8 @@
         </div>
 
         <ul class="list-group list-group-flush">
-          @for (word of words; track word.uuid) {
-            <li class="list-group-item py-3">
+          @for (word of words; track word.uuid; let i = $index) {
+            <li class="list-group-item py-3" [class.bg-light]="i % 2 !== 0">
               <div class="row">
                 <!-- Sentence -->
                 <div class="col-sm-3">
@@ -98,7 +98,7 @@
                 </div>
 
                 <!-- Translation -->
-                <div class="col-sm-3 fst-italic text-body-secondary">
+                <div class="col-sm-3 text-body-secondary">
                   {{ word.translation }}
                 </div>
 
@@ -145,9 +145,11 @@
       </div>
     }
 
-    <!-- Language Filter -->
-    <div class="d-flex align-items-center gap-3 mt-3 flex-wrap">
-      <div class="form-check form-switch mb-0">
+    <!-- Filters & Actions -->
+    <div class="d-flex align-items-center gap-2 mt-3 flex-wrap">
+
+      <!-- My languages toggle -->
+      <div class="form-check form-switch mb-0 me-1">
         <input
           class="form-check-input"
           type="checkbox"
@@ -156,31 +158,56 @@
           [(ngModel)]="filterMyLanguages"
           (change)="onLanguageFilterChange()"
         />
-        <label class="form-check-label small" for="filterMyLanguages">My languages only</label>
+        <label class="form-check-label small" for="filterMyLanguages">My languages</label>
       </div>
-      @if (languageFromName || languageToName) {
-        <div class="d-flex align-items-center gap-2">
-          <span class="small">
-            {{ flags[languageFromName!] }} {{ languageFromName }}
-            <i class="bi bi-arrow-right mx-1"></i>
-            {{ flags[languageToName!] }} {{ languageToName }}
-          </span>
-          <button
-            class="btn btn-sm btn-outline-secondary"
-            type="button"
-            (click)="swapLanguages()"
-            title="Swap languages"
-          >
-            <i class="bi bi-arrow-left-right"></i>
-          </button>
-        </div>
+
+      <!-- Language From dropdown -->
+      <select
+        class="form-select form-select-sm"
+        style="width: auto"
+        [(ngModel)]="filterFromUuid"
+        (change)="onLanguageDropdownChange()"
+      >
+        <option value="">Any</option>
+        @for (l of availableLanguages; track l.uuid) {
+          <option [value]="l.uuid">{{ flags[l.name] }} {{ l.name }}</option>
+        }
+      </select>
+
+      <i class="bi bi-arrow-right text-muted"></i>
+
+      <!-- Language To dropdown -->
+      <select
+        class="form-select form-select-sm"
+        style="width: auto"
+        [(ngModel)]="filterToUuid"
+        (change)="onLanguageDropdownChange()"
+      >
+        <option value="">Any</option>
+        @for (l of availableLanguages; track l.uuid) {
+          <option [value]="l.uuid">{{ flags[l.name] }} {{ l.name }}</option>
+        }
+      </select>
+
+      <!-- Swap button -->
+      @if (filterFromUuid || filterToUuid) {
+        <button
+          class="btn btn-sm btn-outline-secondary"
+          type="button"
+          (click)="swapLanguages()"
+          title="Swap languages"
+        >
+          <i class="bi bi-arrow-left-right"></i>
+        </button>
       }
+
       @if (noLanguageSettings) {
         <small class="text-warning">
           <i class="bi bi-exclamation-triangle"></i>
           No language preferences set. <a routerLink="/settings/languages" class="text-warning">Configure them here.</a>
         </small>
       }
+
       <span class="flex-grow-1"></span>
       <a routerLink="/word/new-word" class="btn btn-primary btn-sm">
         <i class="bi bi-plus-lg me-1"></i>Add Word

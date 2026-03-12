@@ -5,6 +5,7 @@ import { WordService } from '../../shared/service/word/word.service';
 import { UserLanguagesService } from '../../shared/service/user/user-languages.service';
 import { LanguageService } from '../../shared/service/language.service';
 import { Word } from '../../shared/model/word.model';
+import { Language } from '../../shared/model/language';
 import { RouterLink } from '@angular/router';
 import { LANGUAGE_FLAGS } from '../../shared/model/flag';
 import { Subject, forkJoin } from 'rxjs';
@@ -32,14 +33,27 @@ export class WordListComponent implements OnInit, OnDestroy {
   public filterMyLanguages = false;
   public noLanguageSettings = false;
 
-  public languageFromName?: string;
-  public languageToName?: string;
+  public availableLanguages: Language[] = [];
+  public filterFromUuid = '';
+  public filterToUuid = '';
+
   private readonly wordService = inject(WordService);
   private readonly userLanguagesService = inject(UserLanguagesService);
   private readonly languageService = inject(LanguageService);
   private destroy$ = new Subject<void>();
 
+  get selectedFromLanguage(): Language | undefined {
+    return this.availableLanguages.find(l => l.uuid === this.filterFromUuid);
+  }
+
+  get selectedToLanguage(): Language | undefined {
+    return this.availableLanguages.find(l => l.uuid === this.filterToUuid);
+  }
+
   ngOnInit() {
+    this.languageService.getAllLanguages().subscribe({
+      next: (langs) => this.availableLanguages = langs,
+    });
     this.reload();
     this.setupSearchListener();
   }
@@ -60,10 +74,15 @@ export class WordListComponent implements OnInit, OnDestroy {
   public reload(page: number = 0): void {
     this.loading = true;
     const searchTerm = this.searchActive ? this.searchControl.value.trim() : undefined;
-    const langUuid = this.filterMyLanguages ? this.languageFromName : undefined;
-    const langToUuid = this.filterMyLanguages ? this.languageToName : undefined;
 
-    this.wordService.listWords(page, this.pageSize, searchTerm, this.sortDir, langUuid, langToUuid)
+    const fromName = this.filterFromUuid
+      ? this.availableLanguages.find(l => l.uuid === this.filterFromUuid)?.name
+      : undefined;
+    const toName = this.filterToUuid
+      ? this.availableLanguages.find(l => l.uuid === this.filterToUuid)?.name
+      : undefined;
+
+    this.wordService.listWords(page, this.pageSize, searchTerm, this.sortDir, fromName, toName)
       .subscribe({
         next: (pageData) => {
           this.page = pageData;
@@ -92,7 +111,7 @@ export class WordListComponent implements OnInit, OnDestroy {
   }
 
   public swapLanguages(): void {
-    [this.languageFromName, this.languageToName] = [this.languageToName, this.languageFromName];
+    [this.filterFromUuid, this.filterToUuid] = [this.filterToUuid, this.filterFromUuid];
     this.reload(0);
   }
 
@@ -101,49 +120,51 @@ export class WordListComponent implements OnInit, OnDestroy {
     this.reload(0);
   }
 
-
   public onLanguageFilterChange(): void {
     this.noLanguageSettings = false;
-    if (this.filterMyLanguages && !this.languageFromName && !this.languageToName) {
-      forkJoin({
-        userLang: this.userLanguagesService.get(),
-        languages: this.languageService.getAllLanguages(),
-      }).subscribe({
-        next: ({ userLang, languages }) => {
-          this.languageFromName = languages.find(l => l.uuid === userLang.language?.uuid)?.name;
-          this.languageToName = languages.find(l => l.uuid === userLang.languageTo?.uuid)?.name;
-          if (!this.languageFromName && !this.languageToName) {
-            this.noLanguageSettings = true;
-            this.filterMyLanguages = false;
-          } else {
-            this.reload(0);
-          }
-        },
-        error: () => {
-          this.error = 'Could not load language settings';
-          this.filterMyLanguages = false;
-        },
-      });
-    } else {
+    if (!this.filterMyLanguages) {
+      this.filterFromUuid = '';
+      this.filterToUuid = '';
       this.reload(0);
-    }
-  }
-
-  public onDelete(word: Word): void {
-    const confirmed = confirm(
-      `Do you really want to delete "${word.sentence}"?`,
-    );
-    if (!confirmed) {
       return;
     }
 
-    this.wordService.delete(word.uuid).subscribe({
-      next: () => {
-        this.reload(this.currentPage);
+    forkJoin({
+      userLang: this.userLanguagesService.get(),
+      languages: this.languageService.getAllLanguages(),
+    }).subscribe({
+      next: ({ userLang, languages }) => {
+        this.availableLanguages = languages;
+        const from = languages.find(l => l.uuid === userLang.language?.uuid);
+        const to = languages.find(l => l.uuid === userLang.languageTo?.uuid);
+        if (!from && !to) {
+          this.noLanguageSettings = true;
+          this.filterMyLanguages = false;
+        } else {
+          this.filterFromUuid = from?.uuid ?? '';
+          this.filterToUuid = to?.uuid ?? '';
+          this.reload(0);
+        }
       },
       error: () => {
-        this.error = 'Error while deleting word';
+        this.error = 'Could not load language settings';
+        this.filterMyLanguages = false;
       },
+    });
+  }
+
+  public onLanguageDropdownChange(): void {
+    this.filterMyLanguages = false;
+    this.reload(0);
+  }
+
+  public onDelete(word: Word): void {
+    const confirmed = confirm(`Do you really want to delete "${word.sentence}"?`);
+    if (!confirmed) return;
+
+    this.wordService.delete(word.uuid).subscribe({
+      next: () => this.reload(this.currentPage),
+      error: () => { this.error = 'Error while deleting word'; },
     });
   }
 
