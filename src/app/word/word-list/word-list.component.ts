@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule, FormControl } from '@angular/forms';
 import { WordService } from '../../shared/service/word/word.service';
 import { UserLanguagesService } from '../../shared/service/user/user-languages.service';
 import { LanguageService } from '../../shared/service/language.service';
@@ -9,10 +9,11 @@ import { Language } from '../../shared/model/language';
 import { RouterLink } from '@angular/router';
 import { LANGUAGE_FLAGS } from '../../shared/model/flag';
 import { Subject, forkJoin } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-word-list',
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule],
   templateUrl: './word-list.component.html',
   styleUrl: './word-list.component.css',
 })
@@ -24,6 +25,9 @@ export class WordListComponent implements OnInit, OnDestroy {
   public error?: string;
   public readonly flags = LANGUAGE_FLAGS;
   public currentPage = 0;
+
+  public searchControl = new FormControl('', { nonNullable: true });
+  public searchActive = false;
 
   public sortDir?: 'asc' | 'desc';
   public filterMyLanguages = false;
@@ -43,10 +47,25 @@ export class WordListComponent implements OnInit, OnDestroy {
       next: (langs) => this.availableLanguages = langs,
     });
     this.reload();
+    this.setupSearchListener();
+  }
+
+  private setupSearchListener(): void {
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        takeUntil(this.destroy$),
+      )
+      .subscribe((searchTerm) => {
+        this.searchActive = searchTerm.trim().length > 0;
+        this.reload(0);
+      });
   }
 
   public reload(page: number = 0): void {
     this.loading = true;
+    const searchTerm = this.searchActive ? this.searchControl.value.trim() : undefined;
 
     const fromName = this.filterFromUuid
       ? this.availableLanguages.find(l => l.uuid === this.filterFromUuid)?.name
@@ -55,7 +74,7 @@ export class WordListComponent implements OnInit, OnDestroy {
       ? this.availableLanguages.find(l => l.uuid === this.filterToUuid)?.name
       : undefined;
 
-    this.wordService.listWords(page, this.pageSize, undefined, this.sortDir, fromName, toName)
+    this.wordService.listWords(page, this.pageSize, searchTerm, this.sortDir, fromName, toName)
       .subscribe({
         next: (pageData) => {
           this.page = pageData;
@@ -75,6 +94,12 @@ export class WordListComponent implements OnInit, OnDestroy {
       return;
     }
     this.reload(page);
+  }
+
+  public clearSearch(): void {
+    this.searchControl.setValue('');
+    this.searchActive = false;
+    this.reload(0);
   }
 
   public toggleSort(): void {
