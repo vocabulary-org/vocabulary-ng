@@ -1,5 +1,6 @@
 import { Component, effect, inject, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { DisclaimerComponent } from '../disclaimer/disclaimer.component';
 import Keycloak from 'keycloak-js';
 import {
   KEYCLOAK_EVENT_SIGNAL,
@@ -10,7 +11,7 @@ import {
 
 @Component({
   selector: 'app-landing',
-  imports: [RouterLink],
+  imports: [RouterLink, DisclaimerComponent],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.css'
 })
