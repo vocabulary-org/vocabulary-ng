@@ -78,7 +78,7 @@
   >
   </app-word-translation>
 
-  <!-- Translation -->
+  <!-- Description -->
   <div class="mb-3">
     <label for="description" class="form-label">Description</label>
     <input
@@ -87,8 +87,38 @@
       formControlName="description"
       class="form-control"
     />
-    @if (translationIsInvalid) {
-      <div class="text-danger small">Please enter a valid Description</div>
+  </div>
+
+  <!-- Tag Suggestions -->
+  <div class="mb-3">
+    <button
+      type="button"
+      class="btn btn-outline-secondary btn-sm"
+      (click)="suggestTags()"
+      [disabled]="isSuggestingTags() || !form.value.sentence?.trim() || !form.value.language"
+    >
+      @if (isSuggestingTags()) {
+        <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+        Suggesting…
+      } @else {
+        <i class="bi bi-tags me-1"></i>Suggest tags
+      }
+    </button>
+
+    @if (suggestedTags().length) {
+      <div class="mt-2 d-flex flex-wrap gap-2">
+        @for (tag of suggestedTags(); track tag.tag) {
+          <button
+            type="button"
+            class="btn btn-sm"
+            [class.btn-primary]="isTagSelected(tag)"
+            [class.btn-outline-secondary]="!isTagSelected(tag)"
+            (click)="toggleTag(tag, $event)"
+          >
+            {{ tag.label }}
+          </button>
+        }
+      </div>
     }
   </div>
 

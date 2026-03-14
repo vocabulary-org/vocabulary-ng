@@ -8,8 +8,14 @@ export class Word {
     public translation: string,
     public description: string,
     public language: Language,
-    public languageTo: Language
+    public languageTo: Language,
+    public tags?: TagSuggestion[]
   ) {}
+}
+
+export interface TagSuggestion {
+  tag: string;
+  label: string;
 }
 
 export interface CreateWordRequest {
@@ -18,4 +24,5 @@ export interface CreateWordRequest {
   description?: string;
   language: LanguageRef;
   languageTo: LanguageRef;
+  tags?: TagSuggestion[];
 }

@@ -2,10 +2,11 @@ import { Component, inject, input, OnInit } from '@angular/core';
 import { WordService } from '../../shared/service/word/word.service';
 import { Word } from '../../shared/model/word.model';
 import { LANGUAGE_FLAGS } from '../../shared/model/flag';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-word-detail',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './word-detail.component.html',
   styleUrl: './word-detail.component.css',
 })
