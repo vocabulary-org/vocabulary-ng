@@ -75,6 +75,13 @@
             <td>
               {{ word.sentence }}
               <div class="d-sm-none text-body-secondary small mt-1">{{ word.translation }}</div>
+              @if (word.tags?.length) {
+                <div class="d-none d-sm-flex flex-wrap gap-1 mt-1">
+                  @for (tag of word.tags!; track tag.tag) {
+                    <span class="badge rounded-pill bg-primary-subtle text-primary-emphasis">{{ tag.label }}</span>
+                  }
+                </div>
+              }
             </td>
             <td class="d-none d-sm-table-cell text-body-secondary">{{ word.translation }}</td>
             <td class="d-none d-md-table-cell text-body-secondary small">{{ word.description }}</td>

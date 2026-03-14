@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CreateWordRequest, Word } from '../../shared/model/word.model';
+import { CreateWordRequest, TagSuggestion, Word } from '../../shared/model/word.model';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Language } from '../../shared/model/language';
@@ -17,6 +17,7 @@ import { AutoTranslationComponent } from '../auto-translation/auto-translation.c
 import { LanguagesStore } from '../../shared/store/language.store';
 import { UserLanguages } from '../../shared/model/user-languages';
 import { UserLanguagesService } from '../../shared/service/user/user-languages.service';
+import { TagService } from '../../shared/service/word/tag.service';
 
 @Component({
   selector: 'app-word-create',
@@ -30,6 +31,7 @@ export class WordCreateUpdateComponent {
   private readonly wordService = inject(WordService);
   private readonly languageStore = inject(LanguagesStore);
   private readonly userLanguagesService = inject(UserLanguagesService);
+  private readonly tagService = inject(TagService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
@@ -41,6 +43,9 @@ export class WordCreateUpdateComponent {
   isQuotaReached = signal(false);
   message = signal<string | null>(null);
   isError = signal(false);
+  isSuggestingTags = signal(false);
+  suggestedTags = signal<TagSuggestion[]>([]);
+  selectedTags = signal<TagSuggestion[]>([]);
 
   private messageTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -94,6 +99,10 @@ export class WordCreateUpdateComponent {
           language: langFrom,
           languageTo: langTo,
         });
+        if (word.tags?.length) {
+          this.selectedTags.set(word.tags);
+          this.suggestedTags.set(word.tags);
+        }
         this.originalFormValue = this.form.getRawValue();
       },
       error: (err) => {
@@ -129,6 +138,35 @@ export class WordCreateUpdateComponent {
     });
   }
 
+  suggestTags(): void {
+    const sentence = this.form.value.sentence?.trim();
+    const languageCode = this.form.value.language?.code;
+    if (!sentence || !languageCode) return;
+
+    this.isSuggestingTags.set(true);
+    this.suggestedTags.set([]);
+    this.selectedTags.set([]);
+
+    this.tagService.suggest({ sentence, languageCode }).subscribe({
+      next: (tags) => this.suggestedTags.set(tags),
+      error: (err) => console.error('Tag suggestion failed', err),
+      complete: () => this.isSuggestingTags.set(false),
+    });
+  }
+
+  toggleTag(tag: TagSuggestion, event: MouseEvent): void {
+    (event.currentTarget as HTMLElement).blur();
+    const current = this.selectedTags();
+    const exists = current.some((t) => t.tag === tag.tag);
+    this.selectedTags.set(
+      exists ? current.filter((t) => t.tag !== tag.tag) : [...current, tag]
+    );
+  }
+
+  isTagSelected(tag: TagSuggestion): boolean {
+    return this.selectedTags().some((t) => t.tag === tag.tag);
+  }
+
   onSubmit() {
     const word: CreateWordRequest = {
       sentence: this.form.value.sentence!,
@@ -136,6 +174,7 @@ export class WordCreateUpdateComponent {
       description: this.form.value.description!,
       language: { uuid: this.form.value.language!.uuid },
       languageTo: { uuid: this.form.value.languageTo!.uuid },
+      tags: this.selectedTags(),
     };
 
     if (this.isEdit()) {
@@ -168,6 +207,8 @@ export class WordCreateUpdateComponent {
           this.form.controls.sentence.reset();
           this.form.controls.translation.reset();
           this.form.controls.description.reset();
+          this.suggestedTags.set([]);
+          this.selectedTags.set([]);
           setTimeout(() => this.sentenceInput.nativeElement.focus());
         } else {
           this.isError.set(true);
@@ -204,6 +245,7 @@ export class WordCreateUpdateComponent {
     this.form.reset(this.originalFormValue);
     this.form.markAsPristine();
     this.form.markAsUntouched();
+    this.selectedTags.set([...this.suggestedTags()]);
   }
 
   swapLanguages(): void {
