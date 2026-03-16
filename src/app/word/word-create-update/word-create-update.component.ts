@@ -1,4 +1,5 @@
 import { Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
+import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
 import { WordService } from '../../shared/service/word/word.service';
 import {
   FormControl,
@@ -15,16 +16,55 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { AutoTranslationComponent } from '../auto-translation/auto-translation.component';
 import { LanguagesStore } from '../../shared/store/language.store';
-import { UserLanguages } from '../../shared/model/user-languages';
 import { UserLanguagesService } from '../../shared/service/user/user-languages.service';
 import { TagService } from '../../shared/service/word/tag.service';
+
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-word-create',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, AutoTranslationComponent],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    AutoTranslationComponent,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
+  ],
   templateUrl: './word-create-update.component.html',
-  styleUrl: './word-create-update.component.css',
+  animations: [
+    trigger('pageEnter', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(18px)' }),
+        animate('420ms ease-out', style({ opacity: 1, transform: 'none' }))
+      ])
+    ]),
+    trigger('cardEnter', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(14px) scale(0.98)' }),
+        animate('360ms ease-out', style({ opacity: 1, transform: 'none' }))
+      ])
+    ]),
+    trigger('staggerItems', [
+      transition(':enter', [
+        query('.anim-item', [
+          style({ opacity: 0, transform: 'translateY(10px)' }),
+          stagger(60, [animate('280ms ease-out', style({ opacity: 1, transform: 'none' }))])
+        ], { optional: true })
+      ])
+    ])
+  ],
 })
 export class WordCreateUpdateComponent {
   @ViewChild('sentenceInput') sentenceInput!: ElementRef<HTMLInputElement>;
@@ -35,20 +75,17 @@ export class WordCreateUpdateComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
-  // State
   languages = signal<Language[]>([]);
   isEdit = signal(false);
   uuid = signal<string | null>(null);
-  isTranslating = signal(false);
-  isQuotaReached = signal(false);
   message = signal<string | null>(null);
   isError = signal(false);
   isSuggestingTags = signal(false);
+  isSubmitting = signal(false);
   suggestedTags = signal<TagSuggestion[]>([]);
   selectedTags = signal<TagSuggestion[]>([]);
 
   private messageTimer: ReturnType<typeof setTimeout> | null = null;
-
   originalFormValue: any;
 
   form = new FormGroup({
@@ -69,8 +106,20 @@ export class WordCreateUpdateComponent {
     }),
   });
 
+  get formCompletion(): number {
+    const controls = ['sentence', 'translation', 'language', 'languageTo'] as const;
+    const filled = controls.filter(c => {
+      const val = this.form.get(c)?.value;
+      return val !== null && val !== '' && val !== undefined;
+    }).length;
+    return Math.round((filled / controls.length) * 100);
+  }
+
+  get progressState(): string {
+    return this.formCompletion === 100 ? 'complete' : 'partial';
+  }
+
   ngOnInit(): void {
-    // check if we are in edit mode (URL: /words/edit/:uuid)
     const paramUuid = this.route.snapshot.paramMap.get('uuid');
     if (!paramUuid) {
       this.loadWordForCreate();
@@ -88,10 +137,8 @@ export class WordCreateUpdateComponent {
     }).subscribe({
       next: ({ langs, word }) => {
         this.languages.set(langs);
-        const langFrom =
-          langs.find((l) => l.uuid === word.language.uuid) ?? null;
-        const langTo =
-          langs.find((l) => l.uuid === word.languageTo.uuid) ?? null;
+        const langFrom = langs.find(l => l.uuid === word.language.uuid) ?? null;
+        const langTo = langs.find(l => l.uuid === word.languageTo.uuid) ?? null;
         this.form.patchValue({
           sentence: word.sentence,
           translation: word.translation,
@@ -105,10 +152,9 @@ export class WordCreateUpdateComponent {
         }
         this.originalFormValue = this.form.getRawValue();
       },
-      error: (err) => {
-        console.error('Error loading word for edit', err);
+      error: () => {
         this.isError.set(true);
-        this.message.set('❌ Unable to load the word for editing.');
+        this.message.set('Unable to load the word for editing.');
       },
     });
   }
@@ -120,20 +166,14 @@ export class WordCreateUpdateComponent {
     }).subscribe({
       next: ({ langs, userLang }) => {
         this.languages.set(langs);
-        const langFrom =
-          langs.find((l) => l.uuid === userLang.language?.uuid) ?? null;
-        const langTo =
-          langs.find((l) => l.uuid === userLang.languageTo?.uuid) ?? null;
-        this.form.patchValue({
-          language: langFrom,
-          languageTo: langTo,
-        });
+        const langFrom = langs.find(l => l.uuid === userLang.language?.uuid) ?? null;
+        const langTo = langs.find(l => l.uuid === userLang.languageTo?.uuid) ?? null;
+        this.form.patchValue({ language: langFrom, languageTo: langTo });
         this.originalFormValue = this.form.getRawValue();
       },
-      error: (err) => {
-        console.error('Error loading word for edit', err);
+      error: () => {
         this.isError.set(true);
-        this.message.set('❌ Unable to load the word for editing.');
+        this.message.set('Unable to load language settings.');
       },
     });
   }
@@ -148,26 +188,33 @@ export class WordCreateUpdateComponent {
     this.selectedTags.set([]);
 
     this.tagService.suggest({ sentence, languageCode }).subscribe({
-      next: (tags) => this.suggestedTags.set(tags),
-      error: (err) => console.error('Tag suggestion failed', err),
+      next: tags => this.suggestedTags.set(tags),
+      error: err => console.error('Tag suggestion failed', err),
       complete: () => this.isSuggestingTags.set(false),
     });
   }
 
-  toggleTag(tag: TagSuggestion, event: MouseEvent): void {
-    (event.currentTarget as HTMLElement).blur();
+  toggleTag(tag: TagSuggestion, event?: MouseEvent): void {
+    if (event) (event.currentTarget as HTMLElement).blur();
     const current = this.selectedTags();
-    const exists = current.some((t) => t.tag === tag.tag);
-    this.selectedTags.set(
-      exists ? current.filter((t) => t.tag !== tag.tag) : [...current, tag]
-    );
+    const exists = current.some(t => t.tag === tag.tag);
+    this.selectedTags.set(exists ? current.filter(t => t.tag !== tag.tag) : [...current, tag]);
+  }
+
+  onTagChipChange(tag: TagSuggestion, selected: boolean): void {
+    const current = this.selectedTags();
+    if (selected) {
+      if (!current.some(t => t.tag === tag.tag)) this.selectedTags.set([...current, tag]);
+    } else {
+      this.selectedTags.set(current.filter(t => t.tag !== tag.tag));
+    }
   }
 
   isTagSelected(tag: TagSuggestion): boolean {
-    return this.selectedTags().some((t) => t.tag === tag.tag);
+    return this.selectedTags().some(t => t.tag === tag.tag);
   }
 
-  onSubmit() {
+  onSubmit(): void {
     const word: CreateWordRequest = {
       sentence: this.form.value.sentence!,
       translation: this.form.value.translation!,
@@ -177,24 +224,20 @@ export class WordCreateUpdateComponent {
       tags: this.selectedTags(),
     };
 
+    this.isSubmitting.set(true);
+
     if (this.isEdit()) {
-      // 🔁 UPDATE
       this.wordService.updateWord(this.uuid()!, word).subscribe({
-        next: (response) => {
-          this.setSuccessMessage('✅ Your word has been successfully updated.');
-          // optional: navigate back to list
-          setTimeout(() => {
-            this.router.navigate(['/word/list']); // ✅ redirect to list
-          }, 800);
+        next: () => {
+          this.isSubmitting.set(false);
+          this.setSuccessMessage('Word updated successfully!');
+          setTimeout(() => this.router.navigate(['/word/list']), 900);
         },
         error: (error: HttpErrorResponse) => {
+          this.isSubmitting.set(false);
           this.isError.set(true);
           const body = error.error;
-          this.message =
-            body && body.message
-              ? body.message
-              : '❌ Something went wrong while updating.';
-          console.error('Update error status:', error.status, 'body:', body);
+          this.message.set(body?.message ?? 'Something went wrong while updating.');
         },
       });
       return;
@@ -202,8 +245,9 @@ export class WordCreateUpdateComponent {
 
     this.wordService.addWord(word).subscribe({
       next: (response: HttpResponse<Word>) => {
+        this.isSubmitting.set(false);
         if (response.status === 201) {
-          this.setSuccessMessage('✅ Your word has been successfully added.');
+          this.setSuccessMessage('Word added to your vocabulary!');
           this.form.controls.sentence.reset();
           this.form.controls.translation.reset();
           this.form.controls.description.reset();
@@ -213,15 +257,13 @@ export class WordCreateUpdateComponent {
         } else {
           this.isError.set(true);
           this.message.set(`Unexpected status: ${response.status}`);
-          console.error('Error status:', response.status);
         }
       },
       error: (error: HttpErrorResponse) => {
+        this.isSubmitting.set(false);
         this.isError.set(true);
-        const body = error.error; // could be string (text/plain) or object (application/json)
-        this.message =
-          body && body.message ? body.message : '❌ Something went wrong.';
-        console.error('Error status:', error.status, 'body:', body);
+        const body = error.error;
+        this.message.set(body?.message ?? 'Something went wrong.');
       },
     });
   }
@@ -230,7 +272,7 @@ export class WordCreateUpdateComponent {
     if (this.messageTimer) clearTimeout(this.messageTimer);
     this.isError.set(false);
     this.message.set(text);
-    this.messageTimer = setTimeout(() => this.message.set(null), 4000);
+    this.messageTimer = setTimeout(() => this.message.set(null), 4500);
   }
 
   clearMessage(): void {
@@ -239,9 +281,7 @@ export class WordCreateUpdateComponent {
   }
 
   onCancel(): void {
-    if (!this.originalFormValue) {
-      return;
-    }
+    if (!this.originalFormValue) return;
     this.form.reset(this.originalFormValue);
     this.form.markAsPristine();
     this.form.markAsUntouched();
@@ -251,11 +291,11 @@ export class WordCreateUpdateComponent {
   swapLanguages(): void {
     const from = this.form.value.language;
     const to = this.form.value.languageTo;
+    this.form.patchValue({ language: to, languageTo: from });
+  }
 
-    this.form.patchValue({
-      language: to,
-      languageTo: from,
-    });
+  compareByUuid(a: Language | null, b: Language | null): boolean {
+    return a?.uuid === b?.uuid;
   }
 
   onTranslated(text: string): void {
@@ -263,19 +303,13 @@ export class WordCreateUpdateComponent {
     this.form.controls.translation.markAsDirty();
   }
 
-  get sentenceIsInvalid() {
-    return (
-      this.form.controls.sentence.touched &&
-      this.form.controls.sentence.dirty &&
-      this.form.controls.sentence.invalid
-    );
+  get sentenceIsInvalid(): boolean {
+    const c = this.form.controls.sentence;
+    return c.touched && c.dirty && c.invalid;
   }
 
-  get translationIsInvalid() {
-    return (
-      this.form.controls.translation.touched &&
-      this.form.controls.translation.dirty &&
-      this.form.controls.translation.invalid
-    );
+  get translationIsInvalid(): boolean {
+    const c = this.form.controls.translation;
+    return c.touched && c.dirty && c.invalid;
   }
 }

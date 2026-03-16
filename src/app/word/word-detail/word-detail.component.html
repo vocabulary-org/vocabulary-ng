@@ -6,7 +6,7 @@
         <div class="card shadow-sm">
           <div class="card-body p-4">
 
-            <!-- Language badges -->
+            
             <div class="d-flex align-items-center justify-content-between mb-4">
               <h5 class="mb-0 fw-bold text-body-secondary">Word Details</h5>
               <div class="d-flex gap-2">
@@ -20,7 +20,7 @@
               </div>
             </div>
 
-            <!-- Sentence & Translation -->
+            
             <div class="row g-4 mb-4">
               <div class="col-md-6">
                 <div class="card bg-light border-0 h-100">
@@ -40,7 +40,7 @@
               </div>
             </div>
 
-            <!-- Description -->
+            
             @if (word.description.trim()) {
               <div class="card bg-light border-0 mb-3">
                 <div class="card-body">
@@ -50,7 +50,7 @@
               </div>
             }
 
-            <!-- Tags -->
+            
             @if (word.tags?.length) {
               <div class="d-flex flex-wrap gap-2 mt-3">
                 @for (tag of word.tags!; track tag.tag) {
@@ -61,7 +61,7 @@
               </div>
             }
 
-            <!-- Actions -->
+            
             <div class="d-flex gap-2 mt-4">
               <a [routerLink]="['/word/edit', word.uuid]" class="btn btn-warning btn-sm">
                 <i class="bi bi-pencil me-1"></i>Edit

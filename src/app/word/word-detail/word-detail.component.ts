@@ -13,7 +13,7 @@ import { RouterLink } from '@angular/router';
 export class WordDetailComponent implements OnInit {
   uuid = input.required<string>();
   private wordService = inject(WordService);
-  word?: Word; // property to hold the result
+  word?: Word;
   readonly flags = LANGUAGE_FLAGS;
 
   ngOnInit(): void {

@@ -1,5 +1,16 @@
-<button type="button" class="btn btn-outline-primary" (click)="autoTranslate()" [disabled]="!canTranslate()">
-  @if (isTranslating) { Translating... } @else { Auto translate }
+<button mat-stroked-button type="button" color="accent" class="rounded-pill d-inline-flex align-items-center justify-content-center gap-1 btn btn-outline-primary cursor-pointer"
+  (click)="autoTranslate()" [disabled]="!canTranslate()">
+  @if (isTranslating) {
+    <span class="d-inline-flex align-items-center gap-1">
+      <mat-icon>sync</mat-icon>
+      Translating...
+    </span>
+  } @else {
+    <span class="d-inline-flex align-items-center gap-1">
+      <mat-icon>auto_awesome</mat-icon>
+      Auto translate
+    </span>
+  }
 </button>
 
 @if (isQuotaReached) {
@@ -9,7 +20,7 @@
 }
 
 @if (message) {
-<div class="error">
+<div class="alert alert-danger py-2 mt-2 mb-0" role="alert">
   {{ message }}
 </div>
 }

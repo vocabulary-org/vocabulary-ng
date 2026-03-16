@@ -1,92 +1,142 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
-  <div class="container-fluid">
+<mat-toolbar class="sticky-top px-2 px-md-3 bg-dark text-white"
+  [class.shadow]="isScrolled">
 
-    <!-- Brand -->
-    <a class="navbar-brand" routerLink="/">Vocabulary</a>
+  
+  <a routerLink="/" mat-button class="rounded-pill fw-bold fs-6 text-white" (click)="closeMobileMenu()">
+    <mat-icon class="text-white">auto_stories</mat-icon>
+    Vocabulary
+  </a>
 
-    <!-- Mobile toggle -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <span class="flex-fill"></span>
 
-    <!-- Menu items -->
-    <div class="collapse navbar-collapse" id="mainNavbar">
-      <ul class="navbar-nav ms-auto">
+  
+  <nav class="d-none d-lg-flex align-items-center gap-1">
 
-        <li class="nav-item">
-          <a routerLink="/" class="nav-link">Home</a>
-        </li>
+    <a routerLink="/" mat-button class="rounded-pill text-white"
+      routerLinkActive="bg-white bg-opacity-10"
+      [routerLinkActiveOptions]="{exact:true}">
+      <mat-icon class="text-white">home</mat-icon> Home
+    </a>
 
-        <!-- WORDS DROPDOWN -->
-        <li class="nav-item dropdown" *kaHasRoles="['USER']">
-          <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Words
-          </a>
+    <ng-container *kaHasRoles="['USER']">
+      <button mat-button class="rounded-pill text-white" [matMenuTriggerFor]="wordsMenu">
+        <mat-icon class="text-white">library_books</mat-icon>
+        Words
+        <mat-icon class="text-white" iconPositionEnd>arrow_drop_down</mat-icon>
+      </button>
+      <mat-menu #wordsMenu="matMenu">
+        <a mat-menu-item routerLink="/word/list">
+          <mat-icon>format_list_bulleted</mat-icon> My Words
+        </a>
+        <a mat-menu-item routerLink="/word/new-word">
+          <mat-icon>add_circle</mat-icon> Add Word
+        </a>
+      </mat-menu>
+    </ng-container>
 
-          <ul class="dropdown-menu">
-            <li>
-              <a class="dropdown-item" routerLink="/word/list">
-                My Words
-              </a>
-            </li>
+    <a *kaHasRoles="['USER']" routerLink="/flashcard" mat-button class="rounded-pill text-white"
+      routerLinkActive="bg-white bg-opacity-10">
+      <mat-icon class="text-white">style</mat-icon> Flashcards
+    </a>
 
-            <li>
-              <a class="dropdown-item" routerLink="/word/new-word">
-                Add Word
-              </a>
-            </li>
-          </ul>
-        </li>
+    <ng-container *kaHasRoles="['USER']">
+      <button mat-button class="rounded-pill text-white" [matMenuTriggerFor]="settingsMenu">
+        <mat-icon class="text-white">tune</mat-icon>
+        Settings
+        <mat-icon class="text-white" iconPositionEnd>arrow_drop_down</mat-icon>
+      </button>
+      <mat-menu #settingsMenu="matMenu">
+        <a mat-menu-item routerLink="/settings/languages">
+          <mat-icon>language</mat-icon> My Languages
+        </a>
+        <a mat-menu-item routerLink="/settings/roles">
+          <mat-icon>manage_accounts</mat-icon> Roles
+        </a>
+        <mat-divider></mat-divider>
+        <a mat-menu-item routerLink="/settings/delete-user">
+          <mat-icon color="warn">delete_forever</mat-icon> Delete Account
+        </a>
+      </mat-menu>
+    </ng-container>
 
-        <!-- FLASHCARDS -->
-        <li class="nav-item" *kaHasRoles="['USER']">
-          <a routerLink="/flashcard" class="nav-link">Flashcards</a>
-        </li>
+    <div class="vr text-white opacity-25 mx-2 d-none d-lg-inline-flex"></div>
 
-        <!-- SETTINGS DROPDOWN -->
-        <li class="nav-item dropdown" *kaHasRoles="['USER']">
-          <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Settings
-          </a>
+    @if (!authenticated) {
+      <button mat-button class="rounded-pill text-white" (click)="login()">
+        <mat-icon class="text-white">login</mat-icon> Login
+      </button>
+      <a mat-raised-button routerLink="/register" class="rounded-pill ms-1 bg-gradient bg-primary text-white fw-semibold">
+        <mat-icon class="text-white">person_add</mat-icon> Register
+      </a>
+    } @else {
+      <button mat-stroked-button class="rounded-pill border-white border-opacity-50 text-white" (click)="logout()">
+        <mat-icon class="text-white">logout</mat-icon> Logout
+      </button>
+    }
 
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li>
-              <a class="dropdown-item" routerLink="/settings/languages">
-                My Languages
-              </a>
-            </li>
+  </nav>
 
-            <li>
-              <a class="dropdown-item" routerLink="/settings/roles">
-                Roles
-              </a>
-            </li>
+  
+  <button mat-icon-button class="d-lg-none text-white" (click)="mobileMenuOpen = !mobileMenuOpen">
+    <mat-icon class="text-white">{{ mobileMenuOpen ? 'close' : 'menu' }}</mat-icon>
+  </button>
 
-            <li>
-              <a class="dropdown-item" routerLink="/settings/delete-user">
-                Delete My Account
-              </a>
-            </li>
+</mat-toolbar>
 
-          </ul>
-        </li>
 
-        <!-- Authenticated / not authenticated -->
-        @if (!authenticated) {
-        <li class="nav-item">
-          <button class="btn nav-link" (click)="login()" style="cursor: pointer;">Login</button>
-        </li>
+@if (mobileMenuOpen) {
+  <div class="bg-dark border-bottom border-light-subtle shadow-sm p-3">
 
-        <li class="nav-item">
-          <a routerLink="/register" class="nav-link">Register</a>
-        </li>
-        } @else {
-        <li class="nav-item">
-          <button class="btn nav-link" (click)="logout()" style="cursor: pointer;">Logout</button>
-        </li>
-        }
+    <a mat-button class="d-flex w-100 justify-content-start rounded-pill mb-1 text-white"
+      routerLink="/" routerLinkActive="bg-white bg-opacity-10"
+      [routerLinkActiveOptions]="{exact:true}" (click)="closeMobileMenu()">
+      <mat-icon class="me-2 text-white">home</mat-icon> Home
+    </a>
 
-      </ul>
-    </div>
+    <ng-container *kaHasRoles="['USER']">
+      <a mat-button class="d-flex w-100 justify-content-start rounded-pill mb-1 text-white"
+        routerLink="/word/list" routerLinkActive="bg-white bg-opacity-10" (click)="closeMobileMenu()">
+        <mat-icon class="me-2 text-white">format_list_bulleted</mat-icon> My Words
+      </a>
+      <a mat-button class="d-flex w-100 justify-content-start rounded-pill mb-1 text-white"
+        routerLink="/word/new-word" routerLinkActive="bg-white bg-opacity-10" (click)="closeMobileMenu()">
+        <mat-icon class="me-2 text-white">add_circle</mat-icon> Add Word
+      </a>
+      <a mat-button class="d-flex w-100 justify-content-start rounded-pill mb-1 text-white"
+        routerLink="/flashcard" routerLinkActive="bg-white bg-opacity-10" (click)="closeMobileMenu()">
+        <mat-icon class="me-2 text-white">style</mat-icon> Flashcards
+      </a>
+    </ng-container>
+
+    <mat-divider class="my-2"></mat-divider>
+
+    <ng-container *kaHasRoles="['USER']">
+      <a mat-button class="d-flex w-100 justify-content-start rounded-pill mb-1 text-white"
+        routerLink="/settings/languages" routerLinkActive="bg-white bg-opacity-10" (click)="closeMobileMenu()">
+        <mat-icon class="me-2 text-white">language</mat-icon> My Languages
+      </a>
+      <a mat-button class="d-flex w-100 justify-content-start rounded-pill mb-1 text-white"
+        routerLink="/settings/roles" routerLinkActive="bg-white bg-opacity-10" (click)="closeMobileMenu()">
+        <mat-icon class="me-2 text-white">manage_accounts</mat-icon> Roles
+      </a>
+      <mat-divider class="my-2"></mat-divider>
+    </ng-container>
+
+    @if (!authenticated) {
+      <button mat-button class="d-flex w-100 justify-content-start rounded-pill mb-1 text-white"
+        (click)="login(); closeMobileMenu()">
+        <mat-icon class="me-2 text-white">login</mat-icon> Login
+      </button>
+      <a mat-raised-button class="d-flex w-100 justify-content-start rounded-pill bg-gradient bg-primary text-white"
+        routerLink="/register" (click)="closeMobileMenu()">
+        <mat-icon class="me-2 text-white">person_add</mat-icon> Register
+      </a>
+    } @else {
+      <button mat-stroked-button class="d-flex w-100 justify-content-start rounded-pill text-white border-white border-opacity-50"
+        (click)="logout()">
+        <mat-icon class="me-2 text-white">logout</mat-icon> Logout
+      </button>
+    }
+
   </div>
-</nav>
+}
