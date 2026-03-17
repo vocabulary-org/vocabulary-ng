@@ -160,7 +160,13 @@
                   type="submit"
                   color="primary"
                   class="rounded-pill px-4 bg-gradient d-flex flex-grow-1 flex-sm-grow-0 align-items-center justify-content-center gap-1 btn btn-primary cursor-pointer"
-                  [disabled]="form.invalid || isSubmitting()"
+                  [disabled]="
+                    isSubmitting() ||
+                    !form.value.sentence?.trim() ||
+                    !form.value.translation?.trim() ||
+                    !form.value.language ||
+                    !form.value.languageTo
+                  "
                 >
                 @if (isSubmitting()) {
                   <span class="d-inline-flex align-items-center gap-1">
