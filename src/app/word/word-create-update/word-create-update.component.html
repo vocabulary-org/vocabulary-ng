@@ -11,7 +11,7 @@
             <p class="text-white-50 small text-uppercase fw-semibold mb-1">
               {{ isEdit() ? 'Edit' : 'New word' }}
             </p>
-            <h3 class="fw-bold mb-0">
+            <h3 class="fw-bold mb-0 fs-5 fs-md-3">
               {{ isEdit() ? 'Update Word' : 'Add to your vocabulary' }}
             </h3>
           </div>
@@ -21,10 +21,10 @@
           <div class="row g-3" @staggerItems>
             <div class="col-12 anim-item">
               <div class="p-3 p-md-4 bg-primary bg-opacity-10 border border-primary-subtle rounded-4 shadow-sm">
-                <div class="row align-items-center g-2">
-                  <div class="col-12 col-md-5 order-1">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="flex-fill" style="min-width: 0">
                     <mat-form-field appearance="fill" class="w-100">
-                      <mat-label>Language from</mat-label>
+                      <mat-label><span class="d-none d-sm-inline">Language </span>From</mat-label>
                       <mat-select formControlName="language" [compareWith]="compareByUuid">
                         @for (l of languages(); track l.uuid) {
                           <mat-option [value]="l">{{ l.name }}</mat-option>
@@ -33,7 +33,7 @@
                     </mat-form-field>
                   </div>
 
-                  <div class="col-12 col-md-2 order-2 d-flex justify-content-center align-items-center">
+                  <div class="flex-shrink-0">
                     <button
                       mat-icon-button
                       type="button"
@@ -46,9 +46,9 @@
                     </button>
                   </div>
 
-                  <div class="col-12 col-md-5 order-3">
+                  <div class="flex-fill" style="min-width: 0">
                     <mat-form-field appearance="fill" class="w-100">
-                      <mat-label>Language to</mat-label>
+                      <mat-label><span class="d-none d-sm-inline">Language </span>To</mat-label>
                       <mat-select formControlName="languageTo" [compareWith]="compareByUuid">
                         @for (l of languages(); track l.uuid) {
                           <mat-option [value]="l">{{ l.name }}</mat-option>
@@ -63,7 +63,7 @@
             <div class="col-12 anim-item">
               <div class="p-3 p-md-4 bg-white bg-opacity-75 border border-primary-subtle rounded-4 shadow-sm">
                 <div class="row g-3">
-                  <div class="col-12">
+                  <div class="col-12 col-md-6">
                     <mat-form-field appearance="fill" class="w-100">
                       <mat-label>Sentence</mat-label>
                       <input
@@ -79,7 +79,7 @@
                     </mat-form-field>
                   </div>
 
-                  <div class="col-12">
+                  <div class="col-12 col-md-6">
                     <mat-form-field appearance="fill" class="w-100">
                       <mat-label>Translation</mat-label>
                       <input matInput formControlName="translation" />
@@ -112,6 +112,7 @@
 
             <div class="col-12 anim-item">
               <div class="p-3 p-md-4 bg-white bg-opacity-75 border rounded-4 shadow-sm">
+                <div class="d-grid d-sm-block">
                 <button
                   mat-stroked-button
                   type="button"
@@ -132,6 +133,7 @@
                   </span>
                 }
                 </button>
+                </div>
 
                 @if (suggestedTags().length) {
                   <div class="mt-2 d-flex flex-wrap gap-2">
@@ -157,7 +159,7 @@
                   mat-raised-button
                   type="submit"
                   color="primary"
-                  class="rounded-pill px-4 bg-gradient d-inline-flex align-items-center justify-content-center gap-1 btn btn-primary cursor-pointer"
+                  class="rounded-pill px-4 bg-gradient d-flex flex-grow-1 flex-sm-grow-0 align-items-center justify-content-center gap-1 btn btn-primary cursor-pointer"
                   [disabled]="form.invalid || isSubmitting()"
                 >
                 @if (isSubmitting()) {
@@ -175,7 +177,7 @@
                     mat-stroked-button
                     type="button"
                     color="accent"
-                    class="rounded-pill d-inline-flex align-items-center justify-content-center gap-1 btn btn-outline-secondary cursor-pointer"
+                    class="rounded-pill d-flex flex-grow-1 flex-sm-grow-0 align-items-center justify-content-center gap-1 btn btn-outline-secondary cursor-pointer"
                     (click)="onCancel()"
                   >
                     Cancel

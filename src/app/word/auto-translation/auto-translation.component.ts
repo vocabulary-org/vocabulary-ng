@@ -11,7 +11,6 @@ export type AutoTranslationInput = {
   toCode: string | null;
 };
 
-
 @Component({
   selector: 'app-word-translation',
   standalone: true,
@@ -31,7 +30,7 @@ export class AutoTranslationComponent {
   ngOnInit(): void {
     this.translateService.isQuotaReached().subscribe({
       next: (v) => (this.isQuotaReached = v),
-      error: () => (this.isQuotaReached = true),
+      error: () => (this.isQuotaReached = false),
     });
   }
 

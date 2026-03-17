@@ -7,6 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { CreateWordRequest, TagSuggestion, Word } from '../../shared/model/word.model';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -27,9 +28,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+class TouchedDirtyMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null): boolean {
+    return !!(control?.invalid && control.dirty && control.touched);
+  }
+}
+
 @Component({
   selector: 'app-word-create',
   standalone: true,
+  providers: [{ provide: ErrorStateMatcher, useClass: TouchedDirtyMatcher }],
   imports: [
     ReactiveFormsModule,
     CommonModule,
@@ -90,19 +98,19 @@ export class WordCreateUpdateComponent {
 
   form = new FormGroup({
     sentence: new FormControl('', {
-      validators: [Validators.required, Validators.minLength(2)],
+      validators: [Validators.minLength(2)],
     }),
     translation: new FormControl('', {
-      validators: [Validators.required, Validators.minLength(2)],
+      validators: [Validators.minLength(2)],
     }),
     description: new FormControl('', {
       validators: [Validators.minLength(2)],
     }),
     language: new FormControl<Language | null>(null, {
-      validators: [Validators.required],
+      validators: [],
     }),
     languageTo: new FormControl<Language | null>(null, {
-      validators: [Validators.required],
+      validators: [],
     }),
   });
 
