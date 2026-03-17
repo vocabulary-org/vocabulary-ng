@@ -1,5 +1,7 @@
 import { Component, inject, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { TranslateService } from '../../shared/service/word/translate.service';
 import { TranslateRequest } from '../../shared/model/translate-request.model';
 
@@ -9,11 +11,10 @@ export type AutoTranslationInput = {
   toCode: string | null;
 };
 
-
 @Component({
   selector: 'app-word-translation',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatButtonModule, MatIconModule],
   templateUrl: './auto-translation.component.html',
 })
 export class AutoTranslationComponent {
@@ -29,7 +30,7 @@ export class AutoTranslationComponent {
   ngOnInit(): void {
     this.translateService.isQuotaReached().subscribe({
       next: (v) => (this.isQuotaReached = v),
-      error: () => (this.isQuotaReached = true), // fail-safe
+      error: () => (this.isQuotaReached = false),
     });
   }
 
@@ -55,7 +56,7 @@ export class AutoTranslationComponent {
       },
       error: (err) => {
         console.error('Translate failed', err);
-        const body = err.error; // could be string (text/plain) or object (application/json)
+        const body = err.error;
 
         this.message =
           body && body.message ? body.message : '❌ Something went wrong.';
@@ -64,4 +65,3 @@ export class AutoTranslationComponent {
     });
   }
 }
-
