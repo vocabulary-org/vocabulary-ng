@@ -1,0 +1,186 @@
+<div class="container py-4">
+
+  <!-- Language picker -->
+  @if (state === 'pick-language') {
+  <div class="row justify-content-center">
+    <div class="col-md-5 text-center py-4">
+      <i class="bi bi-translate fs-1 text-primary"></i>
+      <h3 class="mt-3 fw-bold">Try the Flashcard Demo</h3>
+      <p class="text-muted mb-4">Pick a language pair and practice 8 common words — no account needed.</p>
+
+      <div class="row g-3 mb-4 align-items-center">
+        <div class="col">
+          <label class="form-label fw-semibold">From</label>
+          <select class="form-select form-select-lg" [(ngModel)]="fromLang" (ngModelChange)="onFromChange()">
+            @for (lang of languages; track lang.code) {
+              <option [value]="lang.code">{{ lang.flag }} {{ lang.name }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-auto pt-3">
+          <i class="bi bi-arrow-right fs-4 text-muted"></i>
+        </div>
+        <div class="col">
+          <label class="form-label fw-semibold">To</label>
+          <select class="form-select form-select-lg" [(ngModel)]="toLang" (ngModelChange)="onToChange()">
+            @for (lang of languages; track lang.code) {
+              <option [value]="lang.code" [disabled]="lang.code === fromLang">{{ lang.flag }} {{ lang.name }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-lg w-100" (click)="start()" [disabled]="!canStart">
+        <i class="bi bi-play-fill me-2"></i>Start Practice
+      </button>
+
+      <p class="mt-4 mb-0 small text-muted">
+        Want to practice your own words?
+        <a routerLink="/register" class="fw-semibold">Create a free account</a>
+      </p>
+    </div>
+  </div>
+  }
+
+  <!-- Active session -->
+  @if (state === 'sentence' || state === 'translation') {
+  <div class="row justify-content-center">
+    <div class="col-md-7 col-lg-6">
+
+      <!-- Header -->
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <span class="badge bg-primary bg-opacity-10 text-primary fs-6">
+          {{ fromLanguage.flag }} {{ fromLanguage.name }} → {{ toLanguage.flag }} {{ toLanguage.name }}
+        </span>
+        <button class="btn btn-sm btn-outline-secondary" (click)="changeLang()">Change</button>
+      </div>
+
+      <!-- Progress -->
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="text-muted small">Card {{ currentIndex + 1 }} of {{ words.length }}</span>
+        <div class="d-flex gap-3 small">
+          <span class="text-success"><i class="bi bi-check-circle-fill"></i> {{ rightCount }}</span>
+          <span class="text-danger"><i class="bi bi-x-circle-fill"></i> {{ wrongCount }}</span>
+          <span class="text-secondary"><i class="bi bi-arrow-right-circle-fill"></i> {{ skipCount }}</span>
+        </div>
+      </div>
+
+      <div class="progress mb-4" style="height: 6px;">
+        <div class="progress-bar" [style.width.%]="(currentIndex / words.length) * 100"></div>
+      </div>
+
+      <!-- Card -->
+      <div class="card-flip-container" (click)="state === 'sentence' && reveal()" [style.cursor]="state === 'sentence' ? 'pointer' : 'default'" [title]="state === 'sentence' ? 'Click to reveal the translation' : ''">
+        <div class="card-inner" [class.flipped]="isFlipped" [class.no-transition]="skipTransition">
+
+          <!-- Front: sentence -->
+          <div class="card-face card-front">
+            <p class="text-muted small mb-2">{{ fromLanguage.flag }} {{ fromLanguage.name }}</p>
+            <h2 class="mb-0">{{ currentWord.sentence }}</h2>
+          </div>
+
+          <!-- Back: translation -->
+          <div class="card-face card-back">
+            <p class="text-muted small mb-2">{{ fromLanguage.flag }} {{ fromLanguage.name }}</p>
+            <h2 class="mb-3">{{ currentWord.sentence }}</h2>
+            <hr class="w-100 my-0">
+            <p class="text-muted small mb-2 mt-3">{{ toLanguage.flag }} {{ toLanguage.name }}</p>
+            <h3 class="text-primary mb-0">{{ currentWord.translation }}</h3>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Hint (first card only) -->
+      @if (state === 'sentence' && currentIndex === 0) {
+      <p class="text-center text-muted small mb-3">
+        <i class="bi bi-hand-index me-1"></i>Tap the card to reveal the translation
+      </p>
+      }
+
+      <!-- Actions -->
+      @if (state === 'sentence') {
+      <div class="row g-2">
+        <div class="col-12">
+          <button class="btn btn-outline-secondary w-100 btn-lg" (click)="submit('SKIP')">
+            <i class="bi bi-arrow-right me-1"></i>Skip
+          </button>
+        </div>
+      </div>
+      }
+
+      @if (state === 'translation') {
+      <div class="row g-2">
+        <div class="col-6">
+          <button class="btn btn-success w-100 btn-lg" (click)="submit('RIGHT')">
+            <i class="bi bi-check-lg me-1"></i>Right
+          </button>
+        </div>
+        <div class="col-6">
+          <button class="btn btn-danger w-100 btn-lg" (click)="submit('WRONG')">
+            <i class="bi bi-x-lg me-1"></i>Wrong
+          </button>
+        </div>
+      </div>
+      }
+
+    </div>
+  </div>
+  }
+
+  <!-- Session complete -->
+  @if (state === 'complete') {
+  <div class="row justify-content-center">
+    <div class="col-md-6 text-center py-4">
+      <i class="bi bi-trophy-fill fs-1 text-warning"></i>
+      <h3 class="mt-3">Session complete!</h3>
+      <p class="text-muted">
+        You reviewed {{ words.length }} words:
+        {{ fromLanguage.flag }} {{ fromLanguage.name }} → {{ toLanguage.flag }} {{ toLanguage.name }}.
+      </p>
+
+      <div class="row g-3 my-3">
+        <div class="col-4">
+          <div class="card border-0 bg-success bg-opacity-10 py-3">
+            <div class="fs-2 fw-bold text-success">{{ rightCount }}</div>
+            <div class="small text-muted">Right</div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="card border-0 bg-danger bg-opacity-10 py-3">
+            <div class="fs-2 fw-bold text-danger">{{ wrongCount }}</div>
+            <div class="small text-muted">Wrong</div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="card border-0 bg-secondary bg-opacity-10 py-3">
+            <div class="fs-2 fw-bold text-secondary">{{ skipCount }}</div>
+            <div class="small text-muted">Skipped</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2 justify-content-center mt-3">
+        <button class="btn btn-outline-primary" (click)="restart()">
+          <i class="bi bi-arrow-clockwise me-2"></i>Practice Again
+        </button>
+        <button class="btn btn-outline-secondary" (click)="changeLang()">Change Languages</button>
+      </div>
+
+      <!-- Sign-up CTA -->
+      <div class="card border-0 bg-primary bg-opacity-10 mt-4 p-4">
+        <h5 class="fw-bold mb-2">Practice your own vocabulary</h5>
+        <p class="text-muted small mb-3">Create a free account to add your own words and track your progress across sessions.</p>
+        <a routerLink="/register" class="btn btn-primary">
+          <i class="bi bi-person-plus me-2"></i>Create Free Account
+        </a>
+        <p class="mt-2 mb-0 small text-muted">
+          Already have an account? <a routerLink="/">Log in</a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+  }
+
+</div>
