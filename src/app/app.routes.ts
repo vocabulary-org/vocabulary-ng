@@ -17,6 +17,7 @@ import { PrivacyComponent } from './legal/privacy/privacy.component';
 import { TermsComponent } from './legal/terms/terms.component';
 import { CookiesComponent } from './legal/cookies/cookies.component';
 import { AboutComponent } from './about/about.component';
+import { DemoFlashcardComponent } from './demo-flashcard/demo-flashcard.component';
 
 export const routes: Routes = [
   {
@@ -76,6 +77,11 @@ export const routes: Routes = [
     component: DeleteUserComponent,
     canActivate: [canActivateAuthRole],
     data: { role: 'USER' },
+  },
+
+  {
+    path: 'demo',
+    component: DemoFlashcardComponent,
   },
 
   {

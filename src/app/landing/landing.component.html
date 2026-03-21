@@ -14,6 +14,7 @@
             <a routerLink="/flashcard" class="btn btn-outline-light btn-sm px-2 px-lg-4 fw-semibold" style="font-size: clamp(0.75rem, 2.5vw, 1rem);">Flashcards</a>
           } @else {
             <a routerLink="/register" class="btn btn-light btn-sm px-2 px-lg-4 fw-semibold" style="font-size: clamp(0.75rem, 2.5vw, 1rem);">Get Started</a>
+            <a routerLink="/demo" class="btn btn-outline-light btn-sm px-2 px-lg-4 fw-semibold" style="font-size: clamp(0.75rem, 2.5vw, 1rem);">Try Demo</a>
           }
         </div>
         @if (!authenticated) {
@@ -70,6 +71,8 @@
             <p class="text-body-secondary mb-1 small">Use flashcards and spaced repetition to lock new words into long-term memory.</p>
             @if (authenticated) {
               <a routerLink="/flashcard" class="small fw-semibold text-success">Practice now →</a>
+            } @else {
+              <a routerLink="/demo" class="small fw-semibold text-success">Try the demo →</a>
             }
           </div>
         </div>
