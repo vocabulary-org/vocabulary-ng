@@ -6,11 +6,15 @@
   (click)="autoTranslate()"
   [disabled]="!canTranslate()">
   @if (isTranslating) {
-    <mat-icon class="fs-6">sync</mat-icon>
-    <span class="small">Translating…</span>
+    <ng-container>
+      <mat-icon class="fs-6">sync</mat-icon>
+      <span class="small">Translating…</span>
+    </ng-container>
   } @else {
-    <mat-icon class="fs-6">translate</mat-icon>
-    <span class="small">Auto-translate</span>
+    <ng-container>
+      <mat-icon class="fs-6">translate</mat-icon>
+      <span class="small">Auto-translate</span>
+    </ng-container>
   }
 </button>
 

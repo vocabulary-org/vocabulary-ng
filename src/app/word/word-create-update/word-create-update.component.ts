@@ -53,7 +53,6 @@ class TouchedDirtyMatcher implements ErrorStateMatcher {
     CdkTextareaAutosize,
   ],
   templateUrl: './word-create-update.component.html',
-  styleUrl: './word-create-update.component.css',
   animations: [
     trigger('pageEnter', [
       transition(':enter', [
