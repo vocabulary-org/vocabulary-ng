@@ -66,13 +66,15 @@
                   <div class="col-12 col-md-6">
                     <mat-form-field appearance="fill" class="w-100">
                       <mat-label>Sentence</mat-label>
-                      <input
+                      <textarea
                         matInput
+                        cdkTextareaAutosize
+                        cdkAutosizeMinRows="1"
                         #sentenceInput
                         [formControl]="form.controls.sentence"
                         placeholder="e.g. The cat sat on the mat"
                         (input)="clearMessage()"
-                      />
+                      ></textarea>
                       @if (sentenceIsInvalid) {
                         <mat-error>Please enter a valid Sentence</mat-error>
                       }
@@ -82,7 +84,12 @@
                   <div class="col-12 col-md-6">
                     <mat-form-field appearance="fill" class="w-100">
                       <mat-label>Translation</mat-label>
-                      <input matInput formControlName="translation" />
+                      <textarea
+                        matInput
+                        cdkTextareaAutosize
+                        cdkAutosizeMinRows="1"
+                        formControlName="translation"
+                      ></textarea>
                       @if (translationIsInvalid) {
                         <mat-error>Please enter a valid Translation</mat-error>
                       }
