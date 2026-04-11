@@ -1,29 +1,29 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()" class="container py-4 py-md-5" @pageEnter>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="container py-2 py-md-3" @pageEnter>
   <div class="row justify-content-center">
     <div class="col-12 col-lg-9">
       <mat-card @cardEnter class="border-0 rounded-4 overflow-hidden shadow-lg bg-white bg-opacity-75">
-        <div class="bg-primary bg-gradient text-white p-3 p-md-4" @staggerItems>
+        <div class="bg-primary bg-gradient text-white p-2 p-md-3" @staggerItems>
           <div class="d-flex align-items-center gap-2 anim-item">
             <mat-icon>auto_stories</mat-icon>
             <span class="fw-semibold">Vocabulary</span>
           </div>
-          <div class="mt-2 anim-item">
-            <p class="text-white-50 small text-uppercase fw-semibold mb-1">
+          <div class="anim-item">
+            <p class="text-white-50 small text-uppercase fw-semibold mb-0">
               {{ isEdit() ? 'Edit' : 'New word' }}
             </p>
-            <h3 class="fw-bold mb-0 fs-5 fs-md-3">
+            <h3 class="fw-bold mb-0 fs-6">
               {{ isEdit() ? 'Update Word' : 'Add to your vocabulary' }}
             </h3>
           </div>
         </div>
 
-        <mat-card-content class="p-3 p-md-4">
-          <div class="row g-3" @staggerItems>
+        <mat-card-content class="p-2 p-md-3">
+          <div class="row g-2" @staggerItems>
             <div class="col-12 anim-item">
-              <div class="p-3 p-md-4 bg-primary bg-opacity-10 border border-primary-subtle rounded-4 shadow-sm">
+              <div class="p-2 bg-primary bg-opacity-10 border border-primary-subtle rounded-3 shadow-sm">
                 <div class="d-flex align-items-center gap-2">
                   <div class="flex-fill" style="min-width: 0">
-                    <mat-form-field appearance="fill" class="w-100">
+                    <mat-form-field appearance="fill" subscriptSizing="dynamic" class="w-100 dense-field">
                       <mat-label><span class="d-none d-sm-inline">Language </span>From</mat-label>
                       <mat-select formControlName="language" [compareWith]="compareByUuid">
                         @for (l of languages(); track l.uuid) {
@@ -47,7 +47,7 @@
                   </div>
 
                   <div class="flex-fill" style="min-width: 0">
-                    <mat-form-field appearance="fill" class="w-100">
+                    <mat-form-field appearance="fill" subscriptSizing="dynamic" class="w-100 dense-field">
                       <mat-label><span class="d-none d-sm-inline">Language </span>To</mat-label>
                       <mat-select formControlName="languageTo" [compareWith]="compareByUuid">
                         @for (l of languages(); track l.uuid) {
@@ -61,10 +61,10 @@
             </div>
 
             <div class="col-12 anim-item">
-              <div class="p-3 p-md-4 bg-white bg-opacity-75 border border-primary-subtle rounded-4 shadow-sm">
-                <div class="row g-3">
+              <div class="p-2 bg-white bg-opacity-75 border border-primary-subtle rounded-3 shadow-sm">
+                <div class="row g-2">
                   <div class="col-12 col-md-6">
-                    <mat-form-field appearance="fill" class="w-100">
+                    <mat-form-field appearance="fill" subscriptSizing="dynamic" class="w-100 dense-field">
                       <mat-label>Sentence</mat-label>
                       <textarea
                         matInput
@@ -82,7 +82,7 @@
                   </div>
 
                   <div class="col-12 col-md-6">
-                    <mat-form-field appearance="fill" class="w-100">
+                    <mat-form-field appearance="fill" subscriptSizing="dynamic" class="w-100 dense-field">
                       <mat-label>Translation</mat-label>
                       <textarea
                         matInput
@@ -108,7 +108,7 @@
                   </div>
 
                   <div class="col-12">
-                    <mat-form-field appearance="fill" class="w-100">
+                    <mat-form-field appearance="fill" subscriptSizing="dynamic" class="w-100 dense-field">
                       <mat-label>Description</mat-label>
                       <input matInput formControlName="description" />
                     </mat-form-field>
@@ -118,7 +118,7 @@
             </div>
 
             <div class="col-12 anim-item">
-              <div class="p-3 p-md-4 bg-white bg-opacity-75 border rounded-4 shadow-sm">
+              <div class="p-2 bg-white bg-opacity-75 border rounded-3 shadow-sm">
                 <div class="d-grid d-sm-block">
                 <button
                   mat-stroked-button
@@ -143,7 +143,7 @@
                 </div>
 
                 @if (suggestedTags().length) {
-                  <div class="mt-2 d-flex flex-wrap gap-2">
+                  <div class="mt-1 d-flex flex-wrap gap-1">
                     @for (tag of suggestedTags(); track tag.tag) {
                       <button
                         type="button"
@@ -201,7 +201,7 @@
           </div>
 
           @if (message()) {
-            <div class="mt-3 alert" [class.alert-danger]="isError()" [class.alert-success]="!isError()">
+            <div class="mt-2 alert" [class.alert-danger]="isError()" [class.alert-success]="!isError()">
               {{ message() }}
             </div>
           }
