@@ -88,7 +88,7 @@
                     </mat-form-field>
                   </div>
 
-                  <div class="col-12">
+                  <div class="col-12 d-flex align-items-center">
                     <app-word-translation
                       [translation]="{
                         sentence: form.controls.sentence.value ?? '',
@@ -110,44 +110,33 @@
             </div>
 
             <div class="col-12 anim-item">
-              <div class="p-2 bg-white bg-opacity-75 border rounded-3 shadow-sm">
-                <div class="d-grid d-sm-block">
+              <div class="d-flex align-items-center flex-wrap gap-1">
                 <button
-                  mat-stroked-button
+                  mat-button
                   type="button"
-                  color="accent"
-                  class="rounded-pill d-inline-flex align-items-center justify-content-center gap-1 btn btn-outline-primary cursor-pointer"
+                  color="primary"
+                  class="rounded-pill px-2 d-inline-flex align-items-center gap-1"
                   (click)="suggestTags()"
                   [disabled]="isSuggestingTags() || !form.value.sentence?.trim() || !form.value.language"
                 >
-                @if (isSuggestingTags()) {
-                  <span class="d-inline-flex align-items-center gap-1">
-                    <mat-spinner diameter="18" class="d-inline-block align-middle"></mat-spinner>
-                    Suggesting…
-                  </span>
-                } @else {
-                  <span class="d-inline-flex align-items-center gap-1">
-                    <mat-icon>auto_awesome</mat-icon>
-                    Suggest tags
-                  </span>
-                }
+                  @if (isSuggestingTags()) {
+                    <mat-spinner diameter="16" class="d-inline-block align-middle"></mat-spinner>
+                    <span class="small">Suggesting…</span>
+                  } @else {
+                    <mat-icon class="fs-6">auto_awesome</mat-icon>
+                    <span class="small">Suggest tags</span>
+                  }
                 </button>
-                </div>
 
-                @if (suggestedTags().length) {
-                  <div class="mt-1 d-flex flex-wrap gap-1">
-                    @for (tag of suggestedTags(); track tag.tag) {
-                      <button
-                        type="button"
-                        class="btn btn-sm cursor-pointer"
-                        [class.btn-primary]="isTagSelected(tag)"
-                        [class.btn-outline-secondary]="!isTagSelected(tag)"
-                        (click)="toggleTag(tag, $event)"
-                      >
-                        {{ tag.label }}
-                      </button>
-                    }
-                  </div>
+                @for (tag of suggestedTags(); track tag.tag) {
+                  <button
+                    type="button"
+                    class="tag-chip small cursor-pointer"
+                    [class.selected]="isTagSelected(tag)"
+                    (click)="toggleTag(tag, $event)"
+                  >
+                    {{ tag.label }}
+                  </button>
                 }
               </div>
             </div>
