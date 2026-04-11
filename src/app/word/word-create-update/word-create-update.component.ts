@@ -27,6 +27,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
 class TouchedDirtyMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null): boolean {
@@ -49,6 +50,7 @@ class TouchedDirtyMatcher implements ErrorStateMatcher {
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    CdkTextareaAutosize,
   ],
   templateUrl: './word-create-update.component.html',
   animations: [
@@ -75,7 +77,7 @@ class TouchedDirtyMatcher implements ErrorStateMatcher {
   ],
 })
 export class WordCreateUpdateComponent {
-  @ViewChild('sentenceInput') sentenceInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('sentenceInput') sentenceInput!: ElementRef<HTMLTextAreaElement>;
   private readonly wordService = inject(WordService);
   private readonly languageStore = inject(LanguagesStore);
   private readonly userLanguagesService = inject(UserLanguagesService);

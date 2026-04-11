@@ -1,26 +1,27 @@
-<button mat-stroked-button type="button" color="accent" class="rounded-pill d-inline-flex align-items-center justify-content-center gap-1 btn btn-outline-primary cursor-pointer"
-  (click)="autoTranslate()" [disabled]="!canTranslate()">
+<button
+  mat-button
+  type="button"
+  color="primary"
+  class="rounded-pill px-2 d-inline-flex align-items-center gap-1"
+  (click)="autoTranslate()"
+  [disabled]="!canTranslate()">
   @if (isTranslating) {
-    <span class="d-inline-flex align-items-center gap-1">
-      <mat-icon>sync</mat-icon>
-      Translating...
-    </span>
+    <ng-container>
+      <mat-icon class="fs-6">sync</mat-icon>
+      <span class="small">Translating…</span>
+    </ng-container>
   } @else {
-    <span class="d-inline-flex align-items-center gap-1">
-      <mat-icon>auto_awesome</mat-icon>
-      Auto translate
-    </span>
+    <ng-container>
+      <mat-icon class="fs-6">translate</mat-icon>
+      <span class="small">Auto-translate</span>
+    </ng-container>
   }
 </button>
 
 @if (isQuotaReached) {
-<small class="text-muted d-block mt-1">
-  Translation quota reached for this month.
-</small>
+  <small class="text-muted ms-1">Quota reached for this month.</small>
 }
 
 @if (message) {
-<div class="alert alert-danger py-2 mt-2 mb-0" role="alert">
-  {{ message }}
-</div>
+  <small class="text-warning ms-1">{{ message }}</small>
 }
