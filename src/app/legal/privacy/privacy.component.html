@@ -137,7 +137,7 @@
           <div class="col-md-6">
             <div class="card h-100">
               <div class="card-body py-2">
-                <p class="small mb-0"><strong>Erasure (<a href="https://gdpr-info.eu/art-17-gdpr/" target="_blank" rel="noopener">Art. 17</a>)</strong> &mdash; Request deletion of your data. You can <a routerLink="/settings/delete-user">delete your account</a> directly.</p>
+                <p class="small mb-0"><strong>Erasure (<a href="https://gdpr-info.eu/art-17-gdpr/" target="_blank" rel="noopener">Art. 17</a>)</strong> &mdash; Request deletion of your data. You can @if (auth.isAuthenticated()) {<a routerLink="/settings/delete-user">delete your account</a>} @else {delete your account} directly.</p>
               </div>
             </div>
           </div>
