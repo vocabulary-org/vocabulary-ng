@@ -29,6 +29,7 @@
     "@angular/material": "~20.1.5",
     "@angular/platform-browser": "^20.0.0",
     "@angular/router": "^20.0.0",
+    "@jsverse/transloco": "^8.3.0",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
     "keycloak-angular": "^20.0.0",
@@ -39,9 +40,9 @@
   },
   "devDependencies": {
     "@angular/build": "^20.0.5",
-    "@angular/platform-browser-dynamic": "20.0.6",
     "@angular/cli": "^20.0.5",
     "@angular/compiler-cli": "^20.0.0",
+    "@angular/platform-browser-dynamic": "20.0.6",
     "@types/jasmine": "~5.1.0",
     "@types/jest": "^30.0.0",
     "jasmine-core": "~5.7.0",

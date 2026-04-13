@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { WordView, WordReviewResultType } from '../shared/model/flashcard.model';
 import { DEMO_LANGUAGES, DemoLangCode, DemoLanguage, getDemoWords } from '../shared/data/demo-words';
+import { TranslocoModule } from '@jsverse/transloco';
 
 type SessionState = 'pick-language' | 'sentence' | 'translation' | 'complete';
 
@@ -15,7 +16,7 @@ interface ReviewEntry {
 @Component({
   selector: 'app-demo-flashcard',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, RouterLink, FormsModule, TranslocoModule],
   templateUrl: './demo-flashcard.component.html',
   styleUrl: './demo-flashcard.component.css',
 })

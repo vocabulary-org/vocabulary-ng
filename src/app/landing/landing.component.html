@@ -5,21 +5,21 @@
   <div class="container">
     <div class="row align-items-center g-5">
       <div class="col-lg-6 text-center text-lg-start">
-        <h1 class="fw-bold mb-2 mb-lg-3" style="font-size: clamp(1.1rem, 5vw, 3.5rem);">Vocabulary Builder</h1>
-        <p class="mb-2 mb-lg-3 opacity-90 d-none d-lg-block" style="font-size: clamp(0.8rem, 2.5vw, 1.25rem);">Embrace the essence of traditional paper vocabularies in a digital format.</p>
-        <p class="mb-3 mb-lg-4 opacity-75 d-none d-lg-block">Effortlessly organize, learn, and reinforce new words with the added power of interactive flashcards.</p>
+        <h1 class="fw-bold mb-2 mb-lg-3" style="font-size: clamp(1.1rem, 5vw, 3.5rem);">{{ 'landing.hero.title' | transloco }}</h1>
+        <p class="mb-2 mb-lg-3 opacity-90 d-none d-lg-block" style="font-size: clamp(0.8rem, 2.5vw, 1.25rem);">{{ 'landing.hero.subtitle' | transloco }}</p>
+        <p class="mb-3 mb-lg-4 opacity-75 d-none d-lg-block">{{ 'landing.hero.description' | transloco }}</p>
         <div class="d-flex gap-2 justify-content-center justify-content-lg-start">
           @if (authenticated) {
-            <a routerLink="/word/list" class="btn btn-light btn-sm px-2 px-lg-4 fw-semibold" style="font-size: clamp(0.75rem, 2.5vw, 1rem);">My Words</a>
-            <a routerLink="/flashcard" class="btn btn-outline-light btn-sm px-2 px-lg-4 fw-semibold" style="font-size: clamp(0.75rem, 2.5vw, 1rem);">Flashcards</a>
+            <a routerLink="/word/list" class="btn btn-light btn-sm px-2 px-lg-4 fw-semibold" style="font-size: clamp(0.75rem, 2.5vw, 1rem);">{{ 'landing.hero.myWords' | transloco }}</a>
+            <a routerLink="/flashcard" class="btn btn-outline-light btn-sm px-2 px-lg-4 fw-semibold" style="font-size: clamp(0.75rem, 2.5vw, 1rem);">{{ 'landing.hero.flashcards' | transloco }}</a>
           } @else {
-            <a routerLink="/register" class="btn btn-light btn-sm px-2 px-lg-4 fw-semibold" style="font-size: clamp(0.75rem, 2.5vw, 1rem);">Get Started</a>
-            <a routerLink="/demo" class="btn btn-outline-light btn-sm px-2 px-lg-4 fw-semibold" style="font-size: clamp(0.75rem, 2.5vw, 1rem);">Try Demo</a>
+            <a routerLink="/register" class="btn btn-light btn-sm px-2 px-lg-4 fw-semibold" style="font-size: clamp(0.75rem, 2.5vw, 1rem);">{{ 'landing.hero.getStarted' | transloco }}</a>
+            <a routerLink="/demo" class="btn btn-outline-light btn-sm px-2 px-lg-4 fw-semibold" style="font-size: clamp(0.75rem, 2.5vw, 1rem);">{{ 'landing.hero.tryDemo' | transloco }}</a>
           }
         </div>
         @if (!authenticated) {
-          <p class="mt-2 mt-lg-3 mb-0 small opacity-75">Already have an account or a Google account? <a (click)="login()" role="button" class="text-white fw-semibold" style="cursor: pointer; text-decoration: underline;">Log in</a></p>
-          <p class="mb-0 small opacity-50"><a (click)="forgotPassword()" role="button" class="text-white" style="cursor: pointer; text-decoration: underline;">Forgot password?</a></p>
+          <p class="mt-2 mt-lg-3 mb-0 small opacity-75">{{ 'landing.hero.haveAccount' | transloco }} <a (click)="login()" role="button" class="text-white fw-semibold" style="cursor: pointer; text-decoration: underline;">{{ 'landing.hero.logIn' | transloco }}</a></p>
+          <p class="mb-0 small opacity-50"><a (click)="forgotPassword()" role="button" class="text-white" style="cursor: pointer; text-decoration: underline;">{{ 'landing.hero.forgotPassword' | transloco }}</a></p>
         }
       </div>
       <div class="col-lg-6 text-center position-relative d-none d-lg-block" style="height: 350px;">
@@ -39,8 +39,8 @@
 <!-- Features -->
 <section class="py-3 py-md-5">
   <div class="container">
-    <h2 class="text-center fw-bold mb-2">How it works</h2>
-    <p class="text-center text-body-secondary mb-3 mb-md-5">Three simple steps to build your vocabulary</p>
+    <h2 class="text-center fw-bold mb-2">{{ 'landing.features.title' | transloco }}</h2>
+    <p class="text-center text-body-secondary mb-3 mb-md-5">{{ 'landing.features.subtitle' | transloco }}</p>
     <div class="row g-2 g-md-4">
       <div class="col-4">
         <div class="card shadow-sm border-0 bg-light text-center">
@@ -49,11 +49,11 @@
             <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-1 mb-md-3" style="width: clamp(40px, 8vw, 64px); height: clamp(40px, 8vw, 64px);">
               <i class="bi bi-book-half text-primary" style="font-size: clamp(1rem, 3vw, 1.5rem);"></i>
             </div>
-            <h6 class="fw-semibold mb-0">Organize</h6>
+            <h6 class="fw-semibold mb-0">{{ 'landing.features.organize.title' | transloco }}</h6>
             <i class="bi bi-chevron-down chevron d-md-none small text-body-secondary"></i>
           </div>
           <div class="collapse d-md-block px-2 pb-2" id="organizeDesc">
-            <p class="text-body-secondary mb-0 small">Keep words tidy like a notebook — only smarter, searchable, and always with you.</p>
+            <p class="text-body-secondary mb-0 small">{{ 'landing.features.organize.description' | transloco }}</p>
           </div>
         </div>
       </div>
@@ -64,15 +64,15 @@
             <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-1 mb-md-3" style="width: clamp(40px, 8vw, 64px); height: clamp(40px, 8vw, 64px);">
               <i class="bi bi-lightning-charge text-success" style="font-size: clamp(1rem, 3vw, 1.5rem);"></i>
             </div>
-            <h6 class="fw-semibold mb-0">Learn</h6>
+            <h6 class="fw-semibold mb-0">{{ 'landing.features.learn.title' | transloco }}</h6>
             <i class="bi bi-chevron-down chevron d-md-none small text-body-secondary"></i>
           </div>
           <div class="collapse d-md-block px-2 pb-2" id="learnDesc">
-            <p class="text-body-secondary mb-1 small">Use flashcards and spaced repetition to lock new words into long-term memory.</p>
+            <p class="text-body-secondary mb-1 small">{{ 'landing.features.learn.description' | transloco }}</p>
             @if (authenticated) {
-              <a routerLink="/flashcard" class="small fw-semibold text-success">Practice now →</a>
+              <a routerLink="/flashcard" class="small fw-semibold text-success">{{ 'landing.features.learn.practiceNow' | transloco }}</a>
             } @else {
-              <a routerLink="/demo" class="small fw-semibold text-success">Try the demo →</a>
+              <a routerLink="/demo" class="small fw-semibold text-success">{{ 'landing.features.learn.tryDemo' | transloco }}</a>
             }
           </div>
         </div>
@@ -84,11 +84,11 @@
             <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-1 mb-md-3" style="width: clamp(40px, 8vw, 64px); height: clamp(40px, 8vw, 64px);">
               <i class="bi bi-globe text-danger" style="font-size: clamp(1rem, 3vw, 1.5rem);"></i>
             </div>
-            <h6 class="fw-semibold mb-0">Grow</h6>
+            <h6 class="fw-semibold mb-0">{{ 'landing.features.grow.title' | transloco }}</h6>
             <i class="bi bi-chevron-down chevron d-md-none small text-body-secondary"></i>
           </div>
           <div class="collapse d-md-block px-2 pb-2" id="growDesc">
-            <p class="text-body-secondary mb-0 small">Track progress across multiple languages and celebrate your milestones.</p>
+            <p class="text-body-secondary mb-0 small">{{ 'landing.features.grow.description' | transloco }}</p>
           </div>
         </div>
       </div>
@@ -100,9 +100,9 @@
 @if (!authenticated) {
 <section class="py-5 bg-light">
   <div class="container text-center">
-    <h2 class="fw-bold mb-3">Ready to expand your vocabulary?</h2>
-    <p class="text-body-secondary mb-4">Join for free and start learning today.</p>
-    <a routerLink="/register" class="btn btn-primary btn-lg px-5">Create Account</a>
+    <h2 class="fw-bold mb-3">{{ 'landing.cta.title' | transloco }}</h2>
+    <p class="text-body-secondary mb-4">{{ 'landing.cta.subtitle' | transloco }}</p>
+    <a routerLink="/register" class="btn btn-primary btn-lg px-5">{{ 'landing.cta.createAccount' | transloco }}</a>
   </div>
 </section>
 }
