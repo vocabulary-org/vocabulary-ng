@@ -142,17 +142,13 @@
     </ng-container>
 
     <!-- Language switcher (mobile) -->
-    <div class="d-flex gap-1 mb-2 px-1">
-      @for (lang of langs; track lang.code) {
-        <button mat-flat-button class="flex-fill"
-          [color]="activeLang === lang.code ? 'primary' : undefined"
-          [class.text-white]="activeLang !== lang.code"
-          [class.border-white]="activeLang !== lang.code"
-          [class.border-opacity-25]="activeLang !== lang.code"
-          (click)="setLang(lang.code)">
-          {{ lang.code.toUpperCase() }}
-        </button>
-      }
+    <div class="px-1 mb-2">
+      <select class="form-select form-select-sm bg-dark text-white border-secondary"
+        [value]="activeLang" (change)="setLang($any($event.target).value)">
+        @for (lang of langs; track lang.code) {
+          <option [value]="lang.code">{{ lang.label }}</option>
+        }
+      </select>
     </div>
 
     @if (!authenticated) {
