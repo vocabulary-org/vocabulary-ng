@@ -1,0 +1,98 @@
+{
+  "header": {
+    "home": "Inicio",
+    "words": "Palabras",
+    "myWords": "Mis palabras",
+    "addWord": "Añadir palabra",
+    "flashcards": "Tarjetas",
+    "settings": "Ajustes",
+    "myLanguages": "Mis idiomas",
+    "roles": "Roles",
+    "deleteAccount": "Eliminar cuenta",
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "logout": "Cerrar sesión"
+  },
+  "landing": {
+    "hero": {
+      "title": "Vocabulary Builder",
+      "subtitle": "La esencia del vocabulario tradicional en papel, ahora en formato digital.",
+      "description": "Organiza, aprende y refuerza nuevas palabras con el poder de las tarjetas interactivas.",
+      "myWords": "Mis palabras",
+      "flashcards": "Tarjetas",
+      "getStarted": "Comenzar",
+      "tryDemo": "Probar demo",
+      "haveAccount": "¿Ya tienes una cuenta o una cuenta de Google?",
+      "logIn": "Iniciar sesión",
+      "forgotPassword": "¿Olvidaste tu contraseña?"
+    },
+    "features": {
+      "title": "Cómo funciona",
+      "subtitle": "Tres sencillos pasos para construir tu vocabulario",
+      "organize": {
+        "title": "Organiza",
+        "description": "Mantén las palabras ordenadas como en un cuaderno — pero más inteligente, buscable y siempre contigo."
+      },
+      "learn": {
+        "title": "Aprende",
+        "description": "Usa tarjetas y repetición espaciada para fijar nuevas palabras en la memoria a largo plazo.",
+        "practiceNow": "Practicar ahora →",
+        "tryDemo": "Probar la demo →"
+      },
+      "grow": {
+        "title": "Crece",
+        "description": "Sigue tu progreso en varios idiomas y celebra tus logros."
+      }
+    },
+    "cta": {
+      "title": "¿Listo para ampliar tu vocabulario?",
+      "subtitle": "Regístrate gratis y empieza a aprender hoy.",
+      "createAccount": "Crear cuenta"
+    }
+  },
+  "demo": {
+    "title": "Prueba la demo de tarjetas",
+    "subtitle": "Elige un par de idiomas y practica 8 palabras comunes — sin cuenta.",
+    "from": "De",
+    "to": "A",
+    "startPractice": "Comenzar práctica",
+    "wantOwnWords": "¿Quieres practicar con tus propias palabras?",
+    "createFreeAccount": "Crea una cuenta gratuita",
+    "change": "Cambiar",
+    "cardProgress": "Tarjeta {{ current }} de {{ total }}",
+    "tapHint": "Toca la tarjeta para ver la traducción",
+    "skip": "Saltar",
+    "right": "Correcto",
+    "wrong": "Incorrecto",
+    "skipped": "Omitidas",
+    "sessionComplete": "¡Sesión completada!",
+    "reviewed": "Repasaste {{ total }} palabras:",
+    "practiceAgain": "Practicar de nuevo",
+    "changeLanguages": "Cambiar idiomas",
+    "ctaTitle": "Practica con tu propio vocabulario",
+    "ctaSubtitle": "Crea una cuenta gratuita para añadir tus propias palabras y seguir tu progreso entre sesiones.",
+    "createFreeAccountBtn": "Crear cuenta gratuita",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "logIn": "Iniciar sesión"
+  },
+  "register": {
+    "title": "Regístrate en Vocabulary",
+    "subtitle": "Crea tu cuenta para empezar",
+    "username": "Nombre de usuario",
+    "usernamePlaceholder": "Elige un nombre de usuario",
+    "usernameInvalid": "Por favor, introduce un nombre de usuario válido",
+    "firstName": "Nombre",
+    "firstNameInvalid": "Por favor, introduce un nombre válido",
+    "lastName": "Apellido",
+    "lastNameInvalid": "Por favor, introduce un apellido válido",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "tu@ejemplo.com",
+    "emailInvalid": "Por favor, introduce un correo electrónico válido",
+    "creating": "Creando tu cuenta...",
+    "submit": "Registrarse",
+    "orSkip": "O inicia sesión directamente sin registrarte",
+    "loginGoogle": "Iniciar sesión con Google",
+    "successMessage": "✅ Revisa tu correo para completar el registro.",
+    "errorMessage": "❌ Algo salió mal."
+  }
+}

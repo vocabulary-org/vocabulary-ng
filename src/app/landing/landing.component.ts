@@ -8,10 +8,11 @@ import {
   typeEventArgs,
   ReadyArgs
 } from 'keycloak-angular';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-landing',
-  imports: [RouterLink, DisclaimerComponent],
+  imports: [RouterLink, DisclaimerComponent, TranslocoModule],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.css'
 })

@@ -5,12 +5,12 @@
   <div class="row justify-content-center">
     <div class="col-md-5 text-center py-4">
       <i class="bi bi-translate fs-1 text-primary"></i>
-      <h3 class="mt-3 fw-bold">Try the Flashcard Demo</h3>
-      <p class="text-muted mb-4">Pick a language pair and practice 8 common words — no account needed.</p>
+      <h3 class="mt-3 fw-bold">{{ 'demo.title' | transloco }}</h3>
+      <p class="text-muted mb-4">{{ 'demo.subtitle' | transloco }}</p>
 
       <div class="row g-3 mb-4 align-items-center">
         <div class="col">
-          <label class="form-label fw-semibold">From</label>
+          <label class="form-label fw-semibold">{{ 'demo.from' | transloco }}</label>
           <select class="form-select form-select-lg" [(ngModel)]="fromLang" (ngModelChange)="onFromChange()">
             @for (lang of languages; track lang.code) {
               <option [value]="lang.code">{{ lang.flag }} {{ lang.name }}</option>
@@ -21,7 +21,7 @@
           <i class="bi bi-arrow-right fs-4 text-muted"></i>
         </div>
         <div class="col">
-          <label class="form-label fw-semibold">To</label>
+          <label class="form-label fw-semibold">{{ 'demo.to' | transloco }}</label>
           <select class="form-select form-select-lg" [(ngModel)]="toLang" (ngModelChange)="onToChange()">
             @for (lang of languages; track lang.code) {
               <option [value]="lang.code" [disabled]="lang.code === fromLang">{{ lang.flag }} {{ lang.name }}</option>
@@ -31,12 +31,12 @@
       </div>
 
       <button class="btn btn-primary btn-lg w-100" (click)="start()" [disabled]="!canStart">
-        <i class="bi bi-play-fill me-2"></i>Start Practice
+        <i class="bi bi-play-fill me-2"></i>{{ 'demo.startPractice' | transloco }}
       </button>
 
       <p class="mt-4 mb-0 small text-muted">
-        Want to practice your own words?
-        <a routerLink="/register" class="fw-semibold">Create a free account</a>
+        {{ 'demo.wantOwnWords' | transloco }}
+        <a routerLink="/register" class="fw-semibold">{{ 'demo.createFreeAccount' | transloco }}</a>
       </p>
     </div>
   </div>
@@ -52,12 +52,12 @@
         <span class="badge bg-primary bg-opacity-10 text-primary fs-6">
           {{ fromLanguage.flag }} {{ fromLanguage.name }} → {{ toLanguage.flag }} {{ toLanguage.name }}
         </span>
-        <button class="btn btn-sm btn-outline-secondary" (click)="changeLang()">Change</button>
+        <button class="btn btn-sm btn-outline-secondary" (click)="changeLang()">{{ 'demo.change' | transloco }}</button>
       </div>
 
       <!-- Progress -->
       <div class="d-flex justify-content-between align-items-center mb-2">
-        <span class="text-muted small">Card {{ currentIndex + 1 }} of {{ words.length }}</span>
+        <span class="text-muted small">{{ 'demo.cardProgress' | transloco: { current: currentIndex + 1, total: words.length } }}</span>
         <div class="d-flex gap-3 small">
           <span class="text-success"><i class="bi bi-check-circle-fill"></i> {{ rightCount }}</span>
           <span class="text-danger"><i class="bi bi-x-circle-fill"></i> {{ wrongCount }}</span>
@@ -70,7 +70,7 @@
       </div>
 
       <!-- Card -->
-      <div class="card-flip-container" (click)="state === 'sentence' && reveal()" [style.cursor]="state === 'sentence' ? 'pointer' : 'default'" [title]="state === 'sentence' ? 'Click to reveal the translation' : ''">
+      <div class="card-flip-container" (click)="state === 'sentence' && reveal()" [style.cursor]="state === 'sentence' ? 'pointer' : 'default'" [title]="state === 'sentence' ? ('demo.tapHint' | transloco) : ''">
         <div class="card-inner" [class.flipped]="isFlipped" [class.no-transition]="skipTransition">
 
           <!-- Front: sentence -->
@@ -94,7 +94,7 @@
       <!-- Hint (first card only) -->
       @if (state === 'sentence' && currentIndex === 0) {
       <p class="text-center text-muted small mb-3">
-        <i class="bi bi-hand-index me-1"></i>Tap the card to reveal the translation
+        <i class="bi bi-hand-index me-1"></i>{{ 'demo.tapHint' | transloco }}
       </p>
       }
 
@@ -103,7 +103,7 @@
       <div class="row g-2">
         <div class="col-12">
           <button class="btn btn-outline-secondary w-100 btn-lg" (click)="submit('SKIP')">
-            <i class="bi bi-arrow-right me-1"></i>Skip
+            <i class="bi bi-arrow-right me-1"></i>{{ 'demo.skip' | transloco }}
           </button>
         </div>
       </div>
@@ -113,12 +113,12 @@
       <div class="row g-2">
         <div class="col-6">
           <button class="btn btn-success w-100 btn-lg" (click)="submit('RIGHT')">
-            <i class="bi bi-check-lg me-1"></i>Right
+            <i class="bi bi-check-lg me-1"></i>{{ 'demo.right' | transloco }}
           </button>
         </div>
         <div class="col-6">
           <button class="btn btn-danger w-100 btn-lg" (click)="submit('WRONG')">
-            <i class="bi bi-x-lg me-1"></i>Wrong
+            <i class="bi bi-x-lg me-1"></i>{{ 'demo.wrong' | transloco }}
           </button>
         </div>
       </div>
@@ -133,9 +133,9 @@
   <div class="row justify-content-center">
     <div class="col-md-6 text-center py-4">
       <i class="bi bi-trophy-fill fs-1 text-warning"></i>
-      <h3 class="mt-3">Session complete!</h3>
+      <h3 class="mt-3">{{ 'demo.sessionComplete' | transloco }}</h3>
       <p class="text-muted">
-        You reviewed {{ words.length }} words:
+        {{ 'demo.reviewed' | transloco: { total: words.length } }}
         {{ fromLanguage.flag }} {{ fromLanguage.name }} → {{ toLanguage.flag }} {{ toLanguage.name }}.
       </p>
 
@@ -143,39 +143,39 @@
         <div class="col-4">
           <div class="card border-0 bg-success bg-opacity-10 py-3">
             <div class="fs-2 fw-bold text-success">{{ rightCount }}</div>
-            <div class="small text-muted">Right</div>
+            <div class="small text-muted">{{ 'demo.right' | transloco }}</div>
           </div>
         </div>
         <div class="col-4">
           <div class="card border-0 bg-danger bg-opacity-10 py-3">
             <div class="fs-2 fw-bold text-danger">{{ wrongCount }}</div>
-            <div class="small text-muted">Wrong</div>
+            <div class="small text-muted">{{ 'demo.wrong' | transloco }}</div>
           </div>
         </div>
         <div class="col-4">
           <div class="card border-0 bg-secondary bg-opacity-10 py-3">
             <div class="fs-2 fw-bold text-secondary">{{ skipCount }}</div>
-            <div class="small text-muted">Skipped</div>
+            <div class="small text-muted">{{ 'demo.skipped' | transloco }}</div>
           </div>
         </div>
       </div>
 
       <div class="d-flex gap-2 justify-content-center mt-3">
         <button class="btn btn-outline-primary" (click)="restart()">
-          <i class="bi bi-arrow-clockwise me-2"></i>Practice Again
+          <i class="bi bi-arrow-clockwise me-2"></i>{{ 'demo.practiceAgain' | transloco }}
         </button>
-        <button class="btn btn-outline-secondary" (click)="changeLang()">Change Languages</button>
+        <button class="btn btn-outline-secondary" (click)="changeLang()">{{ 'demo.changeLanguages' | transloco }}</button>
       </div>
 
       <!-- Sign-up CTA -->
       <div class="card border-0 bg-primary bg-opacity-10 mt-4 p-4">
-        <h5 class="fw-bold mb-2">Practice your own vocabulary</h5>
-        <p class="text-muted small mb-3">Create a free account to add your own words and track your progress across sessions.</p>
+        <h5 class="fw-bold mb-2">{{ 'demo.ctaTitle' | transloco }}</h5>
+        <p class="text-muted small mb-3">{{ 'demo.ctaSubtitle' | transloco }}</p>
         <a routerLink="/register" class="btn btn-primary">
-          <i class="bi bi-person-plus me-2"></i>Create Free Account
+          <i class="bi bi-person-plus me-2"></i>{{ 'demo.createFreeAccountBtn' | transloco }}
         </a>
         <p class="mt-2 mb-0 small text-muted">
-          Already have an account? <a routerLink="/">Log in</a>
+          {{ 'demo.alreadyHaveAccount' | transloco }} <a routerLink="/">{{ 'demo.logIn' | transloco }}</a>
         </p>
       </div>
 

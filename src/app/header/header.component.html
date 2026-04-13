@@ -1,7 +1,7 @@
 <mat-toolbar class="sticky-top px-2 px-md-3 bg-dark text-white"
   [class.shadow]="isScrolled">
 
-  
+
   <a routerLink="/" mat-button class="rounded-pill fw-bold fs-6 text-white" (click)="closeMobileMenu()">
     <mat-icon class="text-white">auto_stories</mat-icon>
     Vocabulary
@@ -9,74 +9,93 @@
 
   <span class="flex-fill"></span>
 
-  
+
   <nav class="d-none d-lg-flex align-items-center gap-1">
 
     <a routerLink="/" mat-button class="rounded-pill text-white"
       routerLinkActive="bg-white bg-opacity-10"
       [routerLinkActiveOptions]="{exact:true}">
-      <mat-icon class="text-white">home</mat-icon> Home
+      <mat-icon class="text-white">home</mat-icon> {{ 'header.home' | transloco }}
     </a>
 
     <ng-container *kaHasRoles="['USER']">
       <button mat-button class="rounded-pill text-white" [matMenuTriggerFor]="wordsMenu">
         <mat-icon class="text-white">library_books</mat-icon>
-        Words
+        {{ 'header.words' | transloco }}
         <mat-icon class="text-white" iconPositionEnd>arrow_drop_down</mat-icon>
       </button>
       <mat-menu #wordsMenu="matMenu">
         <a mat-menu-item routerLink="/word/list">
-          <mat-icon>format_list_bulleted</mat-icon> My Words
+          <mat-icon>format_list_bulleted</mat-icon> {{ 'header.myWords' | transloco }}
         </a>
         <a mat-menu-item routerLink="/word/new-word">
-          <mat-icon>add_circle</mat-icon> Add Word
+          <mat-icon>add_circle</mat-icon> {{ 'header.addWord' | transloco }}
         </a>
       </mat-menu>
     </ng-container>
 
     <a *kaHasRoles="['USER']" routerLink="/flashcard" mat-button class="rounded-pill text-white"
       routerLinkActive="bg-white bg-opacity-10">
-      <mat-icon class="text-white">style</mat-icon> Flashcards
+      <mat-icon class="text-white">style</mat-icon> {{ 'header.flashcards' | transloco }}
     </a>
 
     <ng-container *kaHasRoles="['USER']">
       <button mat-button class="rounded-pill text-white" [matMenuTriggerFor]="settingsMenu">
         <mat-icon class="text-white">tune</mat-icon>
-        Settings
+        {{ 'header.settings' | transloco }}
         <mat-icon class="text-white" iconPositionEnd>arrow_drop_down</mat-icon>
       </button>
       <mat-menu #settingsMenu="matMenu">
         <a mat-menu-item routerLink="/settings/languages">
-          <mat-icon>language</mat-icon> My Languages
+          <mat-icon>language</mat-icon> {{ 'header.myLanguages' | transloco }}
         </a>
         <a mat-menu-item routerLink="/settings/roles">
-          <mat-icon>manage_accounts</mat-icon> Roles
+          <mat-icon>manage_accounts</mat-icon> {{ 'header.roles' | transloco }}
         </a>
         <mat-divider></mat-divider>
         <a mat-menu-item routerLink="/settings/delete-user">
-          <mat-icon color="warn">delete_forever</mat-icon> Delete Account
+          <mat-icon color="warn">delete_forever</mat-icon> {{ 'header.deleteAccount' | transloco }}
         </a>
       </mat-menu>
     </ng-container>
 
     <div class="vr text-white opacity-25 mx-2 d-none d-lg-inline-flex"></div>
 
+    <!-- Language switcher -->
+    <button mat-button class="rounded-pill text-white" [matMenuTriggerFor]="langMenu">
+      <mat-icon class="text-white">language</mat-icon>
+      {{ activeLang.toUpperCase() }}
+    </button>
+    <mat-menu #langMenu="matMenu">
+      @for (lang of langs; track lang.code) {
+        <button mat-menu-item (click)="setLang(lang.code)">
+          @if (activeLang === lang.code) {
+            <mat-icon color="primary">check</mat-icon>
+          } @else {
+            <mat-icon></mat-icon>
+          }
+          <span [class.fw-bold]="activeLang === lang.code"
+                [class.text-primary]="activeLang === lang.code">{{ lang.label }}</span>
+        </button>
+      }
+    </mat-menu>
+
     @if (!authenticated) {
       <button mat-button class="rounded-pill text-white" (click)="login()">
-        <mat-icon class="text-white">login</mat-icon> Login
+        <mat-icon class="text-white">login</mat-icon> {{ 'header.login' | transloco }}
       </button>
       <a mat-raised-button routerLink="/register" class="rounded-pill ms-1 bg-gradient bg-primary text-white fw-semibold">
-        <mat-icon class="text-white">person_add</mat-icon> Register
+        <mat-icon class="text-white">person_add</mat-icon> {{ 'header.register' | transloco }}
       </a>
     } @else {
       <button mat-stroked-button class="rounded-pill border-white border-opacity-50 text-white" (click)="logout()">
-        <mat-icon class="text-white">logout</mat-icon> Logout
+        <mat-icon class="text-white">logout</mat-icon> {{ 'header.logout' | transloco }}
       </button>
     }
 
   </nav>
 
-  
+
   <button mat-icon-button class="d-lg-none text-white" (click)="mobileMenuOpen = !mobileMenuOpen">
     <mat-icon class="text-white">{{ mobileMenuOpen ? 'close' : 'menu' }}</mat-icon>
   </button>
@@ -90,21 +109,21 @@
     <a mat-button class="d-flex w-100 justify-content-start rounded-pill mb-1 text-white"
       routerLink="/" routerLinkActive="bg-white bg-opacity-10"
       [routerLinkActiveOptions]="{exact:true}" (click)="closeMobileMenu()">
-      <mat-icon class="me-2 text-white">home</mat-icon> Home
+      <mat-icon class="me-2 text-white">home</mat-icon> {{ 'header.home' | transloco }}
     </a>
 
     <ng-container *kaHasRoles="['USER']">
       <a mat-button class="d-flex w-100 justify-content-start rounded-pill mb-1 text-white"
         routerLink="/word/list" routerLinkActive="bg-white bg-opacity-10" (click)="closeMobileMenu()">
-        <mat-icon class="me-2 text-white">format_list_bulleted</mat-icon> My Words
+        <mat-icon class="me-2 text-white">format_list_bulleted</mat-icon> {{ 'header.myWords' | transloco }}
       </a>
       <a mat-button class="d-flex w-100 justify-content-start rounded-pill mb-1 text-white"
         routerLink="/word/new-word" routerLinkActive="bg-white bg-opacity-10" (click)="closeMobileMenu()">
-        <mat-icon class="me-2 text-white">add_circle</mat-icon> Add Word
+        <mat-icon class="me-2 text-white">add_circle</mat-icon> {{ 'header.addWord' | transloco }}
       </a>
       <a mat-button class="d-flex w-100 justify-content-start rounded-pill mb-1 text-white"
         routerLink="/flashcard" routerLinkActive="bg-white bg-opacity-10" (click)="closeMobileMenu()">
-        <mat-icon class="me-2 text-white">style</mat-icon> Flashcards
+        <mat-icon class="me-2 text-white">style</mat-icon> {{ 'header.flashcards' | transloco }}
       </a>
     </ng-container>
 
@@ -113,28 +132,42 @@
     <ng-container *kaHasRoles="['USER']">
       <a mat-button class="d-flex w-100 justify-content-start rounded-pill mb-1 text-white"
         routerLink="/settings/languages" routerLinkActive="bg-white bg-opacity-10" (click)="closeMobileMenu()">
-        <mat-icon class="me-2 text-white">language</mat-icon> My Languages
+        <mat-icon class="me-2 text-white">language</mat-icon> {{ 'header.myLanguages' | transloco }}
       </a>
       <a mat-button class="d-flex w-100 justify-content-start rounded-pill mb-1 text-white"
         routerLink="/settings/roles" routerLinkActive="bg-white bg-opacity-10" (click)="closeMobileMenu()">
-        <mat-icon class="me-2 text-white">manage_accounts</mat-icon> Roles
+        <mat-icon class="me-2 text-white">manage_accounts</mat-icon> {{ 'header.roles' | transloco }}
       </a>
       <mat-divider class="my-2"></mat-divider>
     </ng-container>
 
+    <!-- Language switcher (mobile) -->
+    <div class="d-flex gap-1 mb-2 px-1">
+      @for (lang of langs; track lang.code) {
+        <button mat-flat-button class="flex-fill"
+          [color]="activeLang === lang.code ? 'primary' : undefined"
+          [class.text-white]="activeLang !== lang.code"
+          [class.border-white]="activeLang !== lang.code"
+          [class.border-opacity-25]="activeLang !== lang.code"
+          (click)="setLang(lang.code)">
+          {{ lang.code.toUpperCase() }}
+        </button>
+      }
+    </div>
+
     @if (!authenticated) {
       <button mat-button class="d-flex w-100 justify-content-start rounded-pill mb-1 text-white"
         (click)="login(); closeMobileMenu()">
-        <mat-icon class="me-2 text-white">login</mat-icon> Login
+        <mat-icon class="me-2 text-white">login</mat-icon> {{ 'header.login' | transloco }}
       </button>
       <a mat-raised-button class="d-flex w-100 justify-content-start rounded-pill bg-gradient bg-primary text-white"
         routerLink="/register" (click)="closeMobileMenu()">
-        <mat-icon class="me-2 text-white">person_add</mat-icon> Register
+        <mat-icon class="me-2 text-white">person_add</mat-icon> {{ 'header.register' | transloco }}
       </a>
     } @else {
       <button mat-stroked-button class="d-flex w-100 justify-content-start rounded-pill text-white border-white border-opacity-50"
         (click)="logout()">
-        <mat-icon class="me-2 text-white">logout</mat-icon> Logout
+        <mat-icon class="me-2 text-white">logout</mat-icon> {{ 'header.logout' | transloco }}
       </button>
     }
 

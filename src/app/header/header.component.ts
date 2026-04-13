@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-header',
@@ -27,6 +28,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatMenuModule,
     MatTooltipModule,
     MatDividerModule,
+    TranslocoModule,
   ],
   templateUrl: './header.component.html',
 })
@@ -35,8 +37,20 @@ export class HeaderComponent {
   isScrolled = false;
   mobileMenuOpen = false;
 
+  readonly langs = [
+    { code: 'en', label: 'English' },
+    { code: 'it', label: 'Italiano' },
+    { code: 'de', label: 'Deutsch' },
+    { code: 'es', label: 'Español' },
+  ];
+
   private readonly keycloak = inject(Keycloak);
   private readonly keycloakSignal = inject(KEYCLOAK_EVENT_SIGNAL);
+  private readonly transloco = inject(TranslocoService);
+
+  get activeLang(): string {
+    return this.transloco.getActiveLang();
+  }
 
   constructor() {
     effect(() => {
@@ -53,6 +67,11 @@ export class HeaderComponent {
   @HostListener('window:scroll')
   onScroll(): void {
     this.isScrolled = window.scrollY > 4;
+  }
+
+  setLang(code: string): void {
+    this.transloco.setActiveLang(code);
+    localStorage.setItem('lang', code);
   }
 
   login(): void { this.keycloak.login(); }

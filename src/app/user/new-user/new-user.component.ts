@@ -11,11 +11,12 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import Keycloak from 'keycloak-js';
 import { environment } from '../../../environments/environment';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-new-user',
 
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, TranslocoModule],
 
   templateUrl: './new-user.component.html',
   styleUrl: './new-user.component.css',
@@ -24,6 +25,7 @@ export class NewUserComponent implements AfterViewInit, OnDestroy {
   private readonly userService = inject(UserService);
   private readonly keycloak = inject(Keycloak);
   private readonly ngZone = inject(NgZone);
+  private readonly transloco = inject(TranslocoService);
 
   readonly captchaEnabled = !!environment.turnstileSiteKey;
   private readonly turnstileSiteKey = environment.turnstileSiteKey;
@@ -105,7 +107,7 @@ export class NewUserComponent implements AfterViewInit, OnDestroy {
           this.isError = false;
           this.registrationSuccess = true;
           this.form.disable();
-          this.message = '✅ Check your email to complete registration.';
+          this.message = this.transloco.translate('register.successMessage');
         } else {
           this.isError = true;
           this.message = `Unexpected status: ${response.status}`;
@@ -116,7 +118,7 @@ export class NewUserComponent implements AfterViewInit, OnDestroy {
         this.isLoading = false;
         this.isError = true;
         const body = error.error;
-        this.message = (body && body.message) ? body.message : '❌ Something went wrong.';
+        this.message = (body && body.message) ? body.message : this.transloco.translate('register.errorMessage');
         console.error('Error status:', error.status, 'body:', body);
       }
     });
