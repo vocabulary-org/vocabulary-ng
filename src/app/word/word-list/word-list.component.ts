@@ -8,12 +8,13 @@ import { Word } from '../../shared/model/word.model';
 import { Language } from '../../shared/model/language';
 import { RouterLink } from '@angular/router';
 import { LANGUAGE_FLAGS } from '../../shared/model/flag';
+import { TooltipDirective } from '../../shared/directive/tooltip.directive';
 import { Subject, forkJoin } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-word-list',
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, FormsModule, TooltipDirective],
   templateUrl: './word-list.component.html',
   styleUrl: './word-list.component.css',
 })
@@ -123,9 +124,6 @@ export class WordListComponent implements OnInit, OnDestroy {
   public onLanguageFilterChange(): void {
     this.noLanguageSettings = false;
     if (!this.filterMyLanguages) {
-      this.filterFromUuid = '';
-      this.filterToUuid = '';
-      this.reload(0);
       return;
     }
 

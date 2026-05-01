@@ -1,9 +1,15 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { FlashcardService } from '../shared/service/flashcard/flashcard.service';
 import { UserLanguagesService } from '../shared/service/user/user-languages.service';
+import { LanguagesStore } from '../shared/store/language.store';
 import { WordView, WordReviewResultType } from '../shared/model/flashcard.model';
+import { Language } from '../shared/model/language';
+import { LANGUAGE_FLAGS } from '../shared/model/flag';
+import { TooltipDirective } from '../shared/directive/tooltip.directive';
 
 type SessionState = 'loading' | 'no-languages' | 'no-words' | 'error' | 'sentence' | 'translation' | 'complete';
 
@@ -15,13 +21,16 @@ interface ReviewEntry {
 @Component({
   selector: 'app-flashcard',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, FormsModule, TooltipDirective],
   templateUrl: './flashcard.component.html',
   styleUrl: './flashcard.component.css',
 })
 export class FlashcardComponent implements OnInit {
   private readonly flashcardService = inject(FlashcardService);
   private readonly userLanguagesService = inject(UserLanguagesService);
+  private readonly languagesStore = inject(LanguagesStore);
+
+  readonly flags = LANGUAGE_FLAGS;
 
   state: SessionState = 'loading';
   words: WordView[] = [];
@@ -31,6 +40,13 @@ export class FlashcardComponent implements OnInit {
   isFlipped = false;
   skipTransition = false;
 
+  languages: Language[] = [];
+  filterMyLanguages = false;
+  selectedLanguageUuid = '';
+  selectedLanguageToUuid = '';
+
+  private defaultLanguageUuid = '';
+  private defaultLanguageToUuid = '';
   private languageUuid?: string;
   private languageToUuid?: string;
 
@@ -51,14 +67,24 @@ export class FlashcardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userLanguagesService.get().subscribe({
-      next: (userLang) => {
-        if (!userLang.language?.uuid || !userLang.languageTo?.uuid) {
+    forkJoin({
+      langs: this.languagesStore.getAll$(),
+      userLang: this.userLanguagesService.get(),
+    }).subscribe({
+      next: ({ langs, userLang }) => {
+        this.languages = langs;
+        this.defaultLanguageUuid = userLang.language?.uuid ?? '';
+        this.defaultLanguageToUuid = userLang.languageTo?.uuid ?? '';
+        this.selectedLanguageUuid = this.defaultLanguageUuid;
+        this.selectedLanguageToUuid = this.defaultLanguageToUuid;
+        this.filterMyLanguages = !!(this.defaultLanguageUuid && this.defaultLanguageToUuid);
+
+        if (!this.selectedLanguageUuid || !this.selectedLanguageToUuid) {
           this.state = 'no-languages';
           return;
         }
-        this.languageUuid = userLang.language.uuid;
-        this.languageToUuid = userLang.languageTo.uuid;
+        this.languageUuid = this.selectedLanguageUuid;
+        this.languageToUuid = this.selectedLanguageToUuid;
         this.loadWords();
       },
       error: () => {
@@ -66,6 +92,28 @@ export class FlashcardComponent implements OnInit {
         this.state = 'error';
       },
     });
+  }
+
+  onLanguageFilterChange(): void {
+    if (!this.filterMyLanguages) return;
+    if (!this.defaultLanguageUuid || !this.defaultLanguageToUuid) {
+      this.filterMyLanguages = false;
+      return;
+    }
+    this.selectedLanguageUuid = this.defaultLanguageUuid;
+    this.selectedLanguageToUuid = this.defaultLanguageToUuid;
+    this.languageUuid = this.defaultLanguageUuid;
+    this.languageToUuid = this.defaultLanguageToUuid;
+    this.loadWords();
+  }
+
+  onLanguageChange(): void {
+    if (!this.selectedLanguageUuid || !this.selectedLanguageToUuid) return;
+    if (this.selectedLanguageUuid === this.selectedLanguageToUuid) return;
+    this.filterMyLanguages = false;
+    this.languageUuid = this.selectedLanguageUuid;
+    this.languageToUuid = this.selectedLanguageToUuid;
+    this.loadWords();
   }
 
   private loadWords(): void {
@@ -109,7 +157,6 @@ export class FlashcardComponent implements OnInit {
         };
 
         if (this.isFlipped) {
-          // Reset flip instantly (no reverse animation), then advance
           this.skipTransition = true;
           this.isFlipped = false;
           setTimeout(() => {
