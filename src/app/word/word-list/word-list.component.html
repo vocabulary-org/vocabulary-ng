@@ -120,24 +120,27 @@
       <div class="w-100 d-sm-none"></div>
 
       
-      <select class="form-select form-select-sm" style="width: auto" [(ngModel)]="filterFromUuid"
-        (change)="onLanguageDropdownChange()">
-        <option value="">Any</option>
-        @for (l of availableLanguages; track l.uuid) {
-        <option [value]="l.uuid">{{ flags[l.name] }} {{ l.name }}</option>
-        }
-      </select>
+      <span [appTooltip]="filterMyLanguages ? 'Uncheck My languages to edit' : ''">
+        <select class="form-select form-select-sm" style="width: auto" [(ngModel)]="filterFromUuid"
+          (change)="onLanguageDropdownChange()" [disabled]="filterMyLanguages">
+          <option value="">Any</option>
+          @for (l of availableLanguages; track l.uuid) {
+          <option [value]="l.uuid">{{ flags[l.name] }} {{ l.name }}</option>
+          }
+        </select>
+      </span>
 
       <i class="bi bi-arrow-right text-muted"></i>
 
-      
-      <select class="form-select form-select-sm" style="width: auto" [(ngModel)]="filterToUuid"
-        (change)="onLanguageDropdownChange()">
-        <option value="">Any</option>
-        @for (l of availableLanguages; track l.uuid) {
-        <option [value]="l.uuid">{{ flags[l.name] }} {{ l.name }}</option>
-        }
-      </select>
+      <span [appTooltip]="filterMyLanguages ? 'Uncheck My languages to edit' : ''">
+        <select class="form-select form-select-sm" style="width: auto" [(ngModel)]="filterToUuid"
+          (change)="onLanguageDropdownChange()" [disabled]="filterMyLanguages">
+          <option value="">Any</option>
+          @for (l of availableLanguages; track l.uuid) {
+          <option [value]="l.uuid">{{ flags[l.name] }} {{ l.name }}</option>
+          }
+        </select>
+      </span>
 
       
       @if (filterFromUuid || filterToUuid) {

@@ -1,5 +1,37 @@
 <div class="container py-4">
 
+  <!-- Language selector -->
+  @if (languages.length > 0) {
+  <div class="d-flex align-items-center justify-content-center gap-2 mb-4 flex-wrap">
+    <div class="form-check form-switch mb-0 me-1">
+      <input class="form-check-input" type="checkbox" role="switch" id="filterMyLanguages"
+        [(ngModel)]="filterMyLanguages" (change)="onLanguageFilterChange()" />
+      <label class="form-check-label small" for="filterMyLanguages">My languages</label>
+    </div>
+    <span [appTooltip]="filterMyLanguages ? 'Uncheck My languages to edit' : ''">
+      <select class="form-select form-select-sm" style="width: auto" [(ngModel)]="selectedLanguageUuid" (change)="onLanguageChange()" [disabled]="filterMyLanguages">
+        <option value="" disabled>From language</option>
+        @for (lang of languages; track lang.uuid) {
+        <option [value]="lang.uuid" [disabled]="lang.uuid === selectedLanguageToUuid">
+          {{ flags[lang.name] }} {{ lang.name }}
+        </option>
+        }
+      </select>
+    </span>
+    <i class="bi bi-arrow-right text-muted"></i>
+    <span [appTooltip]="filterMyLanguages ? 'Uncheck My languages to edit' : ''">
+      <select class="form-select form-select-sm" style="width: auto" [(ngModel)]="selectedLanguageToUuid" (change)="onLanguageChange()" [disabled]="filterMyLanguages">
+        <option value="" disabled>To language</option>
+        @for (lang of languages; track lang.uuid) {
+        <option [value]="lang.uuid" [disabled]="lang.uuid === selectedLanguageUuid">
+          {{ flags[lang.name] }} {{ lang.name }}
+        </option>
+        }
+      </select>
+    </span>
+  </div>
+  }
+
   <!-- Loading -->
   @if (state === 'loading') {
   <div class="text-center py-5">
@@ -25,9 +57,8 @@
   <div class="row justify-content-center">
     <div class="col-md-6 text-center py-5">
       <i class="bi bi-translate fs-1 text-muted"></i>
-      <h4 class="mt-3">No language settings found</h4>
-      <p class="text-muted">Please configure your languages before starting flashcards.</p>
-      <a routerLink="/settings/languages" class="btn btn-primary mt-2">Configure Languages</a>
+      <h4 class="mt-3">Select your languages</h4>
+      <p class="text-muted">Choose the from and to languages above to start practicing.</p>
     </div>
   </div>
   }
@@ -67,17 +98,17 @@
       </div>
 
       <!-- Card -->
-      <div class="card-flip-container" (click)="state === 'sentence' && reveal()" [style.cursor]="state === 'sentence' ? 'pointer' : 'default'" [title]="state === 'sentence' ? 'Click to reveal the translation' : ''">
+      <div class="card-flip-container mb-4" (click)="state === 'sentence' && reveal()" [style.cursor]="state === 'sentence' ? 'pointer' : 'default'" [title]="state === 'sentence' ? 'Click to reveal the translation' : ''">
         <div class="card-inner" [class.flipped]="isFlipped" [class.no-transition]="skipTransition">
 
           <!-- Front: sentence -->
-          <div class="card-face card-front">
+          <div class="card-face card-front rounded-4 d-flex flex-column justify-content-center align-items-center text-center bg-white shadow-sm" style="padding: 2rem">
             <p class="text-muted small mb-2">Translate this word</p>
             <h2 class="mb-0">{{ currentWord.sentence }}</h2>
           </div>
 
           <!-- Back: translation -->
-          <div class="card-face card-back">
+          <div class="card-face card-back rounded-4 d-flex flex-column justify-content-center align-items-center text-center bg-light shadow-sm" style="padding: 2rem">
             <p class="text-muted small mb-2">Sentence</p>
             <h2 class="mb-3">{{ currentWord.sentence }}</h2>
             <hr class="w-100 my-0">
@@ -91,19 +122,14 @@
       <!-- Hint (first card only) -->
       @if (state === 'sentence' && currentIndex === 0) {
       <p class="text-center text-muted small mb-3">
-        <i class="bi bi-hand-index me-1"></i>Tap the card or click <strong>Reveal</strong> to see the translation
+        <i class="bi bi-hand-index me-1"></i>Tap the card to see the translation
       </p>
       }
 
       <!-- Actions -->
       @if (state === 'sentence') {
       <div class="row g-2">
-        <div class="col-8">
-          <button class="btn btn-outline-primary w-100 btn-lg" (click)="reveal()">
-            <i class="bi bi-eye me-2"></i>Reveal
-          </button>
-        </div>
-        <div class="col-4">
+        <div class="col-12">
           <button class="btn btn-outline-secondary w-100 btn-lg" (click)="submit('SKIP')">
             <i class="bi bi-arrow-right me-1"></i>Skip
           </button>

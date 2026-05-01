@@ -5,9 +5,12 @@ import { LanguagesStore } from '../../shared/store/language.store';
 import { Language } from '../../shared/model/language';
 import { LANGUAGE_FLAGS } from '../../shared/model/flag';
 import { forkJoin } from 'rxjs';
+import { TooltipDirective } from '../../shared/directive/tooltip.directive';
 
 @Component({
   selector: 'app-settings-user-languages',
+  standalone: true,
+  imports: [TooltipDirective],
   templateUrl: './settings-user-languages.component.html',
 })
 export class SettingsUserLanguagesComponent implements OnInit {
@@ -17,8 +20,9 @@ export class SettingsUserLanguagesComponent implements OnInit {
   loading = signal(true);
   saving = signal(false);
   saved = signal(false);
+  savedFading = signal(false);
+  dirty = signal(false);
   error = signal<string | null>(null);
-  editing = signal(false);
 
   languages = signal<Language[]>([]);
 
@@ -32,42 +36,37 @@ export class SettingsUserLanguagesComponent implements OnInit {
   }
 
   private load(): void {
+    this.loading.set(true);
+    this.saved.set(false);
+    this.dirty.set(false);
     forkJoin({
       langs: this.languagesStore.getAll$(),
       userLang: this.userLanguagesService.get(),
     }).subscribe({
       next: ({ langs, userLang }) => {
         this.languages.set(langs);
-        const langFrom =
-          langs.find((l) => l.uuid === userLang.language?.uuid) ?? null;
-        const langTo =
-          langs.find((l) => l.uuid === userLang.languageTo?.uuid) ?? null;
-        this.model.set({
-          ...userLang,
-          language: langFrom,
-          languageTo: langTo,
-        });
+        const langFrom = langs.find((l) => l.uuid === userLang.language?.uuid) ?? null;
+        const langTo = langs.find((l) => l.uuid === userLang.languageTo?.uuid) ?? null;
+        this.model.set({ ...userLang, language: langFrom, languageTo: langTo });
+        this.loading.set(false);
       },
-      error: (err) => {
-        console.error('Error loading word for edit', err);
+      error: () => {
+        this.error.set('Could not load language settings.');
+        this.loading.set(false);
       },
     });
   }
 
   onToChange(event: Event) {
     const uuid = (event.target as HTMLSelectElement).value;
-    this.model.update((m) => ({
-      ...m,
-      languageTo: { uuid },
-    }));
+    this.model.update((m) => ({ ...m, languageTo: { uuid } }));
+    this.dirty.set(true);
   }
 
   onFromChange(event: Event) {
     const uuid = (event.target as HTMLSelectElement).value;
-    this.model.update((m) => ({
-      ...m,
-      language: { uuid },
-    }));
+    this.model.update((m) => ({ ...m, language: { uuid } }));
+    this.dirty.set(true);
   }
 
   getLanguageName(ref: { uuid: string } | null): string {
@@ -76,21 +75,26 @@ export class SettingsUserLanguagesComponent implements OnInit {
     return lang ? lang.name : '';
   }
 
-  enableEdit(): void {
-    this.editing.set(true);
-  }
-
   cancel(): void {
-    this.editing.set(false);
+    this.load();
   }
 
   save(): void {
+    this.saving.set(true);
+    this.saved.set(false);
     this.userLanguagesService.createOrUpdate(this.model()).subscribe({
       next: (updated) => {
         this.model.set(updated);
-        this.editing.set(false); // back to read-only
+        this.saving.set(false);
+        this.saved.set(true);
+        this.dirty.set(false);
+        setTimeout(() => this.savedFading.set(true), 2000);
+        setTimeout(() => { this.saved.set(false); this.savedFading.set(false); }, 2700);
       },
-      complete: () => this.saving.set(false),
+      error: () => {
+        this.error.set('Could not save. Please try again.');
+        this.saving.set(false);
+      },
     });
   }
 }
