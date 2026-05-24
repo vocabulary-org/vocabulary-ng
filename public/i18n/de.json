@@ -48,6 +48,11 @@
       "title": "Bereit, deinen Wortschatz zu erweitern?",
       "subtitle": "Kostenlos registrieren und noch heute loslegen.",
       "createAccount": "Konto erstellen"
+    },
+    "deutsch": {
+      "title": "Deutsch kostenlos üben",
+      "subtitle": "Deutsche Nomen üben — Artikel und Pluralformen. Kein Konto nötig.",
+      "cta": "Deutsch üben"
     }
   },
   "demo": {
@@ -72,6 +77,36 @@
     "ctaTitle": "Mit deinem eigenen Wortschatz üben",
     "ctaSubtitle": "Erstelle ein kostenloses Konto, um eigene Wörter hinzuzufügen und deinen Fortschritt zu verfolgen.",
     "createFreeAccountBtn": "Kostenloses Konto erstellen",
+    "alreadyHaveAccount": "Hast du bereits ein Konto?",
+    "logIn": "Anmelden"
+  },
+  "learnDeutsch": {
+    "title": "Deutsch üben",
+    "subtitle": "Deutsch üben — kein Konto erforderlich.",
+    "articles": "Artikel",
+    "articlesHint": "der / die / das",
+    "plural": "Plural",
+    "pluralHint": "richtigen Plural wählen",
+    "startPractice": "Übung starten",
+    "wantOwnWords": "Möchtest du deinen eigenen Wortschatz üben?",
+    "createFreeAccount": "Kostenloses Konto erstellen",
+    "loading": "Übungen werden geladen…",
+    "errorTitle": "Übungen konnten nicht geladen werden",
+    "errorMessage": "Bitte überprüfe deine Verbindung und versuche es erneut.",
+    "retry": "Erneut versuchen",
+    "changeMode": "Modus wechseln",
+    "cardProgress": "Karte {{ current }} von {{ total }}",
+    "whatArticle": "Was ist der Artikel?",
+    "whatPlural": "Was ist der Plural?",
+    "correct": "Richtig!",
+    "wrong": "Falsch!",
+    "next": "Weiter",
+    "sessionComplete": "Sitzung abgeschlossen!",
+    "reviewed": "Du hast {{ total }} Fragen beantwortet",
+    "practiceAgain": "Nochmal üben",
+    "ctaTitle": "Mit deinem eigenen Wortschatz üben",
+    "ctaSubtitle": "Erstelle ein kostenloses Konto, um eigene Wörter hinzuzufügen und Fortschritte zu verfolgen.",
+    "createAccountBtn": "Kostenloses Konto erstellen",
     "alreadyHaveAccount": "Hast du bereits ein Konto?",
     "logIn": "Anmelden"
   },

@@ -18,6 +18,7 @@ import { TermsComponent } from './legal/terms/terms.component';
 import { CookiesComponent } from './legal/cookies/cookies.component';
 import { AboutComponent } from './about/about.component';
 import { DemoFlashcardComponent } from './demo-flashcard/demo-flashcard.component';
+import { LearnDeutschComponent } from './learn-deutsch/learn-deutsch.component';
 
 export const routes: Routes = [
   {
@@ -82,6 +83,11 @@ export const routes: Routes = [
   {
     path: 'demo',
     component: DemoFlashcardComponent,
+  },
+
+  {
+    path: 'learn-deutsch',
+    component: LearnDeutschComponent,
   },
 
   {

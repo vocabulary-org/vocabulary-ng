@@ -48,6 +48,11 @@
       "title": "Ready to expand your vocabulary?",
       "subtitle": "Join for free and start learning today.",
       "createAccount": "Create Account"
+    },
+    "deutsch": {
+      "title": "Practice German for free",
+      "subtitle": "Practice German nouns — articles and plural forms. No account needed.",
+      "cta": "Try German Practice"
     }
   },
   "demo": {
@@ -72,6 +77,36 @@
     "ctaTitle": "Practice your own vocabulary",
     "ctaSubtitle": "Create a free account to add your own words and track your progress across sessions.",
     "createFreeAccountBtn": "Create Free Account",
+    "alreadyHaveAccount": "Already have an account?",
+    "logIn": "Log in"
+  },
+  "learnDeutsch": {
+    "title": "German Practice",
+    "subtitle": "Practice German — no account needed.",
+    "articles": "Articles",
+    "articlesHint": "der / die / das",
+    "plural": "Plural",
+    "pluralHint": "choose the correct plural",
+    "startPractice": "Start Practice",
+    "wantOwnWords": "Want to practice your own vocabulary?",
+    "createFreeAccount": "Create a free account",
+    "loading": "Loading exercises…",
+    "errorTitle": "Could not load exercises",
+    "errorMessage": "Please check your connection and try again.",
+    "retry": "Retry",
+    "changeMode": "Change mode",
+    "cardProgress": "Card {{ current }} of {{ total }}",
+    "whatArticle": "What is the article?",
+    "whatPlural": "What is the plural?",
+    "correct": "Correct!",
+    "wrong": "Wrong!",
+    "next": "Next",
+    "sessionComplete": "Session complete!",
+    "reviewed": "You answered {{ total }} questions",
+    "practiceAgain": "Practice Again",
+    "ctaTitle": "Practice your own vocabulary",
+    "ctaSubtitle": "Create a free account to add your own words and track progress across sessions.",
+    "createAccountBtn": "Create Free Account",
     "alreadyHaveAccount": "Already have an account?",
     "logIn": "Log in"
   },
