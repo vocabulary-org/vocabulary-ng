@@ -9,8 +9,8 @@ export class LearnDeutschService {
   private readonly baseUrl = `${env.apiBaseUrl}/public`;
   private readonly http = inject(HttpClient);
 
-  getNouns(limit = 100): Observable<DeutschNoun[]> {
-    const params = new HttpParams().set('limit', limit);
-    return this.http.get<DeutschNoun[]>(`${this.baseUrl}/nouns/de-it`, { params });
+  getNouns(limit = 100, lang = 'en'): Observable<DeutschNoun[]> {
+    const params = new HttpParams().set('limit', limit).set('lang', lang);
+    return this.http.get<DeutschNoun[]>(`${this.baseUrl}/nouns/de`, { params });
   }
 }

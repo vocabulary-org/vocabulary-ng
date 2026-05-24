@@ -19,6 +19,8 @@ import { CookiesComponent } from './legal/cookies/cookies.component';
 import { AboutComponent } from './about/about.component';
 import { DemoFlashcardComponent } from './demo-flashcard/demo-flashcard.component';
 import { LearnDeutschComponent } from './learn-deutsch/learn-deutsch.component';
+import { AdminLayoutComponent } from './admin/admin-layout.component';
+import { NounExamplesAdminComponent } from './admin/noun-examples/noun-examples-admin.component';
 
 export const routes: Routes = [
   {
@@ -88,6 +90,17 @@ export const routes: Routes = [
   {
     path: 'learn-deutsch',
     component: LearnDeutschComponent,
+  },
+
+  {
+    path: 'admin',
+    component: AdminLayoutComponent,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'ADMIN' },
+    children: [
+      { path: '', redirectTo: 'noun-examples', pathMatch: 'full' },
+      { path: 'noun-examples', component: NounExamplesAdminComponent },
+    ],
   },
 
   {
