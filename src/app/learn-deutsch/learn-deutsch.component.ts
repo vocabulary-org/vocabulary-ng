@@ -1,14 +1,14 @@
 import { Component, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { TranslocoModule } from '@jsverse/transloco';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { LearnDeutschService } from './learn-deutsch.service';
 import { DeutschNoun, PracticeItem } from './learn-deutsch.model';
 
 type PageState = 'idle' | 'loading' | 'error' | 'practicing' | 'complete';
 type Mode = 'articles' | 'plural';
 
-const TIMER_MS = 3000;
+const TIMER_MS = 10000;
 const TIMER_STEP_MS = 50;
 
 function shuffle<T>(arr: T[]): T[] {
@@ -28,6 +28,7 @@ function shuffle<T>(arr: T[]): T[] {
 })
 export class LearnDeutschComponent implements OnDestroy {
   private readonly svc = inject(LearnDeutschService);
+  private readonly transloco = inject(TranslocoService);
 
   readonly articleOptions = ['der', 'die', 'das'];
   readonly SESSION_SIZE = 20;
@@ -39,6 +40,8 @@ export class LearnDeutschComponent implements OnDestroy {
   currentIndex = 0;
   selected: string | null = null;
   isAnswered = false;
+  isHeld = false;
+  copied = false;
   correctCount = 0;
   wrongCount = 0;
   timerProgress = 100;
@@ -68,7 +71,7 @@ export class LearnDeutschComponent implements OnDestroy {
   start(): void {
     this.clearTimer();
     this.state = 'loading';
-    this.svc.getNouns().subscribe({
+    this.svc.getNouns(100, this.transloco.getActiveLang()).subscribe({
       next: (data) => {
         const items = this.mode === 'articles'
           ? this.buildArticleItems(data)
@@ -94,6 +97,20 @@ export class LearnDeutschComponent implements OnDestroy {
   next(): void {
     this.clearTimer();
     this.advance();
+  }
+
+  copyExample(): void {
+    const text = this.current.examples
+      .map(ex => `${ex.sentenceDe}\n${ex.sentenceTranslation}`)
+      .join('\n\n');
+    navigator.clipboard.writeText(text).catch(() => {});
+    this.copied = true;
+    setTimeout(() => { this.copied = false; }, 2000);
+  }
+
+  hold(): void {
+    this.clearTimer();
+    this.isHeld = true;
   }
 
   restart(): void {
@@ -141,6 +158,7 @@ export class LearnDeutschComponent implements OnDestroy {
     this.currentIndex = 0;
     this.selected = null;
     this.isAnswered = false;
+    this.isHeld = false;
     this.correctCount = 0;
     this.wrongCount = 0;
     this.state = 'practicing';
@@ -152,6 +170,8 @@ export class LearnDeutschComponent implements OnDestroy {
       correctAnswer: n.article,
       hint: `${n.article} ${n.wordDe}`,
       options: this.articleOptions,
+      translation: n.translation,
+      examples: n.examples ?? [],
     }));
   }
 
@@ -161,6 +181,8 @@ export class LearnDeutschComponent implements OnDestroy {
       correctAnswer: n.pluralDe,
       hint: n.pluralDe,
       options: shuffle([n.pluralDe, ...n.pluralDistractors.slice(0, 3)]),
+      translation: n.translation,
+      examples: n.examples ?? [],
     }));
   }
 
@@ -171,6 +193,8 @@ export class LearnDeutschComponent implements OnDestroy {
       this.currentIndex++;
       this.selected = null;
       this.isAnswered = false;
+      this.isHeld = false;
+      this.copied = false;
     }
   }
 }

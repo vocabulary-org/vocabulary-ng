@@ -59,6 +59,13 @@
       </mat-menu>
     </ng-container>
 
+    <ng-container *kaHasRoles="['ADMIN']">
+      <a routerLink="/admin/noun-examples" mat-button class="rounded-pill text-white"
+        routerLinkActive="bg-white bg-opacity-10">
+        <mat-icon class="text-white">admin_panel_settings</mat-icon> Admin
+      </a>
+    </ng-container>
+
     <div class="vr text-white opacity-25 mx-2 d-none d-lg-inline-flex"></div>
 
     <!-- Language switcher -->
@@ -137,6 +144,14 @@
       <a mat-button class="d-flex w-100 justify-content-start rounded-pill mb-1 text-white"
         routerLink="/settings/roles" routerLinkActive="bg-white bg-opacity-10" (click)="closeMobileMenu()">
         <mat-icon class="me-2 text-white">manage_accounts</mat-icon> {{ 'header.roles' | transloco }}
+      </a>
+      <mat-divider class="my-2"></mat-divider>
+    </ng-container>
+
+    <ng-container *kaHasRoles="['ADMIN']">
+      <a mat-button class="d-flex w-100 justify-content-start rounded-pill mb-1 text-white"
+        routerLink="/admin/noun-examples" routerLinkActive="bg-white bg-opacity-10" (click)="closeMobileMenu()">
+        <mat-icon class="me-2 text-white">admin_panel_settings</mat-icon> Admin
       </a>
       <mat-divider class="my-2"></mat-divider>
     </ng-container>
