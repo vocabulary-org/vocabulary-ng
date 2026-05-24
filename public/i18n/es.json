@@ -48,6 +48,11 @@
       "title": "¿Listo para ampliar tu vocabulario?",
       "subtitle": "Regístrate gratis y empieza a aprender hoy.",
       "createAccount": "Crear cuenta"
+    },
+    "deutsch": {
+      "title": "Practica alemán gratis",
+      "subtitle": "Practica sustantivos alemanes — artículos y plurales. Sin cuenta.",
+      "cta": "Practicar alemán"
     }
   },
   "demo": {
@@ -72,6 +77,36 @@
     "ctaTitle": "Practica con tu propio vocabulario",
     "ctaSubtitle": "Crea una cuenta gratuita para añadir tus propias palabras y seguir tu progreso entre sesiones.",
     "createFreeAccountBtn": "Crear cuenta gratuita",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "logIn": "Iniciar sesión"
+  },
+  "learnDeutsch": {
+    "title": "Práctica de alemán",
+    "subtitle": "Practica alemán — sin cuenta.",
+    "articles": "Artículos",
+    "articlesHint": "der / die / das",
+    "plural": "Plural",
+    "pluralHint": "elige el plural correcto",
+    "startPractice": "Comenzar práctica",
+    "wantOwnWords": "¿Quieres practicar tu propio vocabulario?",
+    "createFreeAccount": "Crear una cuenta gratuita",
+    "loading": "Cargando ejercicios…",
+    "errorTitle": "No se pudieron cargar los ejercicios",
+    "errorMessage": "Comprueba tu conexión e inténtalo de nuevo.",
+    "retry": "Reintentar",
+    "changeMode": "Cambiar modo",
+    "cardProgress": "Tarjeta {{ current }} de {{ total }}",
+    "whatArticle": "¿Cuál es el artículo?",
+    "whatPlural": "¿Cuál es el plural?",
+    "correct": "¡Correcto!",
+    "wrong": "¡Incorrecto!",
+    "next": "Siguiente",
+    "sessionComplete": "¡Sesión completada!",
+    "reviewed": "Respondiste {{ total }} preguntas",
+    "practiceAgain": "Practicar de nuevo",
+    "ctaTitle": "Practica con tu propio vocabulario",
+    "ctaSubtitle": "Crea una cuenta gratuita para añadir tus palabras y seguir tu progreso.",
+    "createAccountBtn": "Crear cuenta gratuita",
     "alreadyHaveAccount": "¿Ya tienes una cuenta?",
     "logIn": "Iniciar sesión"
   },
