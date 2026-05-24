@@ -1,0 +1,50 @@
+<h4 class="fw-bold mb-1">Generate DE Noun Translations</h4>
+<p class="text-muted mb-4">Triggers async generation of missing translations for German nouns.</p>
+
+<div class="card border-0 shadow-sm" style="max-width: 480px;">
+  <div class="card-body p-4">
+
+    <div class="mb-3">
+      <label class="form-label fw-semibold">Target language</label>
+      <select class="form-select" [(ngModel)]="selectedLang">
+        @for (lang of langs; track lang.code) {
+          <option [value]="lang.code">{{ lang.label }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="mb-4">
+      <label class="form-label fw-semibold">
+        Limit <span class="text-muted fw-normal">(optional — leave empty for all)</span>
+      </label>
+      <input type="number" class="form-control" min="1"
+             [(ngModel)]="limit" placeholder="e.g. 10">
+    </div>
+
+    <button class="btn btn-primary w-100"
+            [disabled]="status === 'loading'"
+            (click)="generate()">
+      @if (status === 'loading') {
+        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+        Generating…
+      } @else {
+        <i class="bi bi-translate me-2"></i>Generate Translations
+      }
+    </button>
+
+    @if (status === 'success') {
+      <div class="alert alert-success mt-3 mb-0">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        Generation started — running in the background.
+      </div>
+    }
+
+    @if (status === 'error') {
+      <div class="alert alert-danger mt-3 mb-0">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        Request failed. Check logs or try again.
+      </div>
+    }
+
+  </div>
+</div>

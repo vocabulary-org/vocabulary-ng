@@ -15,4 +15,12 @@ export class NounExamplesAdminService {
     }
     return this.http.post<void>(`${this.baseUrl}/nouns/de/examples/generate`, null, { params });
   }
+
+  generateTranslations(lang: string, limit?: number): Observable<void> {
+    let params = new HttpParams().set('lang', lang);
+    if (limit != null) {
+      params = params.set('limit', limit);
+    }
+    return this.http.post<void>(`${this.baseUrl}/nouns/de/translations/generate`, null, { params });
+  }
 }

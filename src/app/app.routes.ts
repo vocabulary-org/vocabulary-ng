@@ -21,6 +21,7 @@ import { DemoFlashcardComponent } from './demo-flashcard/demo-flashcard.componen
 import { LearnDeutschComponent } from './learn-deutsch/learn-deutsch.component';
 import { AdminLayoutComponent } from './admin/admin-layout.component';
 import { NounExamplesAdminComponent } from './admin/noun-examples/noun-examples-admin.component';
+import { NounTranslationsAdminComponent } from './admin/noun-translations/noun-translations-admin.component';
 
 export const routes: Routes = [
   {
@@ -100,6 +101,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'noun-examples', pathMatch: 'full' },
       { path: 'noun-examples', component: NounExamplesAdminComponent },
+      { path: 'noun-translations', component: NounTranslationsAdminComponent },
     ],
   },
 
