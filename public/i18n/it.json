@@ -52,7 +52,7 @@
     "deutsch": {
       "title": "Pratica il tedesco gratis",
       "subtitle": "Pratica i sostantivi tedeschi — articoli e plurali. Senza account.",
-      "cta": "Prova la pratica tedesco"
+      "cta": "Impara il tedesco"
     }
   },
   "demo": {
@@ -129,5 +129,50 @@
     "loginGoogle": "Accedi con Google",
     "successMessage": "✅ Controlla la tua email per completare la registrazione.",
     "errorMessage": "❌ Qualcosa è andato storto."
+  },
+  "learnDeutschStories": {
+    "title": "Valutazione con storie tedesche",
+    "subtitle": "Leggi una breve storia in tedesco e completa gli spazi — correzione immediata. Senza account.",
+    "loading": "Caricamento storie…",
+    "empty": "Ancora nessuna storia disponibile.",
+    "errorTitle": "Impossibile caricare le storie",
+    "errorMessage": "Controlla la connessione e riprova.",
+    "retry": "Riprova",
+    "start": "Inizia",
+    "backToStories": "Torna alle storie",
+    "check": "Verifica risposte",
+    "tryAgain": "Riprova",
+    "score": "{{ correct }} / {{ total }} corrette",
+    "answered": "{{ answered }} di {{ total }} completati",
+    "wantOwnWords": "Vuoi esercitarti con il tuo vocabolario?",
+    "createFreeAccount": "Crea un account gratuito",
+    "category": {
+      "ARTICLE": "Articolo",
+      "ADJECTIVE_ENDING": "Desinenza aggettivo",
+      "PRONOUN": "Pronome",
+      "PREPOSITION": "Preposizione",
+      "VERB_FORM": "Forma verbale"
+    },
+    "case": {
+      "NOMINATIV": "Nominativo",
+      "AKKUSATIV": "Accusativo",
+      "DATIV": "Dativo",
+      "GENITIV": "Genitivo"
+    }
+  },
+  "learnDeutschHub": {
+    "title": "Impara il tedesco",
+    "subtitle": "Scegli come esercitarti — senza account.",
+    "startBtn": "Inizia",
+    "articles": {
+      "title": "Articoli e plurali",
+      "description": "Esercizi veloci su der/die/das e i plurali."
+    },
+    "stories": {
+      "title": "Valutazione storie",
+      "description": "Leggi una breve storia e completa gli spazi — correzione immediata."
+    },
+    "wantOwnWords": "Vuoi esercitarti con il tuo vocabolario?",
+    "createFreeAccount": "Crea un account gratuito"
   }
 }

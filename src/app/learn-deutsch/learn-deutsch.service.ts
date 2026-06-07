@@ -11,6 +11,6 @@ export class LearnDeutschService {
 
   getNouns(limit = 100, lang = 'en'): Observable<DeutschNoun[]> {
     const params = new HttpParams().set('limit', limit).set('lang', lang);
-    return this.http.get<DeutschNoun[]>(`${this.baseUrl}/nouns/de`, { params });
+    return this.http.get<DeutschNoun[]>(`${this.baseUrl}/deutsch/nouns`, { params });
   }
 }

@@ -52,7 +52,7 @@
     "deutsch": {
       "title": "Practica alemán gratis",
       "subtitle": "Practica sustantivos alemanes — artículos y plurales. Sin cuenta.",
-      "cta": "Practicar alemán"
+      "cta": "Aprender alemán"
     }
   },
   "demo": {
@@ -129,5 +129,50 @@
     "loginGoogle": "Iniciar sesión con Google",
     "successMessage": "✅ Revisa tu correo para completar el registro.",
     "errorMessage": "❌ Algo salió mal."
+  },
+  "learnDeutschStories": {
+    "title": "Evaluación con historias en alemán",
+    "subtitle": "Lee una historia corta en alemán y completa los huecos — corrección instantánea. Sin cuenta.",
+    "loading": "Cargando historias…",
+    "empty": "Aún no hay historias disponibles.",
+    "errorTitle": "No se pudieron cargar las historias",
+    "errorMessage": "Comprueba tu conexión e inténtalo de nuevo.",
+    "retry": "Reintentar",
+    "start": "Empezar",
+    "backToStories": "Volver a las historias",
+    "check": "Comprobar respuestas",
+    "tryAgain": "Intentar de nuevo",
+    "score": "{{ correct }} / {{ total }} correctas",
+    "answered": "{{ answered }} de {{ total }} completados",
+    "wantOwnWords": "¿Quieres practicar tu propio vocabulario?",
+    "createFreeAccount": "Crea una cuenta gratuita",
+    "category": {
+      "ARTICLE": "Artículo",
+      "ADJECTIVE_ENDING": "Terminación del adjetivo",
+      "PRONOUN": "Pronombre",
+      "PREPOSITION": "Preposición",
+      "VERB_FORM": "Forma verbal"
+    },
+    "case": {
+      "NOMINATIV": "Nominativo",
+      "AKKUSATIV": "Acusativo",
+      "DATIV": "Dativo",
+      "GENITIV": "Genitivo"
+    }
+  },
+  "learnDeutschHub": {
+    "title": "Aprender alemán",
+    "subtitle": "Elige cómo quieres practicar — sin cuenta.",
+    "startBtn": "Empezar",
+    "articles": {
+      "title": "Artículos y plurales",
+      "description": "Ejercicios rápidos de der/die/das y plurales."
+    },
+    "stories": {
+      "title": "Evaluación con historias",
+      "description": "Lee una historia corta y completa los huecos — corrección instantánea."
+    },
+    "wantOwnWords": "¿Quieres practicar tu propio vocabulario?",
+    "createFreeAccount": "Crea una cuenta gratuita"
   }
 }

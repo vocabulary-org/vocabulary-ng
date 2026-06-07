@@ -52,7 +52,7 @@
     "deutsch": {
       "title": "Practice German for free",
       "subtitle": "Practice German nouns — articles and plural forms. No account needed.",
-      "cta": "Try German Practice"
+      "cta": "Learn German"
     }
   },
   "demo": {
@@ -129,5 +129,50 @@
     "loginGoogle": "Log in with Google",
     "successMessage": "✅ Check your email to complete registration.",
     "errorMessage": "❌ Something went wrong."
+  },
+  "learnDeutschStories": {
+    "title": "German Story Assessment",
+    "subtitle": "Read a short German story and fill the gaps — graded instantly. No account needed.",
+    "loading": "Loading stories…",
+    "empty": "No stories available yet.",
+    "errorTitle": "Could not load stories",
+    "errorMessage": "Please check your connection and try again.",
+    "retry": "Retry",
+    "start": "Start",
+    "backToStories": "Back to stories",
+    "check": "Check answers",
+    "tryAgain": "Try again",
+    "score": "{{ correct }} / {{ total }} correct",
+    "answered": "{{ answered }} of {{ total }} filled",
+    "wantOwnWords": "Want to practice your own vocabulary?",
+    "createFreeAccount": "Create a free account",
+    "category": {
+      "ARTICLE": "Article",
+      "ADJECTIVE_ENDING": "Adjective ending",
+      "PRONOUN": "Pronoun",
+      "PREPOSITION": "Preposition",
+      "VERB_FORM": "Verb form"
+    },
+    "case": {
+      "NOMINATIV": "Nominative",
+      "AKKUSATIV": "Accusative",
+      "DATIV": "Dative",
+      "GENITIV": "Genitive"
+    }
+  },
+  "learnDeutschHub": {
+    "title": "Learn German",
+    "subtitle": "Pick how you want to practice — no account needed.",
+    "startBtn": "Start",
+    "articles": {
+      "title": "Articles & Plural",
+      "description": "Quick drills on der/die/das and plural forms."
+    },
+    "stories": {
+      "title": "Story Assessment",
+      "description": "Read a short story and fill the gaps — graded instantly."
+    },
+    "wantOwnWords": "Want to practice your own vocabulary?",
+    "createFreeAccount": "Create a free account"
   }
 }

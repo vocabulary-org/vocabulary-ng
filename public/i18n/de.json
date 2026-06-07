@@ -52,7 +52,7 @@
     "deutsch": {
       "title": "Deutsch kostenlos üben",
       "subtitle": "Deutsche Nomen üben — Artikel und Pluralformen. Kein Konto nötig.",
-      "cta": "Deutsch üben"
+      "cta": "Deutsch lernen"
     }
   },
   "demo": {
@@ -129,5 +129,50 @@
     "loginGoogle": "Mit Google anmelden",
     "successMessage": "✅ Überprüfe deine E-Mail, um die Registrierung abzuschließen.",
     "errorMessage": "❌ Etwas ist schiefgelaufen."
+  },
+  "learnDeutschStories": {
+    "title": "Deutscher Geschichten-Test",
+    "subtitle": "Lies eine kurze deutsche Geschichte und fülle die Lücken — sofort bewertet. Kein Konto nötig.",
+    "loading": "Geschichten werden geladen…",
+    "empty": "Noch keine Geschichten verfügbar.",
+    "errorTitle": "Geschichten konnten nicht geladen werden",
+    "errorMessage": "Bitte überprüfe deine Verbindung und versuche es erneut.",
+    "retry": "Erneut versuchen",
+    "start": "Starten",
+    "backToStories": "Zurück zu den Geschichten",
+    "check": "Antworten prüfen",
+    "tryAgain": "Nochmal versuchen",
+    "score": "{{ correct }} / {{ total }} richtig",
+    "answered": "{{ answered }} von {{ total }} ausgefüllt",
+    "wantOwnWords": "Möchtest du deinen eigenen Wortschatz üben?",
+    "createFreeAccount": "Kostenloses Konto erstellen",
+    "category": {
+      "ARTICLE": "Artikel",
+      "ADJECTIVE_ENDING": "Adjektivendung",
+      "PRONOUN": "Pronomen",
+      "PREPOSITION": "Präposition",
+      "VERB_FORM": "Verbform"
+    },
+    "case": {
+      "NOMINATIV": "Nominativ",
+      "AKKUSATIV": "Akkusativ",
+      "DATIV": "Dativ",
+      "GENITIV": "Genitiv"
+    }
+  },
+  "learnDeutschHub": {
+    "title": "Deutsch lernen",
+    "subtitle": "Wähle, wie du üben möchtest — kein Konto nötig.",
+    "startBtn": "Starten",
+    "articles": {
+      "title": "Artikel & Plural",
+      "description": "Schnelle Übungen zu der/die/das und Pluralformen."
+    },
+    "stories": {
+      "title": "Geschichten-Test",
+      "description": "Lies eine kurze Geschichte und fülle die Lücken — sofort bewertet."
+    },
+    "wantOwnWords": "Möchtest du deinen eigenen Wortschatz üben?",
+    "createFreeAccount": "Kostenloses Konto erstellen"
   }
 }
