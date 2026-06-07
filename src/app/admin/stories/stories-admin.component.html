@@ -1,0 +1,69 @@
+<h4 class="fw-bold mb-1">Generate DE Story</h4>
+<p class="text-muted mb-4">Triggers Claude generation of a German gap-fill story for the chosen level, topic and length.</p>
+
+<div class="card border-0 shadow-sm" style="max-width: 480px;">
+  <div class="card-body p-4">
+
+    <div class="mb-3">
+      <label class="form-label fw-semibold">Level</label>
+      <select class="form-select" [(ngModel)]="level">
+        @for (l of levels; track l) {
+          <option [value]="l">{{ l }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label fw-semibold">Topic</label>
+      <input type="text" class="form-control" maxlength="64"
+             [(ngModel)]="topic" placeholder="e.g. food, travel, music">
+      <div class="form-text">Max 64 characters.</div>
+    </div>
+
+    <div class="mb-4">
+      <label class="form-label fw-semibold">Length</label>
+      <select class="form-select" [(ngModel)]="length">
+        @for (len of lengths; track len.value) {
+          <option [value]="len.value">{{ len.label }}</option>
+        }
+      </select>
+    </div>
+
+    <button class="btn btn-primary w-100"
+            [disabled]="!canSubmit"
+            (click)="generate()">
+      @if (status === 'loading') {
+        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+        Generating…
+      } @else {
+        <i class="bi bi-magic me-2"></i>Generate Story
+      }
+    </button>
+
+    @if (status === 'error') {
+      <div class="alert alert-danger mt-3 mb-0">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        Request failed. Check logs or try again.
+      </div>
+    }
+
+  </div>
+</div>
+
+@if (status === 'success' && created) {
+  <div class="card border-0 shadow-sm mt-4" style="max-width: 640px;">
+    <div class="card-header bg-success text-white">
+      <i class="bi bi-check-circle-fill me-2"></i>Story created
+    </div>
+    <div class="card-body p-4">
+      <div class="d-flex justify-content-between align-items-start mb-2">
+        <h5 class="fw-bold mb-0">{{ created.title }}</h5>
+        <span class="badge bg-dark">{{ created.level }}</span>
+      </div>
+      <p class="text-muted small text-capitalize mb-3">
+        {{ created.topic }} · {{ created.gaps.length }} gaps
+      </p>
+      <p class="mb-0" style="white-space: pre-wrap;">{{ created.body }}</p>
+    </div>
+  </div>
+}
