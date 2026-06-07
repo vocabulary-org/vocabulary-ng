@@ -1,42 +1,94 @@
-<h4 class="fw-bold mb-1">Generate DE Story</h4>
-<p class="text-muted mb-4">Triggers Claude generation of a German gap-fill story for the chosen level, topic and length.</p>
+<h4 class="fw-bold mb-1">DE Stories</h4>
+<p class="text-muted mb-4">Generate a gap-fill story from a topic, or build one from your own pasted German text.</p>
 
-<div class="card border-0 shadow-sm" style="max-width: 480px;">
+<!-- Mode toggle -->
+<div class="btn-group mb-4" role="group">
+  <button type="button" class="btn"
+          [class.btn-primary]="mode === 'topic'"
+          [class.btn-outline-primary]="mode !== 'topic'"
+          (click)="setMode('topic')">
+    <i class="bi bi-magic me-1"></i>From topic
+  </button>
+  <button type="button" class="btn"
+          [class.btn-primary]="mode === 'text'"
+          [class.btn-outline-primary]="mode !== 'text'"
+          (click)="setMode('text')">
+    <i class="bi bi-body-text me-1"></i>From pasted text
+  </button>
+</div>
+
+<div class="card border-0 shadow-sm" [style.max-width]="mode === 'text' ? '720px' : '480px'">
   <div class="card-body p-4">
 
-    <div class="mb-3">
-      <label class="form-label fw-semibold">Level</label>
-      <select class="form-select" [(ngModel)]="level">
-        @for (l of levels; track l) {
-          <option [value]="l">{{ l }}</option>
-        }
-      </select>
-    </div>
+    @if (mode === 'topic') {
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Level</label>
+        <select class="form-select" [(ngModel)]="level">
+          @for (l of levels; track l) {
+            <option [value]="l">{{ l }}</option>
+          }
+        </select>
+      </div>
 
-    <div class="mb-3">
-      <label class="form-label fw-semibold">Topic</label>
-      <input type="text" class="form-control" maxlength="64"
-             [(ngModel)]="topic" placeholder="e.g. food, travel, music">
-      <div class="form-text">Max 64 characters.</div>
-    </div>
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Topic</label>
+        <input type="text" class="form-control" maxlength="64"
+               [(ngModel)]="topic" placeholder="e.g. food, travel, music">
+        <div class="form-text">Max 64 characters.</div>
+      </div>
 
-    <div class="mb-4">
-      <label class="form-label fw-semibold">Length</label>
-      <select class="form-select" [(ngModel)]="length">
-        @for (len of lengths; track len.value) {
-          <option [value]="len.value">{{ len.label }}</option>
-        }
-      </select>
-    </div>
+      <div class="mb-4">
+        <label class="form-label fw-semibold">Length</label>
+        <select class="form-select" [(ngModel)]="length">
+          @for (len of lengths; track len.value) {
+            <option [value]="len.value">{{ len.label }}</option>
+          }
+        </select>
+      </div>
+    } @else {
+      <div class="mb-3">
+        <label class="form-label fw-semibold">German text</label>
+        <textarea class="form-control" rows="8" [maxlength]="textMax"
+                  [(ngModel)]="text"
+                  placeholder="Paste a German text here. The generator turns it into a gap-fill exercise."></textarea>
+        <div class="form-text d-flex justify-content-between">
+          <span>Required. The story is built on top of this text.</span>
+          <span [class.text-danger]="textLength > textMax">{{ textLength }} / {{ textMax }}</span>
+        </div>
+      </div>
+
+      <div class="row g-3 mb-2">
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Title <span class="text-muted fw-normal">(optional)</span></label>
+          <input type="text" class="form-control" maxlength="256"
+                 [(ngModel)]="textTitle" placeholder="Derived if left empty">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Topic <span class="text-muted fw-normal">(optional)</span></label>
+          <input type="text" class="form-control" maxlength="64"
+                 [(ngModel)]="textTopic" placeholder="Derived if left empty">
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label fw-semibold">Level <span class="text-muted fw-normal">(optional)</span></label>
+        <select class="form-select" [(ngModel)]="textLevel">
+          <option value="">Auto-detect</option>
+          @for (l of levels; track l) {
+            <option [value]="l">{{ l }}</option>
+          }
+        </select>
+      </div>
+    }
 
     <button class="btn btn-primary w-100"
             [disabled]="!canSubmit"
-            (click)="generate()">
+            (click)="submit()">
       @if (status === 'loading') {
         <span class="spinner-border spinner-border-sm me-2" role="status"></span>
         Generating…
       } @else {
-        <i class="bi bi-magic me-2"></i>Generate Story
+        <i class="bi bi-magic me-2"></i>{{ mode === 'topic' ? 'Generate Story' : 'Build Story from Text' }}
       }
     </button>
 
@@ -50,8 +102,9 @@
   </div>
 </div>
 
+<!-- Created story preview -->
 @if (status === 'success' && created) {
-  <div class="card border-0 shadow-sm mt-4" style="max-width: 640px;">
+  <div class="card border-0 shadow-sm mt-4" style="max-width: 720px;">
     <div class="card-header bg-success text-white">
       <i class="bi bi-check-circle-fill me-2"></i>Story created
     </div>
@@ -67,3 +120,44 @@
     </div>
   </div>
 }
+
+<!-- Existing stories -->
+<div class="mt-5" style="max-width: 720px;">
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <h5 class="fw-bold mb-0">Existing stories</h5>
+    <button class="btn btn-sm btn-outline-secondary" (click)="loadStories()" [disabled]="listLoading">
+      <i class="bi bi-arrow-clockwise me-1"></i>Refresh
+    </button>
+  </div>
+
+  @if (listLoading) {
+    <div class="text-muted py-3">
+      <span class="spinner-border spinner-border-sm me-2" role="status"></span>Loading…
+    </div>
+  } @else if (listError) {
+    <div class="alert alert-danger">Could not load stories.</div>
+  } @else if (stories.length === 0) {
+    <p class="text-muted py-3">No stories yet.</p>
+  } @else {
+    <div class="list-group shadow-sm">
+      @for (s of stories; track s.uuid) {
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+          <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-dark">{{ s.level }}</span>
+            <span class="fw-semibold">{{ s.title }}</span>
+            <span class="badge bg-light text-dark border text-capitalize">{{ s.topic }}</span>
+          </div>
+          <button class="btn btn-sm btn-outline-danger"
+                  [disabled]="deletingUuid === s.uuid"
+                  (click)="remove(s)">
+            @if (deletingUuid === s.uuid) {
+              <span class="spinner-border spinner-border-sm" role="status"></span>
+            } @else {
+              <i class="bi bi-trash"></i>
+            }
+          </button>
+        </div>
+      }
+    </div>
+  }
+</div>

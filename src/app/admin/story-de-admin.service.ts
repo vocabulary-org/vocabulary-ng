@@ -12,6 +12,13 @@ export interface StoryGenerationRequest {
   length: StoryLength;
 }
 
+export interface StoryFromTextRequest {
+  text: string;
+  title?: string;
+  topic?: string;
+  level?: DeutschLevel;
+}
+
 @Injectable({ providedIn: 'root' })
 export class StoryDeAdminService {
   private readonly baseUrl = `${env.apiBaseUrl}/admin/deutsch/stories`;
@@ -19,5 +26,13 @@ export class StoryDeAdminService {
 
   generate(request: StoryGenerationRequest): Observable<Story> {
     return this.http.post<Story>(`${this.baseUrl}/generate`, request);
+  }
+
+  generateFromText(request: StoryFromTextRequest): Observable<Story> {
+    return this.http.post<Story>(`${this.baseUrl}/from-text`, request);
+  }
+
+  delete(uuid: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${uuid}`);
   }
 }
