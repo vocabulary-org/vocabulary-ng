@@ -13,7 +13,7 @@ export class NounExamplesAdminService {
     if (limit != null) {
       params = params.set('limit', limit);
     }
-    return this.http.post<void>(`${this.baseUrl}/nouns/de/examples/generate`, null, { params });
+    return this.http.post<void>(`${this.baseUrl}/deutsch/nouns/examples/generate`, null, { params });
   }
 
   generateTranslations(lang: string, limit?: number): Observable<void> {
@@ -21,6 +21,6 @@ export class NounExamplesAdminService {
     if (limit != null) {
       params = params.set('limit', limit);
     }
-    return this.http.post<void>(`${this.baseUrl}/nouns/de/translations/generate`, null, { params });
+    return this.http.post<void>(`${this.baseUrl}/deutsch/nouns/translations/generate`, null, { params });
   }
 }
