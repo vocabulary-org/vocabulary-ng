@@ -27,8 +27,11 @@ export const provideKeycloakAngular = () =>
       redirectUri: window.location.origin + '/'
     },
     features: [
+      // Never log out on inactivity: the session lifetime is governed by Keycloak's
+      // SSO session settings. If the refresh token is no longer valid, keycloak-js
+      // clears the tokens and emits AuthLogout, so the UI updates on its own.
       withAutoRefreshToken({
-        onInactivityTimeout: 'logout',
+        onInactivityTimeout: 'none',
         sessionTimeout: 10 * 60 * 1000
       })
     ],
