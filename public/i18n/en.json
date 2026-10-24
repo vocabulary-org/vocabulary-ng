@@ -115,7 +115,7 @@
     "subtitle": "Create your account to get started",
     "username": "Username",
     "usernamePlaceholder": "Choose a username",
-    "usernameInvalid": "Please enter a valid username",
+    "usernameInvalid": "Use at least 2 characters: letters, numbers and . _ - @ only (no spaces)",
     "firstName": "First Name",
     "firstNameInvalid": "Please enter a valid first name",
     "lastName": "Last Name",

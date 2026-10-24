@@ -27,9 +27,13 @@ export const provideKeycloakAngular = () =>
       redirectUri: window.location.origin + '/'
     },
     features: [
+      // Never log out on inactivity: the session lifetime is governed by Keycloak's
+      // SSO session settings. The token is only refreshed if the user was active
+      // within sessionTimeout, so it is set high enough to always refresh while the
+      // tab is open. AuthService sends the user to login once the session is gone.
       withAutoRefreshToken({
-        onInactivityTimeout: 'logout',
-        sessionTimeout: 10 * 60 * 1000
+        onInactivityTimeout: 'none',
+        sessionTimeout: 365 * 24 * 60 * 60 * 1000
       })
     ],
     providers: [

@@ -1,10 +1,11 @@
 import { provideRouter, withComponentInputBinding } from '@angular/router';
-import { ApplicationConfig, isDevMode, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, inject, isDevMode, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { includeBearerTokenInterceptor } from 'keycloak-angular';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideTransloco, provideTranslocoLoader } from '@jsverse/transloco';
 import { I18nLoader } from './shared/service/i18n-loader';
+import { AuthService } from './shared/service/auth.service';
 
 import { provideKeycloakAngular } from './keycloak.config';
 import { routes } from './app.routes';
@@ -12,6 +13,8 @@ import { routes } from './app.routes';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideKeycloakAngular(),
+    // Eagerly create AuthService so it reacts to session expiry on every page
+    provideAppInitializer(() => { inject(AuthService); }),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withInterceptors([includeBearerTokenInterceptor])),

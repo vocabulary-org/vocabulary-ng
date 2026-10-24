@@ -115,7 +115,7 @@
     "subtitle": "Crea tu cuenta para empezar",
     "username": "Nombre de usuario",
     "usernamePlaceholder": "Elige un nombre de usuario",
-    "usernameInvalid": "Por favor, introduce un nombre de usuario válido",
+    "usernameInvalid": "Usa al menos 2 caracteres: solo letras, números y . _ - @ (sin espacios)",
     "firstName": "Nombre",
     "firstNameInvalid": "Por favor, introduce un nombre válido",
     "lastName": "Apellido",
