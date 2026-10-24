@@ -115,7 +115,7 @@
     "subtitle": "Erstelle dein Konto und leg los",
     "username": "Benutzername",
     "usernamePlaceholder": "Wähle einen Benutzernamen",
-    "usernameInvalid": "Bitte gib einen gültigen Benutzernamen ein",
+    "usernameInvalid": "Mindestens 2 Zeichen: nur Buchstaben, Zahlen und . _ - @ (keine Leerzeichen)",
     "firstName": "Vorname",
     "firstNameInvalid": "Bitte gib einen gültigen Vornamen ein",
     "lastName": "Nachname",

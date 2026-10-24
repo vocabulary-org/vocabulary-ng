@@ -10,10 +10,12 @@ import { inject } from '@angular/core';
  */
 const isAccessAllowed = async (
   route: ActivatedRouteSnapshot,
-  __: RouterStateSnapshot,
+  state: RouterStateSnapshot,
   authData: AuthGuardData
 ): Promise<boolean | UrlTree> => {
-  const { authenticated, grantedRoles } = authData;
+  const { authenticated, grantedRoles, keycloak } = authData;
+  // inject() must run before the first await, while still in the injection context
+  const router = inject(Router);
 
   const requiredRole = route.data['role'];
   console.log('requiredRole: '+requiredRole);
@@ -24,11 +26,15 @@ const isAccessAllowed = async (
   const hasRequiredRole = (role: string): boolean =>
     Object.values(grantedRoles.resourceRoles).some((roles) => roles.includes(role));
 
-  if (authenticated && hasRequiredRole(requiredRole)) {
+  if (!authenticated) {
+    await keycloak.login({ redirectUri: window.location.origin + state.url });
+    return false;
+  }
+
+  if (hasRequiredRole(requiredRole)) {
     return true;
   }
 
-  const router = inject(Router);
   return router.parseUrl('/forbidden');
 };
 

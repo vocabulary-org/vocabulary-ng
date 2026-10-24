@@ -35,7 +35,8 @@ export class NewUserComponent implements AfterViewInit, OnDestroy {
 
   form = new FormGroup({
     username: new FormControl('', {
-      validators: [Validators.required, Validators.minLength(2)],
+      // Keycloak only accepts letters, digits and . _ - @ in usernames (no spaces)
+      validators: [Validators.required, Validators.minLength(2), Validators.pattern(/^[a-zA-Z0-9._@-]+$/)],
     }),
     firstName: new FormControl('', {
       validators: [Validators.required, Validators.minLength(2)],
